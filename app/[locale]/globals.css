@@ -1,0 +1,94 @@
+:root {
+  --bg: #050505;
+  --color-platinum: #FAFAFA;
+  --color-graphite: #1C1C1E;
+  --color-steel: #8E8E93;
+}
+
+
+html {
+  box-sizing: border-box;
+}
+
+*,
+*::after,
+*::before {
+  box-sizing: inherit;
+}
+
+ul,
+ol {
+  padding: 0;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol,
+li,
+figure,
+figcaption,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+
+ul {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+  height: auto;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+a {
+  text-decoration: none;
+}
+
+html,
+body {
+  min-height: 100vh;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg);
+  color: #FAFAFA;
+}
+
+
+
+main {
+  flex-grow: 1;
+}
+
+section {
+  padding: 60px 0;
+}
+
+.lock {
+  overflow: hidden;
+}
+
+.container {
+  max-width: 1190px;
+  margin: 0 auto;
+  padding: 0 10px;
+}

@@ -1,0 +1,64 @@
+'use client'
+
+import Image from 'next/image'
+import styles from './Header.module.scss'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import Logo from '../logo/Logo'
+
+const links = [
+  { id: 1, titleUk: "Головна", titleEn: "Home", url: "/" },
+  { id: 2, titleUk: "Про нас", titleEn: "About", url: "/about" },
+  { id: 3, titleUk: "Послуги", titleEn: "Services", url: "/services" },
+  { id: 4, titleUk: "Контакти", titleEn: "Contacts", url: "/contacts" },
+]
+
+const Header = () => {
+  const pathname = usePathname();
+  const locale = pathname.startsWith('/en') ? 'en' : 'uk';
+
+  // Функція для перемикання локалі
+  const switchLocale = (newLocale: 'uk' | 'en') => {
+    // видаляємо поточну локаль із URL і додаємо нову
+    const withoutLocale = pathname.replace(/^\/(uk|en)/, '');
+    return `/${newLocale}${withoutLocale || ''}`;
+  };
+
+  return (
+    <header className={styles.header}>
+      <div className="container">
+        <div className={styles.wrapper}>
+
+          {/* <div className={styles.logo}>
+            <Image src='/image/logo.png' alt='Логотип сайту' width={400} height={10} />
+          </div> */}
+          <Logo/>
+
+          <nav className={styles.menu}>
+            
+            <ul className={styles.list}>
+              {links.map(link => (
+                <li key={link.id}>
+                  <Link
+                    href={`/${locale}${link.url}`}
+                    className={`${styles.link} ${pathname === `/${locale}${link.url}` ? styles.active : ""}`}
+                  >
+                    {locale === 'uk' ? link.titleUk : link.titleEn}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            {/* Перемикач мов */}
+            
+          </nav>
+          <div className={styles.langSwitch}>
+            <Link href={switchLocale('uk')} className={locale === 'uk' ? styles.activeLang : ''}>ua</Link> |{" "}
+            <Link href={switchLocale('en')} className={locale === 'en' ? styles.activeLang : ''}>en</Link>
+          </div>
+        </div>
+      </div>
+    </header>
+  )
+}
+
+export default Header;
