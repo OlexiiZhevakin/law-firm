@@ -29,9 +29,6 @@ const Header = () => {
       <div className="container">
         <div className={styles.wrapper}>
 
-          {/* <div className={styles.logo}>
-            <Image src='/image/logo.png' alt='Логотип сайту' width={400} height={10} />
-          </div> */}
           <Logo/>
 
           <nav className={styles.menu}>
