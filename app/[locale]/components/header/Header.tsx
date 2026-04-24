@@ -5,6 +5,7 @@ import styles from './Header.module.scss'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import Logo from '../logo/Logo'
+import DarkMode from '../darkModel/DarkMode'
 
 const links = [
   { id: 1, titleUk: "Головна", titleEn: "Home", url: "/" },
@@ -48,6 +49,7 @@ const Header = () => {
             {/* Перемикач мов */}
             
           </nav>
+          <DarkMode />
           <div className={styles.langSwitch}>
             <Link href={switchLocale('uk')} className={locale === 'uk' ? styles.activeLang : ''}>ua</Link> |{" "}
             <Link href={switchLocale('en')} className={locale === 'en' ? styles.activeLang : ''}>en</Link>

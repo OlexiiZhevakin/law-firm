@@ -4,6 +4,7 @@ import "./globals.css";
 import { notFound } from "next/navigation";
 import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
+import { ThemeProvider } from "./context/ThemeContext";
 
 const locales = ["uk", "en"];
 
@@ -40,9 +41,11 @@ export default async function RootLayout({
   return (
     <html lang={locale}>
       <body className={`${inter.className} ${playfair.className}`}>
-        <Header/>
-        <main>{children}</main>
-        <Footer/>
+        <ThemeProvider>
+          <Header />
+          <main>{children}</main>
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );

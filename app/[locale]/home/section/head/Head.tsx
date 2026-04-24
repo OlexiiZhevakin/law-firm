@@ -14,7 +14,7 @@ const Head = () => {
             Exclusive legal counsel for financial institutions, private equity, and emerging digital asset markets. We build the frameworks of tomorrow.
           </p>
           <div className={styles.btns}>
-            <Button href='#' className={styles.btnLight}>Explore expertise</Button>
+            <Button href='#' className={styles.btnDark}>Explore expertise</Button>
             <Button href='#' className={styles.btnDark}>Meet the partners</Button>
           </div>
         </div>

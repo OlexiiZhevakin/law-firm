@@ -92,3 +92,50 @@ section {
   margin: 0 auto;
   padding: 0 10px;
 }
+
+.theme.light,
+.theme.dark {
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+.theme.light {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.theme.dark {
+  background-color: #111111;
+  color: #ffffff;
+}
+
+/* всі текстові елементи всередині теми */
+.theme.light a,
+.theme.light h1,
+.theme.light h2,
+.theme.light h3,
+.theme.light p {
+  color: #000000;
+  transition: color 0.4s ease;
+}
+
+.theme.dark a,
+.theme.dark h1,
+.theme.dark h2,
+.theme.dark h3,
+.theme.dark p {
+  color: #ffffff;
+  transition: color 0.4s ease;
+}
+
+.theme.light .logo svg {
+  color: #000000;
+  /* чорний у світлій темі */
+  transition: color 0.4s ease;
+}
+
+.theme.dark .logo svg {
+  color: #ffffff;
+  /* білий у темній темі */
+  transition: color 0.4s ease;
+}
+

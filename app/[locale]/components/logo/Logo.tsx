@@ -10,26 +10,26 @@ const Logo = ({ width = 60, height = 60 }: { width?: number; height?: number }) 
           width={width}
           height={height}
           fill="none"
-          stroke="#ffffff"
+          stroke="currentColor"   // ← тут
           strokeWidth="8"
           strokeLinecap="square"
           xmlns="http://www.w3.org/2000/svg"
         >
-          {/* Ліва колонка (Haryk) */}
+          {/* Ліва колонка */}
           <line x1="25" y1="35" x2="25" y2="80" />
-          {/* Центральна колонка (Партнерство) */}
+          {/* Центральна колонка */}
           <line x1="50" y1="20" x2="50" y2="80" />
-          {/* Права колонка (Hlib) */}
+          {/* Права колонка */}
           <line x1="75" y1="20" x2="75" y2="65" />
           {/* Ліва перекладина */}
           <line x1="25" y1="57.5" x2="50" y2="57.5" />
           {/* Права перекладина */}
           <line x1="50" y1="42.5" x2="75" y2="42.5" />
           {/* Вузли перетину */}
-          <rect x="44" y="51.5" width="12" height="12" fill="#ffffff" stroke="none" />
-          <rect x="44" y="36.5" width="12" height="12" fill="#ffffff" stroke="none" />
-          <rect x="19" y="51.5" width="12" height="12" fill="#ffffff" stroke="none" />
-          <rect x="69" y="36.5" width="12" height="12" fill="#ffffff" stroke="none" />
+          <rect x="44" y="51.5" width="12" height="12" fill="currentColor" stroke="none" />
+          <rect x="44" y="36.5" width="12" height="12" fill="currentColor" stroke="none" />
+          <rect x="19" y="51.5" width="12" height="12" fill="currentColor" stroke="none" />
+          <rect x="69" y="36.5" width="12" height="12" fill="currentColor" stroke="none" />
         </svg>
       </Link>
       <div className={styles.logoInfo}>
