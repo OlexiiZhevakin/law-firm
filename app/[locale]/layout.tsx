@@ -6,6 +6,7 @@ import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
 import { ThemeProvider } from "./context/ThemeContext";
 
+
 const locales = ["uk", "en"];
 
 const inter = Inter({

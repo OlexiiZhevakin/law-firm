@@ -10,12 +10,26 @@ type ThemeContextType = {
 export const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  const [mode, setMode] = useState<"light" | "dark">("dark");
-  const toggle = () => setMode((prev) => (prev === "dark" ? "light" : "dark"));
+  const [mode, setMode] = useState<"light" | "dark">(() => {
+    if (typeof window !== "undefined") {
+      return (localStorage.getItem("theme") as "light" | "dark") || "dark";
+    }
+    return "dark";
+  });
+
+  const toggle = () => {
+    setMode((prev) => {
+      const next = prev === "dark" ? "light" : "dark";
+      localStorage.setItem("theme", next); // 👈 тут зберігаємо
+      return next;
+    });
+  };
 
   return (
     <ThemeContext.Provider value={{ toggle, mode }}>
-      <div className={`theme ${mode}`}>{children}</div>
+      <div className={`theme ${mode} page-layout`}>
+        {children}
+      </div>
     </ThemeContext.Provider>
   );
 };

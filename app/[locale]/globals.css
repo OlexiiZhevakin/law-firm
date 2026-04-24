@@ -59,6 +59,7 @@ select {
 
 a {
   text-decoration: none;
+  transition: color 0.4s ease;
 }
 
 html,
@@ -71,12 +72,24 @@ body {
   flex-direction: column;
   background-color: var(--bg);
   color: #FAFAFA;
+  transition: background-color 0.4s ease,
+  color 0.4s ease;
 }
 
-
+.page-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  /* щоб футер завжди був внизу */
+}
 
 main {
-  flex-grow: 1;
+  flex: 1;
+}
+
+footer {
+  margin-top: auto;
+  /* прибиває футер вниз */
 }
 
 section {
@@ -138,4 +151,3 @@ section {
   /* білий у темній темі */
   transition: color 0.4s ease;
 }
-
