@@ -52,3 +52,21 @@
     }
   }
 }
+
+.headerBtn {
+  color: var(--color-graphite);
+  padding: 8px 12px;
+  transition: background-color 0.8s ease;
+  position: relative;
+  &::after {
+    content: "→";
+    /* стрілочка */
+    margin-left: 8px;
+    font-weight: 600;
+    transition: transform 0.3s ease;
+  }
+  &:hover {
+    color: var(--color-platinum);
+    background: var(--color-graphite);
+  }
+}

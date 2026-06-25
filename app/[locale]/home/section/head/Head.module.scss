@@ -38,9 +38,12 @@
 }
 
 .btnLight {
+  padding: 16px 38px;
   background-color: var(--color-platinum);
   transition: background-color 0.8s ease;
   color: var(--color-obsidian);
+  
+  
   &:hover {
     color: var(--color-platinum);
     background-color: var(--color-obsidian); // темно-сірий з прозорістю 60%
@@ -48,8 +51,18 @@
 }
 
 .btnDark {
+  padding: 16px 38px;
+  color: var(--color-platinum);
   background-color: var(--color-obsidian);
   transition: background-color 0.8s ease;
+  position: relative;
+  &::after {
+    content: "→";
+    /* стрілочка */
+    margin-left: 8px;
+    font-weight: 600;
+    transition: transform 0.3s ease;
+  }
   &:hover {
     color: var(--color-obsidian);
     background-color: var(--color-platinum); // темно-сірий з прозорістю 60%
