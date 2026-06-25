@@ -3,6 +3,7 @@
   --color-platinum: #FAFAFA;
   --color-graphite: #1C1C1E;
   --color-steel: #8E8E93;
+  --color-obsidian: #050505;
 }
 
 
@@ -60,6 +61,7 @@ select {
 a {
   text-decoration: none;
   transition: color 0.4s ease;
+  /* color: var(--color-obsidian); */
 }
 
 html,
@@ -70,10 +72,10 @@ body {
 body {
   display: flex;
   flex-direction: column;
-  background-color: var(--bg);
-  color: #FAFAFA;
-  transition: background-color 0.4s ease,
-  color 0.4s ease;
+  background-color: var(--color-platinum);
+  color: var(--color-obsidian);
+  /* transition: background-color 0.4s ease,
+  color 0.4s ease; */
 }
 
 .page-layout {
@@ -106,7 +108,7 @@ section {
   padding: 0 10px;
 }
 
-.theme.light,
+/* .theme.light,
 .theme.dark {
   transition: background-color 0.4s ease, color 0.4s ease;
 }
@@ -114,15 +116,15 @@ section {
 .theme.light {
   background-color: #ffffff;
   color: #000000;
-}
+} */
 
-.theme.dark {
+/* .theme.dark {
   background-color: #111111;
   color: #ffffff;
-}
+} */
 
 /* всі текстові елементи всередині теми */
-.theme.light a,
+/* .theme.light a,
 .theme.light h1,
 .theme.light h2,
 .theme.light h3,
@@ -143,11 +145,11 @@ section {
 .theme.light .logo svg {
   color: #000000;
   /* чорний у світлій темі */
-  transition: color 0.4s ease;
-}
+  /* transition: color 0.4s ease;
+} */
 
-.theme.dark .logo svg {
+/* .theme.dark .logo svg {
   color: #ffffff;
   /* білий у темній темі */
-  transition: color 0.4s ease;
-}
+  /* transition: color 0.4s ease;
+} */

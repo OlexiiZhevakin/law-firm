@@ -3,6 +3,10 @@
   align-items: center;
 }
 
+.logo svg {
+  color: var(--color-obsidian); // напряму для svg
+}
+
 .subtitle {
   font-size: 32px;
   font-family: 'Playfair Display', serif;

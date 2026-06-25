@@ -1,7 +1,9 @@
 .header {
   padding: 20px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2); // світла лінія знизу
+  border-bottom: 1px solid var(--color-steel);
+  /* нижня лінія кольору steel */
 }
+
 
 .wrapper {
   display: flex;
@@ -19,17 +21,15 @@
 
 .link {
   text-decoration: none;
-  color: #FAFAFA;
+  color: var(--color-obsidian);
   font-size: 18px;
-
-  &:hover,
-  &:focus {
-    color: #fff;
+  &:hover {
+    color: var(--color-graphite);
   }
-
   &.active {
-    color: #fff;
+    font-weight: 700;
   }
+  
 }
 
 .langSwitch {
@@ -40,14 +40,15 @@
   a {
     text-decoration: none;
     color: #aaa;
+    text-transform: uppercase;
 
     &:hover {
-      color: #fff;
+      color: var(--color-graphite);
     }
 
     &.activeLang {
-      color: #fff;
-
+      font-weight: 700;
+      color: var(--color-obsidian);
     }
   }
 }

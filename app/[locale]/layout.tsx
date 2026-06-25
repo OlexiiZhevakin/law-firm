@@ -42,11 +42,11 @@ export default async function RootLayout({
   return (
     <html lang={locale}>
       <body className={`${inter.className} ${playfair.className}`}>
-        <ThemeProvider>
+        {/* <ThemeProvider> */}
           <Header />
           <main>{children}</main>
           <Footer />
-        </ThemeProvider>
+        {/* </ThemeProvider> */}
       </body>
     </html>
   );
