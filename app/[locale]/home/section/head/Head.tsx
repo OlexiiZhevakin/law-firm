@@ -9,13 +9,15 @@ const Head = () => {
     <section className={styles.section}>
       <div className="container">
         <div className={styles.wrapper}>
-          <h1 className={styles.title}>Structuring the Future of Finance.</h1>
+          <h1 className={styles.title}>Регуляторна
+            навігація
+            для фінансового сектору</h1>
           <p className={styles.description}>
-            Exclusive legal counsel for financial institutions, private equity, and emerging digital asset markets. We build the frameworks of tomorrow.
+            Юридичний бутік для банків, страхових і небанківських фінансових установ, фінтех-компаній і крипто-сервісів — в Україні, ЄС та Великобританії. Команда та засновники фірми мають значний досвід роботи у Регуляторах фінансового сектору.
           </p>
           <div className={styles.btns}>
-            <Button href='#' className={styles.btnDark}>Explore expertise</Button>
-            <Button href='#' className={styles.btnDark}>Meet the partners</Button>
+            <Button href='#' className={styles.btnDark}>Замовити консультацію</Button>
+            <Button href='#' className={styles.btnLight}>Наші послуги</Button>
           </div>
         </div>
       </div>

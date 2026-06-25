@@ -17,7 +17,7 @@
   font-family: 'Playfair Display',
   serif;
   font-weight: 600;
-  // text-transform: uppercase;
+  text-transform: uppercase;
   // letter-spacing: 0.15em;
 }
 
@@ -34,17 +34,24 @@
 .btns {
   display: flex;
   gap: 30px;
+  
 }
 
 .btnLight {
-  background-color: #FFF;
-  color: #000;
+  background-color: var(--color-platinum);
+  transition: background-color 0.8s ease;
+  color: var(--color-obsidian);
+  &:hover {
+    color: var(--color-platinum);
+    background-color: var(--color-obsidian); // темно-сірий з прозорістю 60%
+  }
 }
 
 .btnDark {
-  transition: background-color 0.5s ease;
+  background-color: var(--color-obsidian);
+  transition: background-color 0.8s ease;
   &:hover {
-    
-    background-color: rgba(51, 51, 51, 0.6); // темно-сірий з прозорістю 60%
+    color: var(--color-obsidian);
+    background-color: var(--color-platinum); // темно-сірий з прозорістю 60%
   }
 }
