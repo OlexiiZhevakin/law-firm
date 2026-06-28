@@ -30,6 +30,8 @@
 }
 
 .img {
+  width: auto;
+  height: auto;
   object-fit: cover; // обрізає зайве, щоб фото завжди заповнювало контейнер
 }
 
