@@ -1,8 +1,7 @@
-
 'use client'
 
 import { ReactNode } from 'react'
-import Link from 'next/link'
+import Link from 'next/link' // Повертаємо Next.js Link
 import { useParams } from 'next/navigation'
 
 interface NavLinkProps {
@@ -12,12 +11,12 @@ interface NavLinkProps {
   children: ReactNode
 }
 
-export default function NavLink({ targetId, className, activeClass, children }: NavLinkProps) {
+export default function NavLink({ targetId, className, children }: NavLinkProps) {
   const params = useParams()
   const locale = params?.locale || 'uk'
 
   const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault() // Скасовуємо різкий стрибок браузера
+    e.preventDefault()
 
     const element = document.getElementById(targetId)
     if (element) {
@@ -25,7 +24,6 @@ export default function NavLink({ targetId, className, activeClass, children }: 
         behavior: 'smooth',
         block: 'start'
       })
-      // Оновлюємо хеш в адресному рядку для краси
       window.history.pushState(null, '', `#${targetId}`)
     }
   }
@@ -35,6 +33,7 @@ export default function NavLink({ targetId, className, activeClass, children }: 
       href={`/${locale}#${targetId}`}
       onClick={handleScroll}
       className={className}
+      prefetch={false} // 👇 ОСЬ ЦЕЙ ПАРАМЕТР ВИМИКАЄ ФОНОВІ 404 ПОМИЛКИ!
     >
       {children}
     </Link>
