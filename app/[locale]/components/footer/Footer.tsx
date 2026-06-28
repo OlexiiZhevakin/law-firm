@@ -75,9 +75,9 @@
 //           <div className={styles.column}>
 //             <h3 className={styles.title}>Юридична інформація</h3>
 //             <ul className={styles.list}>
-//               <li><Link href="/privacy">Privacy Policy</Link></li>
-//               <li><Link href="/cookies">Cookie Policy</Link></li>
-//               <li><Link href="/terms">Terms of Use</Link></li>
+              // <li><Link href="/privacy">Privacy Policy</Link></li>
+              // <li><Link href="/cookies">Cookie Policy</Link></li>
+              // <li><Link href="/terms">Terms of Use</Link></li>
 //             </ul>
 //           </div>
 //         </div>
@@ -180,10 +180,9 @@ export default function Footer({ locale = 'uk' }: FooterProps) {
           <div className={styles.column}>
             <h3 className={styles.title}>{locale === 'uk' ? 'Юридична інформація' : 'Legal Info'}</h3>
             <ul className={styles.list}>
-              <li><a href={`/${locale}#head`}>{locale === 'uk' ? 'Головна' : 'Home'}</a></li>
-              <li><a href={`/${locale}#about`}>{locale === 'uk' ? 'Про нас' : 'About'}</a></li>
-              <li><a href={`/${locale}#services`}>{locale === 'uk' ? 'Послуги' : 'Services'}</a></li>
-              <li><a href={`/${locale}#contacts`}>{locale === 'uk' ? 'Контакти' : 'Contacts'}</a></li>
+              <li><Link href="/privacy">Privacy Policy</Link></li>
+              <li><Link href="/cookies">Cookie Policy</Link></li>
+              <li><Link href="/terms">Terms of Use</Link></li>
             </ul>
           </div>
         </div>
