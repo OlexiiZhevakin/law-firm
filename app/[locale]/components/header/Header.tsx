@@ -1,95 +1,171 @@
-  // 'use client'
 
-  // import styles from './Header.module.scss'
-  // import Link from 'next/link'
-  // import { usePathname } from 'next/navigation'
-  // import Logo from '../logo/Logo'
-  // import Button from '../button/Button'
-  // import DarkMode from '../darkModel/DarkMode'
+// 'use client'
 
-  // const links = [
-  //   { id: 1, titleUk: "Головна", titleEn: "Home", url: "/" },
-  //   { id: 2, titleUk: "Про нас", titleEn: "About", url: "/about" },
-  //   { id: 3, titleUk: "Послуги", titleEn: "Services", url: "/services" },
-  //   { id: 4, titleUk: "Контакти", titleEn: "Contacts", url: "/contacts" },
-  // ]
+// import { useState } from 'react'
+// import styles from './Header.module.scss'
+// import Link from 'next/link'
+// import { usePathname } from 'next/navigation'
+// import Logo from '../logo/Logo'
+// import Button from '../button/Button'
 
-  // const Header = () => {
-  //   const pathname = usePathname();
-  //   const locale = pathname.startsWith('/en') ? 'en' : 'uk';
+// const links = [
+//   { id: 1, titleUk: "Головна", titleEn: "Home", url: "/" },
+//   { id: 2, titleUk: "Про нас", titleEn: "About", url: "/about" },
+//   { id: 3, titleUk: "Послуги", titleEn: "Services", url: "/services" },
+//   { id: 4, titleUk: "Контакти", titleEn: "Contacts", url: "/contacts" },
+// ]
 
-  //   // Функція для перемикання локалі
-  //   const switchLocale = (newLocale: 'uk' | 'en') => {
-  //     // видаляємо поточну локаль із URL і додаємо нову
-  //     const withoutLocale = pathname.replace(/^\/(uk|en)/, '');
-  //     return `/${newLocale}${withoutLocale || ''}`;
-  //   };
+// const Header = () => {
+//   const pathname = usePathname()
+//   const locale = pathname.startsWith('/en') ? 'en' : 'uk'
+//   const [open, setOpen] = useState(false)
 
-  //   return (
-  //     <header className={styles.header}>
-  //       <div className="container">
-  //         <div className={styles.wrapper}>
+//   const switchLocale = (newLocale: 'uk' | 'en') => {
+//     const withoutLocale = pathname.replace(/^\/(uk|en)/, '')
+//     return `/${newLocale}${withoutLocale || ''}`
+//   }
 
-  //           <Logo/>
+//   return (
+//     <header className={styles.header}>
+//       <div className="container">
+//         <div className={styles.wrapper}>
+//           <Logo />
 
-  //           <nav className={styles.menu}>
-              
-  //             <ul className={styles.list}>
-  //               {links.map(link => (
-  //                 <li key={link.id}>
-  //                   <Link
-  //                     href={`/${locale}${link.url}`}
-  //                     className={`${styles.link} ${pathname === `/${locale}${link.url}` ? styles.active : ""}`}
-  //                   >
-  //                     {locale === 'uk' ? link.titleUk : link.titleEn}
-  //                   </Link>
-  //                 </li>
-  //               ))}
-  //             </ul>
-  //             {/* Перемикач мов */}
-              
-  //           </nav>
-  //           {/* <DarkMode /> */}
-  //           <div className={styles.langSwitch}>
-  //             <Link href={switchLocale('uk')} className={locale === 'uk' ? styles.activeLang : ''}>ua</Link> /{" "}
-  //             <Link href={switchLocale('en')} className={locale === 'en' ? styles.activeLang : ''}>en</Link>
-              
-  //           </div>
-  //           <Button href='#' className={styles.headerBtn}>Консультація</Button>
-  //         </div>
-  //       </div>
-  //     </header>
-  //   )
-  // }
+//           {/* Десктопне меню */}
+//           <nav className={styles.menu}>
+//             <ul className={styles.list}>
+//               {links.map(link => (
+//                 <li key={link.id}>
+//                   <Link
+//                     href={`/${locale}${link.url}`}
+//                     className={`${styles.link} ${pathname === `/${locale}${link.url}` ? styles.active : ""}`}
+//                   >
+//                     {locale === 'uk' ? link.titleUk : link.titleEn}
+//                   </Link>
+//                 </li>
+//               ))}
+//             </ul>
+//           </nav>
 
-  // export default Header;
+//           {/* Перемикач мов */}
+//           <div className={styles.langSwitch}>
+//             <Link href={switchLocale('uk')} className={locale === 'uk' ? styles.activeLang : ''}>ua</Link> /{" "}
+//             <Link href={switchLocale('en')} className={locale === 'en' ? styles.activeLang : ''}>en</Link>
+//           </div>
 
+//           {/* Кнопка тільки для десктопу */}
+//           <Button href='#' className={styles.headerBtn}>Консультація</Button>
 
-'use client'
+//           {/* Кнопка бургер */}
+//           <button className={styles.burger} onClick={() => setOpen(true)}>☰</button>
+//         </div>
+//       </div>
 
-import { useState } from 'react'
+//       {/* Мобільне меню */}
+//       <div className={`${styles.sidebar} ${open ? styles.active : ""}`}>
+//         <button className={styles.closeBtn} onClick={() => setOpen(false)}>×</button>
+//         <ul>
+//           {links.map(link => (
+//             <li key={link.id}>
+//               <Link href={`/${locale}${link.url}`} onClick={() => setOpen(false)}>
+//                 {locale === 'uk' ? link.titleUk : link.titleEn}
+//               </Link>
+//             </li>
+//           ))}
+
+//         </ul>
+//         <Button href='#' className={styles.sidebarBtn}>Консультація</Button>
+//       </div>
+//     </header>
+//   )
+// }
+
+// export default Header
+
+// import styles from './Header.module.scss'
+// import Logo from '../logo/Logo'
+// import Button from '../button/Button'
+// import NavLink from '../navLinks/NavLink'
+// import MobileMenu from '../mobileMenu/MobileMenu'
+// import LangSwitch from '../langSwitch/LangSwitch' // Імпортуємо наш новий перемикач
+
+// const links = [
+//   { id: 1, titleUk: "Головна", titleEn: "Home", url: "/" },
+//   { id: 2, titleUk: "Про нас", titleEn: "About", url: "/about" },
+//   { id: 3, titleUk: "Послуги", titleEn: "Services", url: "/services" },
+//   { id: 4, titleUk: "Контакти", titleEn: "Contacts", url: "/contacts" },
+// ]
+
+// interface HeaderProps {
+//   params: { locale?: 'uk' | 'en' }
+// }
+
+// export default function Header({ params }: HeaderProps) {
+//   // Надійно беремо локаль, яка прийшла від Layout
+//   const locale = params.locale || 'uk'
+
+//   return (
+//     <header className={styles.header}>
+//       <div className="container">
+//         <div className={styles.wrapper}>
+//           <Logo />
+
+//           {/* Десктопне меню */}
+//           <nav className={styles.menu}>
+//             <ul className={styles.list}>
+//               {links.map(link => {
+//                 // Формуємо чистий шлях: для головної просто /[locale], для інших /[locale]/about
+//                 const cleanUrl = link.url === "/" ? "" : link.url
+//                 return (
+//                   <li key={link.id}>
+//                     <NavLink
+//                       href={`/${locale}${cleanUrl}`}
+//                       activeClass={styles.active}
+//                       className={styles.link}
+//                     >
+//                       {locale === 'uk' ? link.titleUk : link.titleEn}
+//                     </NavLink>
+//                   </li>
+//                 )
+//               })}
+//             </ul>
+//           </nav>
+
+//           {/* Інтелектуальний перемикач мов */}
+//           <LangSwitch currentLocale={locale} />
+
+//           <Button href={`/${locale}/contacts`} className={styles.headerBtn}>
+//             {locale === 'uk' ? 'Консультація' : 'Consultation'}
+//           </Button>
+
+//           {/* Мобільне меню */}
+//           <MobileMenu links={links} locale={locale} />
+//         </div>
+//       </div>
+//     </header>
+//   )
+// }
+
 import styles from './Header.module.scss'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import Logo from '../logo/Logo'
 import Button from '../button/Button'
+import NavLink from '../navLinks/NavLink'
+import MobileMenu from '../mobileMenu/MobileMenu'
+import LangSwitch from '../langSwitch/LangSwitch'
 
 const links = [
-  { id: 1, titleUk: "Головна", titleEn: "Home", url: "/" },
-  { id: 2, titleUk: "Про нас", titleEn: "About", url: "/about" },
-  { id: 3, titleUk: "Послуги", titleEn: "Services", url: "/services" },
-  { id: 4, titleUk: "Контакти", titleEn: "Contacts", url: "/contacts" },
+  { id: 1, titleUk: "Головна", titleEn: "Home", targetId: "head" },
+  { id: 2, titleUk: "Про нас", titleEn: "About", targetId: "about" },
+  { id: 3, titleUk: "Послуги", titleEn: "Services", targetId: "services" },
+  { id: 4, titleUk: "Контакти", titleEn: "Contacts", targetId: "contacts" },
 ]
 
-const Header = () => {
-  const pathname = usePathname()
-  const locale = pathname.startsWith('/en') ? 'en' : 'uk'
-  const [open, setOpen] = useState(false)
+interface HeaderProps {
+  params: { locale?: 'uk' | 'en' }
+}
 
-  const switchLocale = (newLocale: 'uk' | 'en') => {
-    const withoutLocale = pathname.replace(/^\/(uk|en)/, '')
-    return `/${newLocale}${withoutLocale || ''}`
-  }
+export default function Header({ params }: HeaderProps) {
+  const locale = params.locale || 'uk'
 
   return (
     <header className={styles.header}>
@@ -102,47 +178,28 @@ const Header = () => {
             <ul className={styles.list}>
               {links.map(link => (
                 <li key={link.id}>
-                  <Link
-                    href={`/${locale}${link.url}`}
-                    className={`${styles.link} ${pathname === `/${locale}${link.url}` ? styles.active : ""}`}
+                  <NavLink
+                    targetId={link.targetId}
+                    activeClass={styles.active}
+                    className={styles.link}
                   >
                     {locale === 'uk' ? link.titleUk : link.titleEn}
-                  </Link>
+                  </NavLink>
                 </li>
               ))}
             </ul>
           </nav>
 
-          {/* Перемикач мов */}
-          <div className={styles.langSwitch}>
-            <Link href={switchLocale('uk')} className={locale === 'uk' ? styles.activeLang : ''}>ua</Link> /{" "}
-            <Link href={switchLocale('en')} className={locale === 'en' ? styles.activeLang : ''}>en</Link>
-          </div>
+          <LangSwitch currentLocale={locale} />
 
-          {/* Кнопка тільки для десктопу */}
-          <Button href='#' className={styles.headerBtn}>Консультація</Button>
+          {/* Кнопка "Консультація" теж може плавно скролити до форми контактів */}
+          <NavLink targetId="contacts" activeClass="" className={styles.headerBtn}>
+            {locale === 'uk' ? 'Консультація' : 'Consultation'}
+          </NavLink>
 
-          {/* Кнопка бургер */}
-          <button className={styles.burger} onClick={() => setOpen(true)}>☰</button>
+          <MobileMenu links={links} locale={locale} />
         </div>
-      </div>
-
-      {/* Мобільне меню */}
-      <div className={`${styles.sidebar} ${open ? styles.active : ""}`}>
-        <button className={styles.closeBtn} onClick={() => setOpen(false)}>×</button>
-        <ul>
-          {links.map(link => (
-            <li key={link.id}>
-              <Link href={`/${locale}${link.url}`} onClick={() => setOpen(false)}>
-                {locale === 'uk' ? link.titleUk : link.titleEn}
-              </Link>
-            </li>
-          ))}
-        </ul>
-        <Button href='#' className={styles.sidebarBtn}>Консультація</Button>
       </div>
     </header>
   )
 }
-
-export default Header

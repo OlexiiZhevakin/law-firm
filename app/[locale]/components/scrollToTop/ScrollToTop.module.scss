@@ -1,0 +1,34 @@
+.scrollTopBtn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 45px;
+  height: 45px;
+  background-color: #ffffff; // Білий фон, щоб виділятися на фоні сайту
+  color: #000000; // Або твоя змінна var(--color-graphite)
+  border: 1px solid #cccccc; // Тонкий сірий бордер, як у кнопки Консультація
+  border-radius: 4px; // Невелике закруглення
+  font-size: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); // Легка тінь
+  z-index: 999; // Кнопка завжди поверх усього контенту
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: #000000; // Інверсія кольорів при наведенні
+    color: #ffffff;
+    border-color: #000000;
+    transform: translateY(-3px); // Кнопка злегка підстрибує
+  }
+
+  @media (max-width: 768px) {
+    bottom: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+  }
+}

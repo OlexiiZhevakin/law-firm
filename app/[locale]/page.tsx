@@ -1,8 +1,14 @@
+
 import HomePage from "./home/page";
 
+interface PageProps {
+  params: Promise<{ locale: string }>
+}
 
-export default function Home() {
+// 1. Приймаємо params від Next.js тут, у корінній сторінці
+export default async function Home({ params }: PageProps) {
   return (
-    <HomePage/>
+    // 2. 👇 Передаємо ці params всередину твого компонента HomePage
+    <HomePage params={params} />
   );
 }
