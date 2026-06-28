@@ -1,0 +1,62 @@
+// .section {
+//   background-color: var(--color-obsidian);
+//   color: var(--color-platinum);
+// }
+
+// .info {
+//   border-bottom: 1px solid #ffffff;
+// }
+
+.titleSection {
+  color: var(--color-platinum);
+}
+
+// .description{
+//   font-size: 18px;
+//   margin-bottom: 20px;
+// }
+
+.servicesSection {
+  background: var(--color-obsidian); // чорний фон
+  color: var(--color-platinum); // білий текст
+  padding: 100px 0;
+}
+
+.wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.description {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+
+  @media (max-width: 768px) {
+    flex-direction: column; // на мобільному все стає одне під одним
+    align-items: center;
+    text-align: center;
+    gap: 16px;
+  }
+}
+.info {
+  max-width: 600px;
+}
+.title {
+  color: var(--color-platinum);
+}
+
+.text {
+  font-size: 18px;
+  line-height: 1.6;
+  margin-bottom: 40px;
+  color: var(--color-platinum);
+}
+
+.meta {
+  font-size: 14px;
+  color: var(--color-steel); // сірий відтінок
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
