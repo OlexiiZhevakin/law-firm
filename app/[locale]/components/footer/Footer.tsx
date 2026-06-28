@@ -111,7 +111,8 @@ export default function Footer({ locale = 'uk' }: FooterProps) {
           {/* Лого + опис */}
           <div className={styles.brandColumn}>
             <div className={styles.logoBlock}>
-              <Link href="/">
+              {/* Посилання на головну з урахуванням локалі */}
+              <Link href={`/${locale}`}>
                 <svg
                   viewBox="0 0 100 100"
                   width={60}
@@ -154,14 +155,14 @@ export default function Footer({ locale = 'uk' }: FooterProps) {
             </p>
           </div>
 
-          {/* Навігація */}
+          {/* Навігація — ТЕПЕР ПРАВИЛЬНІ ЯКОРІ НА ОДНУ СТОРІНКУ */}
           <div className={styles.column}>
             <h3 className={styles.title}>{locale === 'uk' ? 'Сайт' : 'Navigation'}</h3>
             <ul className={styles.list}>
-              <li><Link href="/">{locale === 'uk' ? 'Головна' : 'Home'}</Link></li>
-              <li><Link href="/about">{locale === 'uk' ? 'Про нас' : 'About'}</Link></li>
-              <li><Link href="/services">{locale === 'uk' ? 'Послуги' : 'Services'}</Link></li>
-              <li><Link href="/contacts">{locale === 'uk' ? 'Контакти' : 'Contacts'}</Link></li>
+              <li><Link href={`/${locale}#head`}>{locale === 'uk' ? 'Головна' : 'Home'}</Link></li>
+              <li><Link href={`/${locale}#about`}>{locale === 'uk' ? 'Про нас' : 'About'}</Link></li>
+              <li><Link href={`/${locale}#services`}>{locale === 'uk' ? 'Послуги' : 'Services'}</Link></li>
+              <li><Link href={`/${locale}#contacts`}>{locale === 'uk' ? 'Контакти' : 'Contacts'}</Link></li>
             </ul>
           </div>
 
@@ -179,9 +180,9 @@ export default function Footer({ locale = 'uk' }: FooterProps) {
           <div className={styles.column}>
             <h3 className={styles.title}>{locale === 'uk' ? 'Юридична інформація' : 'Legal Info'}</h3>
             <ul className={styles.list}>
-              <li><Link href="/privacy">Privacy Policy</Link></li>
-              <li><Link href="/cookies">Cookie Policy</Link></li>
-              <li><Link href="/terms">Terms of Use</Link></li>
+              <li><Link href={`/${locale}/privacy`}>Privacy Policy</Link></li>
+              <li><Link href={`/${locale}/cookies`}>Cookie Policy</Link></li>
+              <li><Link href={`/${locale}/terms`}>Terms of Use</Link></li>
             </ul>
           </div>
         </div>
