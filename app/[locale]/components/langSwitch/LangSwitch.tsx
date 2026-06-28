@@ -1,7 +1,7 @@
 "use client"
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import styles from '../header/Header.module.scss'
 
 interface LangSwitchProps {
@@ -9,27 +9,34 @@ interface LangSwitchProps {
 }
 
 export default function LangSwitch({ currentLocale }: LangSwitchProps) {
-  const pathname = usePathname()
+  // Ініціалізуємо стан порожнім рядком
+  const [hash, setHash] = useState('')
 
-  // Функція замінює префікс мови в поточному URL (наприклад, /en/services -> /uk/services)
-  const getSecondaryLanguagePath = (targetLocale: string) => {
-    if (!pathname) return `/${targetLocale}`
-    const segments = pathname.split('/')
-    segments[1] = targetLocale // Замінюємо сегмент мови [1]
-    return segments.join('/')
-  }
+  useEffect(() => {
+    // 1. Оновлюємо хеш асинхронно через планувальник подій, щоб уникнути каскадного рендеру
+    const initialHash = window.location.hash
+    if (initialHash) {
+      setTimeout(() => setHash(initialHash), 0)
+    }
+
+    const handleHashChange = () => setHash(window.location.hash)
+
+    // 2. Підписуємося на зміну хешу
+    window.addEventListener('hashchange', handleHashChange)
+    return () => window.removeEventListener('hashchange', handleHashChange)
+  }, [])
 
   return (
     <div className={styles.langSwitch}>
       <Link
-        href={getSecondaryLanguagePath('uk')}
+        href={`/uk${hash}`}
         className={currentLocale === 'uk' ? styles.activeLang : ''}
       >
         ua
       </Link>
       <span className={styles.divider}> / </span>
       <Link
-        href={getSecondaryLanguagePath('en')}
+        href={`/en${hash}`}
         className={currentLocale === 'en' ? styles.activeLang : ''}
       >
         en
