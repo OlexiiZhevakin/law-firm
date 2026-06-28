@@ -9,7 +9,7 @@ type Props = {
 
 const Button = ({ children, href, className }: Props) => {
   return (
-    <Link href={href} className={`${styles.btn} ${className || ''}`} target='_blanc'>{children}</Link>
+    <Link href={href} className={`${styles.btn} ${className || ''}`} target="_self">{children}</Link>
   )
 }
 

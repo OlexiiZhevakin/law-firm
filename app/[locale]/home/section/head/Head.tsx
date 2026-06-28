@@ -60,10 +60,10 @@ export default function Head({ locale = 'uk' }: HeadProps) {
           </p>
 
           <div className={styles.btns}>
-            <Button href={`/${locale}/contacts`} className={styles.btnDark}>
+            <Button href={`/${locale}#contacts`} className={styles.btnDark}>
               {locale === 'uk' ? 'Замовити консультацію' : 'Book a Consultation'}
             </Button>
-            <Button href={`/${locale}/services`} className={styles.btnLight}>
+            <Button href={`/${locale}#services`} className={styles.btnLight}>
               {locale === 'uk' ? 'Наші послуги' : 'Our Services'}
             </Button>
           </div>
