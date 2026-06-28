@@ -180,9 +180,9 @@ export default function Footer({ locale = 'uk' }: FooterProps) {
           <div className={styles.column}>
             <h3 className={styles.title}>{locale === 'uk' ? 'Юридична інформація' : 'Legal Info'}</h3>
             <ul className={styles.list}>
-              <li><Link href="/privacy">Privacy Policy</Link></li>
+              {/* <li><Link href="/privacy">Privacy Policy</Link></li>
               <li><Link href="/cookies">Cookie Policy</Link></li>
-              <li><Link href="/terms">Terms of Use</Link></li>
+              <li><Link href="/terms">Terms of Use</Link></li> */}
             </ul>
           </div>
         </div>
