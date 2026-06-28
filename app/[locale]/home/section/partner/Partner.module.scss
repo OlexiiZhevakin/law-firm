@@ -1,5 +1,103 @@
+// .partnerSection {
+//   padding: 80px 0;
+// }
+
+// .wrapper {
+//   display: flex;
+//   gap: 40px;
+//   border: 1px solid rgba(5, 5, 5, 0.10);
+
+//   @media (max-width: 768px) {
+//     flex-direction: column;
+//     align-items: center;
+//     text-align: center;
+//   }
+// }
+
+// .photo {
+//   position: relative;
+//   width: 320px;   // ширина контейнера на десктопі
+//   height: 400px;  // висота контейнера на десктопі
+// }
+
+// .img {
+//   object-fit: cover; // обрізає зайве, зберігає пропорції
+// }
+
+// /* адаптивність */
+// @media (max-width: 1024px) {
+//   .photo {
+//     width: 240px;
+//     height: 400px;
+//   }
+// }
+
+// @media (max-width: 768px) {
+//   .photo {
+//     width: 100%;     // на мобільному фото розтягується по ширині
+//     height: 300px;   // висота зменшена
+//   }
+// }
+
+
+
+
+// .info {
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center; // все йде вертикально
+//   gap: 24px;
+//   max-width: 800px;
+// }
+
+// .role {
+//   font-size: 14px;
+//   text-transform: uppercase;
+//   color: var(--color-steel);
+// }
+
+// .title{
+//   text-align: left;
+//   margin-bottom: 0;
+// }
+
+// .bio {
+//   color: var(--color-steel);
+// }
+
+// .list {
+//   display: flex;
+//   // flex-wrap: wrap;
+//   gap: 20px;
+//   justify-content: center;
+//   list-style: none;
+//   margin: 0;
+//   padding: 0;
+// }
+
+// .item {
+//   // flex: 1 1 200px;
+//   text-align: center;
+//   padding: 10px;
+//   border: 1px solid var(--color-steel);
+//   font-size: 12px;
+//   font-weight: 600;
+//   text-transform: uppercase;
+//   background: var(--color-platinum);
+//   color: var(--color-obsidian);
+//   transition: background-color 0.3s ease;
+// } 
+
 .partnerSection {
   padding: 80px 0;
+
+  @media (max-width: 1024px) {
+    padding: 60px 0;
+  }
+
+  @media (max-width: 768px) {
+    padding: 40px 0;
+  }
 }
 
 .wrapper {
@@ -11,59 +109,85 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
+    gap: 24px;
   }
 }
 
 .photo {
   position: relative;
   width: 320px;
-  // height: 700px; // базова висота
+  height: 400px;
 
   @media (max-width: 1024px) {
-    height: 500px; // зменшення на планшеті
+    width: 240px;
+    height: 360px;
   }
 
   @media (max-width: 768px) {
     width: 100%;
-    height: 400px; // ще менше на мобільному
+    height: 300px;
   }
 }
 
 .img {
-  width: auto;
-  height: auto;
-  object-fit: cover; // обрізає зайве, щоб фото завжди заповнювало контейнер
+  object-fit: cover;
 }
-
-
 
 .info {
   display: flex;
   flex-direction: column;
-  justify-content: center; // все йде вертикально
+  justify-content: center;
   gap: 24px;
   max-width: 800px;
+
+  @media (max-width: 1024px) {
+    max-width: 600px;
+  }
+
+  @media (max-width: 768px) {
+    max-width: 100%;
+    gap: 16px;
+  }
 }
 
 .role {
   font-size: 14px;
   text-transform: uppercase;
   color: var(--color-steel);
+
+  @media (max-width: 768px) {
+    font-size: 12px;
+  }
 }
 
-.title{
+.title {
   text-align: left;
   margin-bottom: 0;
+
+  @media (max-width: 768px) {
+    text-align: center;
+    font-size: 24px;
+  }
 }
 
 .bio {
   color: var(--color-steel);
+  font-size: 16px;
+  line-height: 1.6;
+
+  @media (max-width: 1024px) {
+    font-size: 15px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
 }
 
 .list {
   display: flex;
-  // flex-wrap: wrap;
-  gap: 20px;
+  flex-wrap: wrap; // дозволяє переносити елементи
+  gap: 12px;
   justify-content: center;
   list-style: none;
   margin: 0;
@@ -71,9 +195,8 @@
 }
 
 .item {
-  // flex: 1 1 200px;
   text-align: center;
-  padding: 10px;
+  padding: 10px 14px;
   border: 1px solid var(--color-steel);
   font-size: 12px;
   font-weight: 600;
@@ -82,8 +205,12 @@
   color: var(--color-obsidian);
   transition: background-color 0.3s ease;
 
-  // &:hover {
-  //   background: var(--color-graphite);
-  //   color: var(--color-platinum);
-  // }
-} 
+  @media (max-width: 768px) {
+    font-size: 11px;
+    flex: 1 1 45%; // два елементи в ряд на мобільному
+  }
+
+  @media (max-width: 480px) {
+    flex: 1 1 100%; // один елемент у ряд на дуже малих екранах
+  }
+}

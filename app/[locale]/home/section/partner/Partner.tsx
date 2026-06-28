@@ -11,9 +11,7 @@ const Partner = () => {
             <Image
               src="/image/partner.jpg" // файл у public/partner.jpg
               alt="Керуючий партнер Гарік Матосян"
-              width={320}
-              height={700}
-              // fill
+              fill
               className={styles.img}
               priority
             />
