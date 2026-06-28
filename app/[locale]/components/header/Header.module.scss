@@ -1,7 +1,18 @@
 .header {
+  position: relative;
   padding: 20px 0;
   border-bottom: 1px solid var(--color-steel);
+  width: 100%;
+  z-index: 100;
   /* нижня лінія кольору steel */
+
+  @media (max-width: 768px) {
+    position: fixed; // Залізно закріплюємо
+    top: 0;
+    left: 0;
+    background-color: var(--color-platinum);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); // додаємо легку тінь для об'єму
+  }
 }
 
 
