@@ -1,15 +1,15 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  async redirects() {
-    return [
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  images: {
+    remotePatterns: [
       {
-        source: "/",
-        destination: "/uk",
-        permanent: true, // Вказує, що це постійний редирект (301), що найкраще для SEO
+        protocol: 'http',
+        hostname: '127.0.0.1',
+        port: '1331',
+        pathname: '/uploads/**',
       },
-    ];
+    ],
   },
-};
+}
 
-export default nextConfig;
+module.exports = nextConfig

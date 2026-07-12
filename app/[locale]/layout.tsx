@@ -104,7 +104,7 @@ export default async function RootLayout({
         <main>{children}</main>
 
         {/* 👇 Сюди теж передаємо, щоб футер знав, яку мову рендерити */}
-        <Footer locale={locale as 'uk' | 'en'} />
+        <Footer params={{ locale: locale as 'uk' | 'en' }} />
         <ScrollToTop/>
       </body>
     </html>

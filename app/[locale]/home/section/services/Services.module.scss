@@ -1,326 +1,66 @@
-
-
-// .titleSection {
-//   color: var(--color-platinum);
-// }
-
-
-// .servicesSection {
-//   background: var(--color-obsidian); // чорний фон
-//   color: var(--color-platinum); // білий текст
-//   padding: 100px 0;
-
-//   @media (max-width: 1024px) {
-//     padding: 80px 0;
-//   }
-
-//   @media (max-width: 768px) {
-//     padding: 60px 0;
-//   }
-
-//   @media (max-width: 480px) {
-//     padding: 40px 0;
-//   }
-// }
-
-// .wrapper {
-//   max-width: 900px;
-//   margin: 0 auto;
-//   text-align: center;
-// }
-
-// .description {
-//   display: flex;
-//   justify-content: space-between;
-//   align-items: flex-end;
-//   padding-bottom: 40px;
-//   border-bottom: 1px solid #ffffff;
-
-//   @media (max-width: 768px) {
-//     flex-direction: column; // на мобільному все стає одне під одним
-//     align-items: center;
-//     text-align: center;
-//     gap: 16px;
-//   }
-// }
-
-// .info {
-//   max-width: 600px;
-// }
-
-// .title {
-//   color: var(--color-platinum);
-// }
-
-// .text {
-//   font-size: 18px;
-//   line-height: 1.6;
-//   margin-bottom: 40px;
-//   color: var(--color-platinum);
-
-//   @media (max-width: 1024px) {
-//     font-size: 16px;
-//   }
-
-//   @media (max-width: 768px) {
-//     font-size: 15px;
-//     margin-bottom: 24px;
-//   }
-
-//   @media (max-width: 480px) {
-//     font-size: 14px;
-//     margin-bottom: 20px;
-//   }
-// }
-
-// .meta {
-//   font-size: 14px;
-//   color: var(--color-steel); // сірий відтінок
-//   text-transform: uppercase;
-//   letter-spacing: 0.1em;
-// }
-// .cluster{
-//   padding: 40px 0;
-//   border-bottom: 1px solid #ffffff;
-// }
-
-// .clusterTitle {
-//   font-size: 32px;
-//   margin-bottom: 40px;
-
-//   @media (max-width: 1024px) {
-//     font-size: 28px;
-//   }
-
-//   @media (max-width: 768px) {
-//     font-size: 24px;
-//     margin-bottom: 24px;
-//   }
-
-//   @media (max-width: 480px) {
-//     font-size: 20px;
-//   }
-// }
-
-// .services {
-//   display: grid;
-//   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-//   // gap: 30px;
-
-//   @media (max-width: 1024px) {
-//     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-//   }
-
-//   @media (max-width: 768px) {
-//     grid-template-columns: 1fr; // на мобільному одна картка в ряд
-//     gap: 20px;
-//   }
-// }
-
-// .servicesCard {
-//   padding: 36px 30px;
-//   display: flex;
-//   flex-direction: column;
-//   gap: 16px;
-//   min-height: 280px;
-//   border: 1px solid rgba(250, 250, 250, 0.65);
-//   cursor: pointer;
-//   text-align: left;
-//   &:hover {
-//     background-color: var(--color-graphite);
-//   }
-
-//   @media (max-width: 768px) {
-//     padding: 24px 20px;
-//     min-height: auto;
-//   }
-// }
-
-// .servicesTitle {
-//   font-weight: 600;
-//   font-size: 16px;
-//   text-transform: uppercase;
-//   line-height: 1.25;
-//   margin: 0;
-//   color: var(--color-platinum);
-
-//   @media (max-width: 768px) {
-//     font-size: 15px;
-//   }
-// }
-
-// .servicesDesc {
-//   font-size: 13px;
-//   line-height: 1.65;
-//   color: rgba(250, 250, 250, 0.65);
-
-//   @media (max-width: 768px) {
-//     font-size: 12px;
-//   }
-// }
-
-// .notice {
-//   background-color: var(--color-graphite); // темний фон
-//   border: 1px solid rgba(250, 250, 250, 0.4);
-//   padding: 24px 30px;
-//   margin-top: 60px;
-//   border-radius: 6px;
-//   color: var(--color-platinum);
-//   @media (max-width: 768px) {
-//     margin-top: 40px;
-//     padding: 20px;
-//     text-align: center;
-//   }
-// }
-
-// .noticeTitle {
-//   display: block;
-//   font-size: 16px;
-//   font-weight: 700;
-//   margin-bottom: 12px;
-//   text-transform: uppercase;
-//   color: var(--color-platinum);
-// }
-
-// .noticeText {
-//   font-size: 14px;
-//   line-height: 1.6;
-//   color: rgba(250, 250, 250, 0.75);
-// }
-
-
 .servicesSection {
-  background: var(--color-obsidian);
-  color: var(--color-platinum);
-  padding: clamp(40px, 6vw, 100px) 0;
+  padding: 80px 0;
+  background-color: #050505; // Глибокий чорний
+  color: #FFFFFF;
 }
 
-.wrapper {
-  max-width: 1000px; // Трохи збільшив ширину, щоб 3 картки в ряд стояли просторіше
-  margin: 0 auto;
-}
-
-.description {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  padding-bottom: 40px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2); // М'якша лінія
-  text-align: left;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 16px;
-  }
-}
-
-.info {
-  max-width: 600px;
-}
-
-.title {
-  color: var(--color-platinum);
-  margin-bottom: 16px; // Додав відступ від заголовка до опису
-}
-
-.text {
-  font-size: clamp(14px, 1.5vw, 18px);
-  line-height: 1.6;
-  color: rgba(250, 250, 250, 0.8);
-}
-
-.meta {
-  font-size: 14px;
-  color: var(--color-steel);
+.mainTitle {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(32px, 5vw, 48px);
+  text-align: center;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  margin-bottom: 20px;
+}
+
+.mainSubtitle {
+  font-size: 1.05rem;
+  text-align: center;
+  color: var(--color-steel);
 }
 
 .cluster {
-  padding: clamp(30px, 4vw, 50px) 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  text-align: left; // Кластери вирівняні по лівому краю
+  margin-top: 60px;
 }
 
 .clusterTitle {
-  font-size: clamp(20px, 3vw, 32px);
-  margin-bottom: clamp(24px, 3vw, 40px);
+  font-size: 1.25rem;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.15em;
+  margin-bottom: 30px;
+  padding-bottom: 15px;
 }
 
-// Замість автофіту робимо строгі 3 колонки, які адекватно ділять простір
-.servicesGrid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px; // Повернули відступи!
-
-  @media (max-width: 1024px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  @media (max-width: 640px) {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-}
-
-.servicesCard {
-  padding: 30px 24px;
+.grid {
   display: flex;
-  flex-direction: column;
-  gap: 14px;
-  border: 1px solid rgba(250, 250, 250, 0.2); // Менш агресивна рамка в тон бізнесу
-  cursor: pointer;
-  transition: background-color 0.3s ease, border-color 0.3s ease;
+  flex-wrap: wrap; // Дозволяє карткам переноситися на наступний рядок
+  gap: 0;
+  border: 1px solid #333;
+}
 
-  &:hover {
-    background-color: var(--color-graphite);
-    border-color: var(--color-steel);
+.card {
+  flex: 1 1 33.333%; // Кожна картка займає рівно 1/3 ширини
+  min-width: 300px; // Не даємо карткам стискатися менше 300px
+  padding: 40px;
+  border-right: 1px solid #333; // Лінія праворуч
+  border-bottom: 1px solid #333; // Лінія знизу
+
+  // Прибираємо бордери, якщо вони зайві
+  &:last-child {
+    border-right: none;
   }
 }
 
-.servicesTitle {
-  font-weight: 600;
-  font-size: clamp(14px, 1.2vw, 16px);
+.cardTitle {
+  font-size: 1.06rem;
+  letter-spacing: .045em;
+  line-height: 1.25;
   text-transform: uppercase;
-  line-height: 1.3;
-  color: var(--color-platinum);
+  margin: 0 0 14px;
 }
 
-.servicesDesc {
-  font-size: 13px;
-  line-height: 1.6;
-  color: rgba(250, 250, 250, 0.65);
-}
-
-.notice {
-  background-color: var(--color-graphite);
-  border: 1px solid rgba(250, 250, 250, 0.15);
-  padding: 24px 30px;
-  margin-top: 60px;
-  text-align: left;
-
-  @media (max-width: 768px) {
-    margin-top: 40px;
-    padding: 20px;
-    text-align: center;
-  }
-}
-
-.noticeTitle {
-  display: block;
-  font-size: 14px;
-  font-weight: 700;
-  margin-bottom: 8px;
-  text-transform: uppercase;
+.cardDesc {
+  font-size: 1.02rem;
   color: var(--color-steel);
-}
-
-.noticeText {
-  font-size: 13px;
   line-height: 1.6;
-  color: rgba(250, 250, 250, 0.6);
+  margin: 0;
 }

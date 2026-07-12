@@ -2,8 +2,9 @@
   --bg: #050505;
   --color-platinum: #FAFAFA;
   --color-graphite: #1C1C1E;
-  --color-steel: #8E8E93;
+  --color-steel: #c7c7cb;
   --color-obsidian: #050505;
+  --color-border: #e0e0e0;
 }
 
 
@@ -108,48 +109,26 @@ section {
   padding: 0 10px;
 }
 
-/* .theme.light,
-.theme.dark {
-  transition: background-color 0.4s ease, color 0.4s ease;
+/* --- АНІМАЦІЯ ПОЯВИ ПРИ СКРОЛІ --- */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  /* Трохи збільшив відступ (було 18px), щоб рух був помітнішим при повільній анімації */
+
+  /* Збільшуємо час анімації: було 0.7s, стало 1.2s */
+  transition: opacity 1.2s ease, transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-.theme.light {
-  background-color: #ffffff;
-  color: #000000;
-} */
-
-/* .theme.dark {
-  background-color: #111111;
-  color: #ffffff;
-} */
-
-/* всі текстові елементи всередині теми */
-/* .theme.light a,
-.theme.light h1,
-.theme.light h2,
-.theme.light h3,
-.theme.light p {
-  color: #000000;
-  transition: color 0.4s ease;
+.reveal.in {
+  opacity: 1;
+  transform: none;
 }
 
-.theme.dark a,
-.theme.dark h1,
-.theme.dark h2,
-.theme.dark h3,
-.theme.dark p {
-  color: #ffffff;
-  transition: color 0.4s ease;
+/* Вимикаємо анімацію для користувачів, які не люблять рух */
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
-
-.theme.light .logo svg {
-  color: #000000;
-  /* чорний у світлій темі */
-  /* transition: color 0.4s ease;
-} */
-
-/* .theme.dark .logo svg {
-  color: #ffffff;
-  /* білий у темній темі */
-  /* transition: color 0.4s ease;
-} */

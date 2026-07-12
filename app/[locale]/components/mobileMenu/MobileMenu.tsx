@@ -1,23 +1,23 @@
 'use client'
 
 import { useState } from 'react'
-import Button from '../button/Button'
-import NavLink from '../navLinks/NavLink' // Імпортуємо наш плавний скрол
+import NavLink from '../navLinks/NavLink'
 import styles from './MobileMenu.module.scss'
 
-interface LinkItem {
+// Інтерфейс для лінків, які приходять зі Strapi
+export interface LinkItem {
   id: number
-  titleUk: string
-  titleEn: string
+  title: string
   targetId: string
 }
 
 interface MobileMenuProps {
   links: LinkItem[]
-  locale: 'uk' | 'en'
+  btnText: string
+  locale: string
 }
 
-export default function MobileMenu({ links, locale }: MobileMenuProps) {
+export default function MobileMenu({ links, btnText, locale }: MobileMenuProps) {
   const [open, setOpen] = useState(false)
 
   // Функція для плавного скролу з одночасним закриттям меню
@@ -51,23 +51,22 @@ export default function MobileMenu({ links, locale }: MobileMenuProps) {
           <ul>
             {links.map(link => (
               <li key={link.id} onClick={handleMobileClick}>
-                {/* 👇 Замість Link використовуємо наш NavLink */}
                 <NavLink
                   targetId={link.targetId}
                   activeClass={styles.active}
                   className={styles.mobileLink}
                 >
-                  {locale === 'uk' ? link.titleUk : link.titleEn}
+                  {link.title}
                 </NavLink>
               </li>
             ))}
           </ul>
         </nav>
 
-        {/* Кнопка "Консультація" в мобільці теж скролить до контактів */}
+        {/* Кнопка "Консультація" */}
         <div onClick={handleMobileClick}>
           <NavLink targetId="contacts" activeClass="" className={styles.sidebarBtn}>
-            {locale === 'uk' ? 'Консультація' : 'Consultation'}
+            {btnText}
           </NavLink>
         </div>
       </div>
