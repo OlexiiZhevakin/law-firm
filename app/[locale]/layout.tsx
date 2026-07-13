@@ -62,6 +62,7 @@ import { notFound } from "next/navigation";
 import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
 import ScrollToTop from "./components/scrollToTop/ScrollToTop";
+import CookieBanner from "./components/cookies/CookieBanner";
 
 const locales = ["uk", "en"];
 
@@ -105,7 +106,9 @@ export default async function RootLayout({
 
         {/* 👇 Сюди теж передаємо, щоб футер знав, яку мову рендерити */}
         <Footer params={{ locale: locale as 'uk' | 'en' }} />
+        
         <ScrollToTop/>
+        <CookieBanner locale={locale} />
       </body>
     </html>
   );

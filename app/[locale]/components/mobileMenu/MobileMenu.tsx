@@ -2,9 +2,9 @@
 
 import { useState } from 'react'
 import NavLink from '../navLinks/NavLink'
+import LangSwitch from '../langSwitch/LangSwitch' // <--- Додаємо імпорт
 import styles from './MobileMenu.module.scss'
 
-// Інтерфейс для лінків, які приходять зі Strapi
 export interface LinkItem {
   id: number
   title: string
@@ -20,14 +20,12 @@ interface MobileMenuProps {
 export default function MobileMenu({ links, btnText, locale }: MobileMenuProps) {
   const [open, setOpen] = useState(false)
 
-  // Функція для плавного скролу з одночасним закриттям меню
   const handleMobileClick = () => {
     setOpen(false)
   }
 
   return (
     <>
-      {/* Кнопка бургер */}
       <button
         className={styles.burger}
         onClick={() => setOpen(true)}
@@ -37,7 +35,6 @@ export default function MobileMenu({ links, btnText, locale }: MobileMenuProps) 
         ☰
       </button>
 
-      {/* Мобільне меню */}
       <div className={`${styles.sidebar} ${open ? styles.active : ""}`} aria-hidden={!open}>
         <button
           className={styles.closeBtn}
@@ -51,11 +48,7 @@ export default function MobileMenu({ links, btnText, locale }: MobileMenuProps) 
           <ul>
             {links.map(link => (
               <li key={link.id} onClick={handleMobileClick}>
-                <NavLink
-                  targetId={link.targetId}
-                  activeClass={styles.active}
-                  className={styles.mobileLink}
-                >
+                <NavLink targetId={link.targetId} activeClass={styles.active} className={styles.mobileLink}>
                   {link.title}
                 </NavLink>
               </li>
@@ -63,7 +56,11 @@ export default function MobileMenu({ links, btnText, locale }: MobileMenuProps) 
           </ul>
         </nav>
 
-        {/* Кнопка "Консультація" */}
+        {/* Додаємо перемикач мов у мобільне меню */}
+        <div className={styles.mobileLang}>
+          <LangSwitch currentLocale={locale as 'uk' | 'en'} />
+        </div>
+
         <div onClick={handleMobileClick}>
           <NavLink targetId="contacts" activeClass="" className={styles.sidebarBtn}>
             {btnText}

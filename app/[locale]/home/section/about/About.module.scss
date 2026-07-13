@@ -12,10 +12,10 @@
 
 // Стиль для надзаголовка "ПРО НАС" (якщо компонент Title цього не робить)
 .label {
-  font-size: 13px;
+  font-size: 18px;
   text-transform: uppercase;
   letter-spacing: 0.2em; // Широкі відступи між літерами
-  color: #8e8e8e;
+  color: var(--obsidian);
   margin-bottom: 24px;
   text-align: center;
 }

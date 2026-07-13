@@ -32,7 +32,6 @@ export default function Partner({ data }: PartnerProps) {
               fill
               className={styles.img}
               sizes="(max-width: 768px) 100vw, (max-width: 1024px) 240px, 320px"
-              unoptimized
               priority
             />
           </div>

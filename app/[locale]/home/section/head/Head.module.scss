@@ -8,7 +8,7 @@
   justify-content: center;
   align-items: center;
   gap: 40px;
-  min-height: calc(100vh - 230px);
+  min-height: calc(100vh - 91px);
 }
 
 .title {
@@ -18,7 +18,7 @@
   serif;
   font-weight: 600;
   text-transform: uppercase;
-  // letter-spacing: 0.15em;
+
 
   @media (max-width: 1024px) {
     font-size: 48px;
@@ -40,9 +40,7 @@
   font-family: 'Inter',
   sans-serif;
   font-weight: 500;
-  // text-transform: uppercase;
-  // letter-spacing: 0.4em;
-  color: var(--color-steel);
+  color: var(--steel-dim);
 
   @media (max-width: 1024px) {
     font-size: 16px;

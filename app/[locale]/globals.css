@@ -5,22 +5,33 @@
   --color-steel: #c7c7cb;
   --color-obsidian: #050505;
   --color-border: #e0e0e0;
+  --obsidian: #050505;
+  --ink: #111112;
+  --platinum: #FAFAFA;
+  --paper: #FFFFFF;
+  --steel: #8E8E93;
+  --steel-dim: #5f5f66;
+  --line-dark: rgba(255, 255, 255, .14);
+  --line-light: rgba(5, 5, 5, .12);
+  --focus: #c9a227;
+
+  --container-max-width: 1280px;
+  /* Оптимально для тексту */
+  --container-padding: clamp(16px, 5vw, 40px);
+  /* Гнучкі відступи */
 }
 
 
+/* --- СКИДАННЯ СТИЛІВ (MODERN RESET) --- */
 html {
   box-sizing: border-box;
+  /* Плавний скрол по якорях */
 }
 
 *,
 *::after,
 *::before {
   box-sizing: inherit;
-}
-
-ul,
-ol {
-  padding: 0;
 }
 
 body,
@@ -40,15 +51,22 @@ blockquote,
 dl,
 dd {
   margin: 0;
+  padding: 0;
 }
 
-ul {
+ul,
+ol {
   list-style: none;
 }
 
-img {
-  max-width: 100%;
+/* Краще скидання для медіа-елементів */
+img,
+picture,
+video,
+canvas,
+svg {
   display: block;
+  max-width: 100%;
   height: auto;
 }
 
@@ -57,46 +75,37 @@ button,
 textarea,
 select {
   font: inherit;
+  color: inherit;
 }
 
 a {
   text-decoration: none;
-  transition: color 0.4s ease;
-  /* color: var(--color-obsidian); */
+  color: inherit;
+  transition: opacity 0.3s ease, color 0.3s ease;
 }
 
-html,
+/* --- БАЗОВІ СТИЛІ ТА ЛЕЙАУТ --- */
 body {
+  /* 100dvh враховує панель адреси на мобільних пристроях */
   min-height: 100vh;
+  min-height: 100dvh;
+
+  /* Ідеальний спосіб притиснути футер (Flexbox-костилі видалено) */
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+
+  background-color: var(--platinum);
+  color: var(--ink);
+
+  /* Покращення рендерингу шрифтів (важливо для читабельності) */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
-body {
-  display: flex;
-  flex-direction: column;
-  background-color: var(--color-platinum);
-  color: var(--color-obsidian);
-  /* transition: background-color 0.4s ease,
-  color 0.4s ease; */
-}
-
-.page-layout {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  /* щоб футер завжди був внизу */
-}
-
-main {
-  flex: 1;
-}
-
-footer {
-  margin-top: auto;
-  /* прибиває футер вниз */
-}
-
+/* Сучасна заміна padding-top/bottom */
 section {
-  padding: 60px 0;
+  padding-block: var(--section-spacing);
 }
 
 .lock {
@@ -104,19 +113,20 @@ section {
 }
 
 .container {
-  max-width: 1190px;
-  margin: 0 auto;
-  padding: 0 10px;
+  width: 100%;
+  max-width: var(--container-max-width);
+  margin-inline: auto;
+  padding-inline: var(--container-padding);
 }
 
 /* --- АНІМАЦІЯ ПОЯВИ ПРИ СКРОЛІ --- */
 .reveal {
   opacity: 0;
   transform: translateY(24px);
-  /* Трохи збільшив відступ (було 18px), щоб рух був помітнішим при повільній анімації */
-
-  /* Збільшуємо час анімації: було 0.7s, стало 1.2s */
-  transition: opacity 1.2s ease, transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+  /* Трохи пришвидшив до 0.8s і змінив криву для преміального ефекту */
+  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: opacity, transform;
+  /* Апаратне прискорення GPU */
 }
 
 .reveal.in {
@@ -126,6 +136,10 @@ section {
 
 /* Вимикаємо анімацію для користувачів, які не люблять рух */
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
   .reveal {
     opacity: 1;
     transform: none;

@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from "next/link"
 import styles from './Footer.module.scss'
 import { fetchStrapi } from '@/lib/api'
@@ -15,17 +16,13 @@ interface FooterProps {
 export default async function Footer({ params }: FooterProps) {
   const locale = params.locale || 'uk'
 
-  // Робимо запит до Strapi. 
-  // Вказуємо конкретні поля для populate, оскільки ти використовуєш URLSearchParams у fetchStrapi
+  // Робимо запит до Strapi
   const footerData = await fetchStrapi('footer', {
     locale: locale,
     'populate[navLinks]': '*',
     'populate[legalLinks]': '*'
   });
 
-  // Дістаємо дані з дефолтними значеннями на випадок порожнього Strapi
-  const logoTitle = footerData?.logoTitle || 'HARLIB';
-  const logoSubtitle = footerData?.logoSubtitle || 'FINANCIAL LAW BOUTIQUE';
   const brandDescription = footerData?.brandDescription || '';
 
   const navTitle = footerData?.navTitle || (locale === 'uk' ? 'САЙТ' : 'NAVIGATION');
@@ -36,42 +33,41 @@ export default async function Footer({ params }: FooterProps) {
 
   const copyrightText = footerData?.copyrightText || '© 2026 HARLIB. HARLIB надає юридичні консультації...';
 
+  // Універсальна функція для правильного формування посилань
+  const getLocalizedUrl = (url?: string) => {
+    if (!url) return '#';
+    // Якщо це зовнішнє посилання, пошта або телефон — нічого не змінюємо
+    if (url.startsWith('http') || url.startsWith('mailto:') || url.startsWith('tel:')) {
+      return url;
+    }
+    // Якщо це якір (наприклад, #contacts)
+    if (url.startsWith('#')) {
+      return `/${locale}${url}`;
+    }
+    // Якщо це внутрішня сторінка з правильним слешем (наприклад, /privacy-policy)
+    if (url.startsWith('/')) {
+      return `/${locale}${url}`;
+    }
+    // Якщо забули написати слеш у Strapi (наприклад, privacy-policy)
+    return `/${locale}/${url}`;
+  };
+
   return (
     <footer className={styles.footer}>
       <div className="container">
-
-        {/* Верхня частина з трьома колонками */}
         <div className={styles.wrapper}>
 
           {/* 1. Колонка: Лого + опис */}
           <div className={styles.brandColumn}>
             <div className={styles.logoBlock}>
-              <Link href={`/${locale}`} className={styles.logoLink}>
-                <svg
-                  viewBox="0 0 100 100"
-                  width={32}
-                  height={32}
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="8"
-                  strokeLinecap="square"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className={styles.svgIcon}
-                >
-                  <line x1="25" y1="35" x2="25" y2="80" />
-                  <line x1="50" y1="20" x2="50" y2="80" />
-                  <line x1="75" y1="20" x2="75" y2="65" />
-                  <line x1="25" y1="57.5" x2="50" y2="57.5" />
-                  <line x1="50" y1="42.5" x2="75" y2="42.5" />
-                  <rect x="44" y="51.5" width="12" height="12" fill="currentColor" stroke="none" />
-                  <rect x="44" y="36.5" width="12" height="12" fill="currentColor" stroke="none" />
-                  <rect x="19" y="51.5" width="12" height="12" fill="currentColor" stroke="none" />
-                  <rect x="69" y="36.5" width="12" height="12" fill="currentColor" stroke="none" />
-                </svg>
-                <div className={styles.logoTextWrapper}>
-                  <span className={styles.logoTitle}>{logoTitle}</span>
-                  <span className={styles.logoSubtitle}>{logoSubtitle}</span>
-                </div>
+              <Link href={`/${locale}`} className={styles.logoLink} aria-label="HARLIB Home">
+                <Image
+                  src="/footer-logo.png"
+                  alt="HARLIB Financial Law Boutique"
+                  className={styles.logoImg}
+                  width={150}
+                  height={40}
+                />
               </Link>
             </div>
 
@@ -91,8 +87,7 @@ export default async function Footer({ params }: FooterProps) {
             <ul className={styles.list}>
               {navLinks.map((link) => (
                 <li key={link.id}>
-                  {/* Захист: якщо url немає, ставимо '#' */}
-                  <Link href={link.url?.startsWith('#') ? `/${locale}${link.url}` : (link.url || '#')}>
+                  <Link href={getLocalizedUrl(link.url)}>
                     {link.label}
                   </Link>
                 </li>
@@ -106,8 +101,7 @@ export default async function Footer({ params }: FooterProps) {
             <ul className={styles.list}>
               {legalLinks.map((link) => (
                 <li key={link.id}>
-                  {/* Захист: якщо url немає, ставимо '#' */}
-                  <Link href={link.url?.startsWith('#') ? `/${locale}${link.url}` : (link.url || '#')}>
+                  <Link href={getLocalizedUrl(link.url)}>
                     {link.label}
                   </Link>
                 </li>

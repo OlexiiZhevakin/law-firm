@@ -43,6 +43,7 @@
   padding: 40px;
   border-right: 1px solid #333; // Лінія праворуч
   border-bottom: 1px solid #333; // Лінія знизу
+  background-color: var(--steel-dim);
 
   // Прибираємо бордери, якщо вони зайві
   &:last-child {
@@ -56,11 +57,12 @@
   line-height: 1.25;
   text-transform: uppercase;
   margin: 0 0 14px;
+  color: var(--platinum);
 }
 
 .cardDesc {
-  font-size: 1.02rem;
-  color: var(--color-steel);
+  font-size: 1.04rem;
+  color: var(--platinum);
   line-height: 1.6;
   margin: 0;
 }

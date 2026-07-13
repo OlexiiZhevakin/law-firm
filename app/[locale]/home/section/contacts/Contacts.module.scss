@@ -43,24 +43,26 @@
   font-size: 1rem; // Трохи збільшили заголовок
   text-transform: uppercase;
   letter-spacing: 0.15em; // Трохи ширше, щоб виглядало стильно
-  color: #888;
+  color: var(--obsidian);
   margin: 0 0 12px 0;
 }
 
 // Посилання (телефони, email)
 .link {
-  color: #000;
   text-decoration: none;
-  font-weight: 600; // Зробили трохи жирнішим для акценту
-  font-size: 1.1rem; // Такий же розмір як у звичайного тексту
-  border-bottom: 1px solid #ddd;
-  transition: border-color 0.3s;
+  /* Прибирає лінію під текстом */
+  font-style: normal;
+  /* Прибирає курсив (на випадок, якщо він успадкувався) */
+  color: inherit;
+  /* Робить колір таким самим, як у звичайного тексту (щоб не був синім) */
+
+  /* Додаємо легкий ефект при наведенні, щоб було зрозуміло, що це клікабельно */
+  transition: opacity 0.3s ease;
 
   &:hover {
-    border-color: #000;
+    opacity: 0.7;
   }
 }
-
 .form {
   background: #ffffff;
   padding: 40px; // Зменшив падінг, щоб форма не була такою масивною
@@ -97,6 +99,8 @@
   border: 1px solid #ddd;
   background: #FAFAFA;
   margin-top: 4px; // Менше місця між лейблом і полем
+  font-size: 20px;
+  font-weight: normal;
 }
 
 .textarea {

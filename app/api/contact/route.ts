@@ -4,11 +4,10 @@ import nodemailer from 'nodemailer';
 export async function POST(req: Request) {
   const { name, company, email, phone, message } = await req.json();
 
-  // Налаштування пошти (використовуй .env змінні!)
   const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST, // наприклад, smtp.gmail.com
-    port: 465,
-    secure: true,
+    host: process.env.SMTP_HOST,
+    port: Number(process.env.SMTP_PORT) || 465,
+    secure: process.env.SMTP_SECURE === 'true',
     auth: {
       user: process.env.SMTP_USER,
       pass: process.env.SMTP_PASS,
@@ -17,9 +16,10 @@ export async function POST(req: Request) {
 
   try {
     await transporter.sendMail({
-      from: `"Сайт" <${process.env.SMTP_USER}>`,
-      to: "olexiy.zhevakin@gmail.com",
-      subject: "Нова заявка на консультацію",
+      from: `"Сайт HARLIB" <${process.env.SMTP_USER}>`,
+      to: "info@harlib.com.ua", // Листи будуть падати на корпоративну пошту
+      replyTo: email, // Дозволить відповідати клієнту напряму
+      subject: `Нова заявка на консультацію від: ${name}`,
       html: `
         <h3>Нова заявка з сайту</h3>
         <p><b>Ім'я:</b> ${name}</p>
@@ -32,6 +32,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
+    console.error("Помилка відправки Nodemailer:", error);
     return NextResponse.json({ success: false }, { status: 500 });
   }
 }

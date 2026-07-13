@@ -1,6 +1,6 @@
 .header {
   position: relative;
-  padding: 20px 0;
+  padding: 10px 0;
   border-bottom: 1px solid var(--color-steel);
   width: 100%;
   z-index: 100;
@@ -22,6 +22,26 @@
   justify-content: space-between;
 }
 
+.logoLink {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  transition: opacity 0.3s ease;
+
+  /* Ефект легкого затухання при наведенні, як і у звичайних посилань */
+  &:hover {
+    opacity: 0.75;
+  }
+}
+
+.logoImg {
+  height: 70px;
+  /* Ідеальна висота для шапки */
+  width: auto;
+  /* Ширина підлаштується автоматично */
+  display: block;
+}
+
 .menu {
   @media (max-width: 1024px) {
     display: none; // ховаємо меню на планшетах і телефонах
@@ -35,63 +55,94 @@
 
 
 .link {
+  position: relative;
+  /* Обов'язково для прив'язки лінії до тексту */
   text-decoration: none;
   color: var(--color-obsidian);
-  font-size: 18px;
+  font-size: 22px;
+  transition: color 0.3s ease;
+  /* Плавна зміна кольору тексту */
+
   &:hover {
-    color: var(--color-graphite);
+    color: var(--steel-dim);
   }
+
   &.active {
     font-weight: 700;
   }
-  
+
+  /* --- ЕФЕКТ ЛІНІЇ ТІЛЬКИ ДЛЯ ДЕСКТОПУ --- */
+  @media (min-width: 768px) {
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -4px;
+      /* Відстань від тексту до лінії. Можеш змінити під свій дизайн */
+      width: 100%;
+      height: 2px;
+      /* Товщина лінії */
+      background-color: var(--steel-dim);
+      /* Колір лінії */
+
+      /* Анімація зліва направо */
+      transform: scaleX(0);
+      transform-origin: left;
+      /* Точка старту - лівий край */
+      transition: transform 0.3s ease;
+    }
+
+    /* При наведенні лінія виростає до 100% */
+    &:hover::after {
+      transform: scaleX(1);
+    }
+
+    /* Опціонально: якщо хочеш, щоб активний лінк завжди мав лінію */
+    &.active::after {
+      transform: scaleX(1);
+    }
+  }
 }
 
 .langSwitch {
-  // flex: 1; // права частина
-  // display: flex;
-  // justify-content: flex-end;
+  /* 1. Повертаємо flex, щоб вишикувати все в один красивий рядок */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  /* Відстань між "UA", "/" та "EN" */
 
   a {
     text-decoration: none;
-    color: #aaa;
+    color: var(--steel);
+    /* Неактивна мова (сірий колір) */
     text-transform: uppercase;
+    font-size: 1.1rem;
+    /* Трохи більший розмір, щоб зручно натискати пальцем */
+    transition: color 0.3s ease;
+    padding: 4px;
+    /* Збільшуємо невидиму зону кліку для телефонів */
 
     &:hover {
-      color: var(--color-graphite);
+      color: var(--steel-dim);
+      /* Акцентний (наприклад, золотий) при наведенні */
     }
 
     &.activeLang {
       font-weight: 700;
-      color: var(--color-obsidian);
+      /* Супер-трюк: беремо колір тексту від батька. 
+         Тепер у світлій шапці він буде темним, а в темному меню — світлим! */
+      color: inherit;
     }
   }
+
+  .divider {
+    color: var(--obsidian);
+    /* Колір слеша трохи темніший за неактивну мову */
+    user-select: none;
+    /* Щоб користувачі випадково не виділяли слеш як текст */
+  }
 }
-
-// .headerBtn {
-//   color: var(--color-graphite);
-//   padding: 8px 20px; // ← тут: 20px зліва і справа
-//   transition: background-color 0.8s ease;
-//   position: relative;
-//    // кнопка займає лише ширину контенту + падінги
-
-  // &::after {
-  //   content: "→";
-  //   margin-left: 8px;
-  //   font-weight: 600;
-  //   transition: transform 0.3s ease;
-  // }
-
-  // &:hover {
-  //   color: var(--color-platinum);
-  //   background: var(--color-graphite);
-  // }
-
-//   @media (max-width: 1024px) {
-//     display: none !important; // ховаємо на планшетах і телефонах
-//   }
-// }
-
 
 
 .headerBtn {
@@ -121,5 +172,14 @@
   // Адаптивність: ховаємо на мобільних пристроях, якщо там є бургер-меню
   @media (max-width: 768px) {
     display: none;
+  }
+}
+
+.desktopLang {
+  display: none;
+
+  @media (min-width: 768px) {
+    display: block;
+    /* Або block, залежно від того, як у тебе вирівняні елементи */
   }
 }

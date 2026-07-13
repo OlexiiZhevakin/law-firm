@@ -83,9 +83,6 @@ export default function Contacts({ locale = 'uk', data }: ContactsProps) {
             <h3 className={styles.contactsTitle}>Email</h3>
             <p><a href={`mailto:${data.email}`} className={styles.link}>{data.email}</a></p>
 
-            {/* Години */}
-            <h3 className={styles.contactsTitle}>{locale === 'uk' ? 'Години роботи' : 'Opening Hours'}</h3>
-            <p>{data.hours}</p>
           </div>
 
           {/* Форма */}
