@@ -62,7 +62,6 @@
 
 import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
-import Script from "next/script"; // ТУТ ДОДАНО ІМПОРТ SCRIPT
 import "./globals.css";
 import { notFound } from "next/navigation";
 import Header from "./components/header/Header";
@@ -186,18 +185,23 @@ export default async function RootLayout({
         <ScrollToTop />
         <CookieBanner locale={locale} />
 
-        {/* ТУТ ДОДАНО КОД PLERDY */}
-        <Script id="plerdy-tracking-code" strategy="afterInteractive">
-          {`
-            var _protocol="https:"==document.location.protocol?"https://":"http://";
-            _site_hash_code = "736019acc6769eaefdd2fde1da546f57",_suid=78560, plerdyScript=document.createElement("script");
-            plerdyScript.setAttribute("defer",""),plerdyScript.dataset.plerdymainscript="plerdymainscript",
-            plerdyScript.src="https://a.plerdy.com/public/js/click/main.js?v="+Math.random();
-            var plerdymainscript=document.querySelector("[data-plerdymainscript='plerdymainscript']");
-            plerdymainscript&&plerdymainscript.parentNode.removeChild(plerdymainscript);
-            try{document.head.appendChild(plerdyScript)}catch(t){console.log(t,"unable add script tag")}
-          `}
-        </Script>
+        {/* КОД PLERDY (пряма вставка для проходження перевірки) */}
+        <script
+          type="text/javascript"
+          defer
+          data-plerdy_code="1"
+          dangerouslySetInnerHTML={{
+            __html: `
+              var _protocol="https:"==document.location.protocol?"https://":"http://";
+              _site_hash_code = "736019acc6769eaefdd2fde1da546f57",_suid=78560, plerdyScript=document.createElement("script");
+              plerdyScript.setAttribute("defer",""),plerdyScript.dataset.plerdymainscript="plerdymainscript",
+              plerdyScript.src="https://a.plerdy.com/public/js/click/main.js?v="+Math.random();
+              var plerdymainscript=document.querySelector("[data-plerdymainscript='plerdymainscript']");
+              plerdymainscript&&plerdymainscript.parentNode.removeChild(plerdymainscript);
+              try{document.head.appendChild(plerdyScript)}catch(t){console.log(t,"unable add script tag")}
+            `,
+          }}
+        />
       </body>
     </html>
   );
