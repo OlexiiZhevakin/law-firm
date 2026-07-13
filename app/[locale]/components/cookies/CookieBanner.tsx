@@ -1,6 +1,6 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Script from "next/script";
 import styles from "./CookieBanner.module.scss";
@@ -13,26 +13,21 @@ type ConsentState = "pending" | "granted" | "denied";
 
 const STORAGE_KEY = "harlib_cookie_consent";
 
-function subscribe(callback: () => void) {
-  window.addEventListener("storage-consent-change", callback);
-  return () => window.removeEventListener("storage-consent-change", callback);
-}
-
-function getSnapshot(): ConsentState {
-  const stored = localStorage.getItem(STORAGE_KEY);
-  return stored === "granted" || stored === "denied" ? stored : "pending";
-}
-
-function getServerSnapshot(): ConsentState {
-  return "pending";
-}
-
 export default function CookieBanner({ locale }: CookieBannerProps) {
-  const consent = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const [mounted, setMounted] = useState(false);
+  const [consent, setConsent] = useState<ConsentState>("pending");
+
+  useEffect(() => {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setConsent(stored === "granted" || stored === "denied" ? stored : "pending");
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
+  }, []);
 
   const handleChoice = (choice: "granted" | "denied") => {
     localStorage.setItem(STORAGE_KEY, choice);
-    window.dispatchEvent(new Event("storage-consent-change"));
+    setConsent(choice);
   };
 
   const text =
@@ -51,6 +46,12 @@ export default function CookieBanner({ locale }: CookieBannerProps) {
         reject: "Reject Non-Essential",
         policy: "Privacy Policy",
       };
+
+  // Поки не змонтувались — взагалі нічого не рендеримо.
+  // Це усуває блимання банера при оновленні сторінки.
+  if (!mounted) {
+    return null;
+  }
 
   if (consent === "granted") {
     return (
