@@ -184,24 +184,6 @@ export default async function RootLayout({
         <Footer params={{ locale: locale as "uk" | "en" }} />
         <ScrollToTop />
         <CookieBanner locale={locale} />
-
-        {/* КОД PLERDY (пряма вставка для проходження перевірки) */}
-        <script
-          type="text/javascript"
-          defer
-          data-plerdy_code="1"
-          dangerouslySetInnerHTML={{
-            __html: `
-              var _protocol="https:"==document.location.protocol?"https://":"http://";
-              _site_hash_code = "736019acc6769eaefdd2fde1da546f57",_suid=78560, plerdyScript=document.createElement("script");
-              plerdyScript.setAttribute("defer",""),plerdyScript.dataset.plerdymainscript="plerdymainscript",
-              plerdyScript.src="https://a.plerdy.com/public/js/click/main.js?v="+Math.random();
-              var plerdymainscript=document.querySelector("[data-plerdymainscript='plerdymainscript']");
-              plerdymainscript&&plerdymainscript.parentNode.removeChild(plerdymainscript);
-              try{document.head.appendChild(plerdyScript)}catch(t){console.log(t,"unable add script tag")}
-            `,
-          }}
-        />
       </body>
     </html>
   );
