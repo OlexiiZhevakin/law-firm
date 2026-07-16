@@ -23,7 +23,6 @@ const cspHeader = `
   img-src 'self' blob: data: https: http://31.131.18.174:1331;
   font-src 'self' data:;
   connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com http://31.131.18.174:1331;
-  require-trusted-types-for 'script';
 `.replace(/\n/g, '').replace(/\s+/g, ' ').trim();
 
 const nextConfig = {
