@@ -132,7 +132,7 @@ export default async function RootLayout({
         <Footer params={{ locale: locale as "uk" | "en" }} />
         <ScrollToTop />
         <CookieBanner locale={locale} />
-        <GoogleAnalytics gaId="G-XXXXXXXXXX" />
+        <GoogleAnalytics gaId="G-PLXGLCQLSF" />
       </body>
     </html>
   );
