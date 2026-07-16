@@ -77,10 +77,10 @@ export default function CookieBanner({ locale }: CookieBannerProps) {
   }
 
   return (
-    <div className={styles.overlay} role="dialog" aria-live="polite">
+    <div className={styles.overlay} role="dialog" aria-live="polite" aria-labelledby="cookie-banner-title">
       <div className={styles.banner}>
         <div className={styles.content}>
-          <h3 className={styles.title}>{text.title}</h3>
+          <h3 id="cookie-banner-title" className={styles.title}>{text.title}</h3>
           <p className={styles.description}>
             {text.desc}{" "}
             <Link href={`/${locale}/privacy-policy`} className={styles.link}>
