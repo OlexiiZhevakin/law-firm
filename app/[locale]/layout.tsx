@@ -1,65 +1,5 @@
 
 
-// import type { Metadata } from "next";
-// import { Inter, Playfair_Display } from "next/font/google";
-// import "./globals.css";
-// import { notFound } from "next/navigation";
-// import Header from "./components/header/Header";
-// import Footer from "./components/footer/Footer";
-// import ScrollToTop from "./components/scrollToTop/ScrollToTop";
-// import CookieBanner from "./components/cookies/CookieBanner";
-
-// const locales = ["uk", "en"];
-
-// const inter = Inter({
-//   subsets: ["latin"],
-//   weight: ["300", "400", "500", "600"],
-// });
-
-// const playfair = Playfair_Display({
-//   subsets: ["latin"],
-//   weight: ["400", "600", "700"],
-// });
-
-// export const metadata: Metadata = {
-//   title: "HARLIB | Financial Law Boutique",
-//   description: "Юридичний бутик для фінансового сектору.",
-// };
-
-// export default async function RootLayout({
-//   children,
-//   params,
-// }: {
-//   children: React.ReactNode;
-//   params: Promise<{ locale: string }>;
-// }) {
-//   // 1. Чекаємо на розпаковку params
-//   const { locale } = await params;
-
-//   // 2. Валідуємо мову
-//   if (!locales.includes(locale)) {
-//     notFound();
-//   }
-
-//   return (
-//     <html lang={locale}>
-//       <body className={`${inter.className} ${playfair.className}`}>
-//         {/* 👇 ТУТ ВИПРАВЛЕНО: передаємо реальну локаль, яку отримав Layout! */}
-//         <Header params={{ locale: locale as 'uk' | 'en' }} />
-
-//         <main>{children}</main>
-
-//         {/* 👇 Сюди теж передаємо, щоб футер знав, яку мову рендерити */}
-//         <Footer params={{ locale: locale as 'uk' | 'en' }} />
-        
-//         <ScrollToTop/>
-//         <CookieBanner locale={locale} />
-//       </body>
-//     </html>
-//   );
-// }
-
-
 import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
@@ -68,6 +8,7 @@ import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
 import ScrollToTop from "./components/scrollToTop/ScrollToTop";
 import CookieBanner from "./components/cookies/CookieBanner";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 const locales = ["uk", "en"];
 
@@ -80,6 +21,7 @@ const playfair = Playfair_Display({
   subsets: ["latin"],
   weight: ["400", "600", "700"],
 });
+
 
 // ПРОФЕСІЙНА ГЕНЕРАЦІЯ МЕТАТЕГІВ ДЛЯ HARLIB
 export async function generateMetadata({
@@ -95,6 +37,12 @@ export async function generateMetadata({
 
   return {
     metadataBase: new URL(baseUrl),
+
+    // 👇 ДОДАЙ ЦЕЙ БЛОК ДЛЯ GOOGLE SEARCH CONSOLE 👇
+    verification: {
+      google: "ajEeltqhnCaDdkrysooitKpCvmRwhLTtdBcWm9icdyA", // Встав сюди код від Google
+    },
+    // 👆 -------------------------------------- 👆
 
     title: {
       default: isUk ? "HARLIB | Юридичний бутик фінансового права" : "HARLIB | Financial Law Boutique",
@@ -184,6 +132,7 @@ export default async function RootLayout({
         <Footer params={{ locale: locale as "uk" | "en" }} />
         <ScrollToTop />
         <CookieBanner locale={locale} />
+        <GoogleAnalytics gaId="G-XXXXXXXXXX" />
       </body>
     </html>
   );
