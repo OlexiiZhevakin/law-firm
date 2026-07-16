@@ -34,7 +34,7 @@ export default async function Header({ params }: HeaderProps) {
 
           <Link href={`/${locale}`} className={styles.logoLink} aria-label="HARLIB Home">
             <Image
-              src="/logo.png"
+              src="/logo-header.png"
               alt="HARLIB Financial Law Boutique"
               className={styles.logoImg}
               width={150} /* Вкажи реальну ширину твого логотипа в пікселях */

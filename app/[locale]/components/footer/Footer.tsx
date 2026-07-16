@@ -62,7 +62,7 @@ export default async function Footer({ params }: FooterProps) {
             <div className={styles.logoBlock}>
               <Link href={`/${locale}`} className={styles.logoLink} aria-label="HARLIB Home">
                 <Image
-                  src="/footer-logo.png"
+                  src="/logo-footer.png"
                   alt="HARLIB Financial Law Boutique"
                   className={styles.logoImg}
                   width={150}
