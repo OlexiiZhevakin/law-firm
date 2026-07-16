@@ -34,14 +34,16 @@ export default function CookieBanner({ locale }: CookieBannerProps) {
     locale === "uk"
       ? {
         title: "Ми поважаємо вашу приватність",
+        // Для української версії крапка стоїть одразу в кінці речення, бо посилання немає
         desc: "Цей сайт використовує необхідні файли cookie для належної роботи, а також аналітичні файли cookie (Google Analytics 4), щоб покращити ваш досвід. Аналітичні файли збирають агреговані дані без ідентифікації користувачів і будуть активовані лише за вашої згоди.",
         accept: "Прийняти всі",
         reject: "Відхилити аналітику",
-        policy: "Політика конфіденційності",
+        policy: "",
       }
       : {
         title: "We value your privacy",
-        desc: "This website uses essential cookies for proper functionality and analytics cookies (Google Analytics 4) to improve your experience. Analytics cookies collect aggregated data without identifying users and will only be activated with your explicit consent.",
+        // Для англійської версії крапки в кінці немає, бо далі буде пробіл і посилання
+        desc: "This website uses essential cookies for proper functionality and analytics cookies (Google Analytics 4) to improve your experience. Analytics cookies collect aggregated data without identifying users and will only be activated with your explicit consent",
         accept: "Accept All",
         reject: "Reject Non-Essential",
         policy: "Privacy Policy",
@@ -53,11 +55,12 @@ export default function CookieBanner({ locale }: CookieBannerProps) {
     return null;
   }
 
+  // Якщо користувач погодився, додаємо скрипти Google Analytics
   if (consent === "granted") {
     return (
       <>
         <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"
+          src="https://www.googletagmanager.com/gtag/js?id=G-PLXGLCQLSF"
           strategy="afterInteractive"
         />
         <Script id="google-analytics" strategy="afterInteractive">
@@ -65,13 +68,14 @@ export default function CookieBanner({ locale }: CookieBannerProps) {
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'G-XXXXXXXXXX', { page_path: window.location.pathname });
+            gtag('config', 'G-PLXGLCQLSF', { page_path: window.location.pathname });
           `}
         </Script>
       </>
     );
   }
 
+  // Якщо відмовився, нічого не рендеримо (аналітика не запускається)
   if (consent === "denied") {
     return null;
   }
@@ -82,11 +86,18 @@ export default function CookieBanner({ locale }: CookieBannerProps) {
         <div className={styles.content}>
           <h3 id="cookie-banner-title" className={styles.title}>{text.title}</h3>
           <p className={styles.description}>
-            {text.desc}{" "}
-            <Link href={`/${locale}/privacy-policy`} className={styles.link}>
-              {text.policy}
-            </Link>
-            .
+            {text.desc}
+
+            {/* Рендеримо посилання ТІЛЬКИ на англійській версії сайту */}
+            {locale === "en" && (
+              <>
+                {" "}
+                <Link href={`/${locale}/privacy-policy`} className={styles.link}>
+                  {text.policy}
+                </Link>
+                .
+              </>
+            )}
           </p>
         </div>
         <div className={styles.buttons}>
