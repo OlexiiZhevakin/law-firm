@@ -243,8 +243,8 @@ export async function generateMetadata({
         ? "HARLIB | Надійний юридичний партнер для вашого бізнесу"
         : "HARLIB | Trusted Legal Partner for Your Business",
       description: isUk
-        ? "Комплексні юридичні рішення для фінансового сектору: від Due Diligence до структурування міжнародних угод."
-        : "Comprehensive legal solutions for the financial sector: from Due Diligence to structuring international deals.",
+        ? "HARLIB — юридичний бутік для банків, страхових і небанківських фінансових установ, фінтех-компаній і крипто-сервісів — в Україні, ЄС, Великобританії та Азії."
+        : "HARLIB is a legal boutique for banks, insurance and non-bank financial institutions, fintech companies and crypto-services — in Ukraine, the EU, the UK, and Asia.",
       images: [
         {
           url: "/og-image.jpg",
