@@ -17,13 +17,12 @@
 .contacts {
   display: flex;
   flex-direction: column;
-  gap: 20px; // Збільшили відстань між блоками (адреса, тел, email)
+  gap: 6px; // Збільшили відстань між блоками (адреса, тел, email)
 }
 
 // Контейнер з адресою та текстом
 .contacts p {
   font-size: 1.1rem; // Збільшили шрифт для кращої читабельності
-  line-height: 1.6;
   margin: 0;
   color: #333; // Трохи темніший колір для тексту
 }
@@ -44,7 +43,7 @@
   text-transform: uppercase;
   letter-spacing: 0.15em; // Трохи ширше, щоб виглядало стильно
   color: var(--obsidian);
-  margin: 0 0 12px 0;
+  // margin: 0 0 12px 0;
 }
 
 // Посилання (телефони, email)
@@ -65,22 +64,21 @@
 }
 .form {
   background: #ffffff;
-  padding: 40px; // Зменшив падінг, щоб форма не була такою масивною
+  padding: 2dvh; // Зменшив падінг, щоб форма не була такою масивною
   display: flex;
   flex-direction: column;
-  gap: 15px; // Зменшив проміжки між полями
+  gap: 10px; // Зменшив проміжки між полями
   border: 1px solid #e0e0e0;
 }
 
 .formTitle {
   font-size: 1.5rem;
-  margin: 0 0 6px;
 }
 
 .formSubtitle {
   color: #8E8E93;
   font-size: 1.1rem;
-  margin: 0 0 28px;
+  margin: 0 0 10px;
 }
 
 .label {
@@ -95,7 +93,7 @@
 .input,
 .textarea {
   width: 100%;
-  padding: 10px; // Зменшив висоту самих полів
+  padding: 6px; // Зменшив висоту самих полів
   border: 1px solid #ddd;
   background: #FAFAFA;
   margin-top: 4px; // Менше місця між лейблом і полем
@@ -104,7 +102,8 @@
 }
 
 .textarea {
-  min-height: 100px; // Зробив текстове поле коротшим
+  min-height: 40px; // Зробив текстове поле коротшим
+  height: 100%;
 }
 
 .submitBtn {

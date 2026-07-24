@@ -103,7 +103,7 @@ export default function Contacts({ locale = 'uk', data }: ContactsProps) {
               <input type="tel" name="phone" required className={styles.input} />
             </label>
             <label className={styles.label}>{locale === 'uk' ? 'Короткий опис питання' : 'Short description'}
-              <textarea name="message" rows={4} className={styles.textarea} />
+              <textarea name="message" rows={3} className={styles.textarea} />
             </label>
 
             <button type="submit" className={styles.submitBtn} disabled={status === 'sending'}>
