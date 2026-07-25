@@ -163,6 +163,8 @@ const playfair = Playfair_Display({
 
 
 // ПРОФЕСІЙНА ГЕНЕРАЦІЯ МЕТАТЕГІВ ДЛЯ HARLIB (SEO Оптимізовано)
+
+// ПРОФЕСІЙНА ГЕНЕРАЦІЯ МЕТАТЕГІВ ДЛЯ HARLIB (SEO Оптимізовано)
 export async function generateMetadata({
   params,
 }: {
@@ -188,7 +190,6 @@ export async function generateMetadata({
       template: "%s | HARLIB",
     },
 
-    // ОПТИМІЗОВАНИЙ ОПИС (Додано тригери: податки, M&A, захист активів)
     // ОПТИМІЗОВАНИЙ ОПИС (Точно ваш текст із головного екрану)
     description: isUk
       ? "HARLIB — юридичний бутік для банків, страхових і небанківських фінансових установ, фінтех-компаній і крипто-сервісів — в Україні, ЄС, Великобританії та Азії."
@@ -224,14 +225,16 @@ export async function generateMetadata({
       ],
     },
 
+    // 👇 ОНОВЛЕНИЙ БЛОК HREFLANG 👇
     alternates: {
       canonical: `/${locale}`,
       languages: {
-        uk: "/uk",
-        en: "/en",
-        "x-default": "/uk",
+        "uk-UA": "/uk",       // Вказуємо мову та регіон (Україна)
+        "en": "/en",          // Англійська для всього світу
+        "x-default": "/uk",   // Якщо регіон/мова невідомі — показуємо українську
       },
     },
+    // 👆 ---------------------- 👆
 
     // ОПТИМІЗАЦІЯ ДЛЯ СОЦМЕРЕЖ ТА МЕСЕНДЖЕРІВ (Telegram, Viber, LinkedIn)
     openGraph: {
