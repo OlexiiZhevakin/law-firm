@@ -148,6 +148,7 @@ import Footer from "./components/footer/Footer";
 import ScrollToTop from "./components/scrollToTop/ScrollToTop";
 import CookieBanner from "./components/cookies/CookieBanner";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import JsonLd from "./components/seo/JsonLd";
 
 const locales = ["uk", "en"];
 
@@ -297,6 +298,10 @@ export default async function RootLayout({
 
   return (
     <html lang={locale}>
+      <head>
+        {/* 👇 ВИКЛИКАЄМО НАШ НОВИЙ КОМПОНЕНТ 👇 */}
+        <JsonLd locale={locale} />
+      </head>
       <body className={`${inter.className} ${playfair.className}`}>
         <Header params={{ locale: locale as "uk" | "en" }} />
         <main>{children}</main>
