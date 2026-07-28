@@ -1,0 +1,71 @@
+.wrapper {
+  padding-block: 120px 80px;
+
+  @media (max-width: 768px) {
+    padding-block: 110px 48px;
+  }
+}
+
+.h1 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 64px;
+  margin-bottom: 48px;
+
+  @media (max-width: 1024px) {
+    font-size: 48px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 36px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 28px;
+  }
+}
+
+.empty {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  color: var(--steel-dim);
+}
+
+.list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 40px 32px;
+}
+
+.card {
+  border-top: 1px solid var(--line-light);
+  padding-top: 24px;
+}
+
+.cardLink {
+  display: block;
+
+  &:hover .cardTitle {
+    color: var(--focus);
+  }
+}
+
+.cardTitle {
+  font-family: 'Playfair Display', serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 26px;
+  color: var(--obsidian);
+  margin-bottom: 12px;
+  transition: color 0.3s ease;
+}
+
+.cardDesc {
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--steel-dim);
+}

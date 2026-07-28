@@ -4,7 +4,8 @@ import styles from './Header.module.scss'
 import NavLink from '../navLinks/NavLink'
 import MobileMenu from '../mobileMenu/MobileMenu'
 import LangSwitch from '../langSwitch/LangSwitch'
-import { fetchStrapi } from '@/lib/api'
+import ContactButton from '../contactModal/ContactButton'
+import { fetchStrapi, fetchContactData } from '@/lib/api'
 
 export interface LinkItem {
   id: number;
@@ -19,10 +20,10 @@ interface HeaderProps {
 export default async function Header({ params }: HeaderProps) {
   const locale = params.locale || 'uk'
 
-  const headerData = await fetchStrapi('header', {
-    locale: locale,
-    populate: '*'
-  });
+  const [headerData, contactData] = await Promise.all([
+    fetchStrapi('header', { locale, populate: '*' }),
+    fetchContactData(locale),
+  ]);
 
   const links: LinkItem[] = headerData?.navLinks || [];
   const btnText = headerData?.buttonText || (locale === 'uk' ? 'Консультація' : 'Consultation');
@@ -60,9 +61,12 @@ export default async function Header({ params }: HeaderProps) {
             <LangSwitch currentLocale={locale as 'uk' | 'en'} />
           </div>
 
-          <NavLink targetId="contacts" activeClass="" className={styles.headerBtn}>
-            {btnText}
-          </NavLink>
+          <ContactButton
+            locale={locale as 'uk' | 'en'}
+            btnText={btnText}
+            headerBtnClassName={styles.headerBtn}
+            data={contactData}
+          />
 
           <MobileMenu links={links} btnText={btnText} locale={locale} />
         </div>

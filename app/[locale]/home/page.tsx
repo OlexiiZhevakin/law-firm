@@ -5,7 +5,7 @@ import Contacts from "./section/contacts/Contacts"
 import Head from "./section/head/Head"
 import Partner from "./section/partner/Partner"
 import Services from "./section/services/Services"
-import { fetchStrapi } from '@/lib/api'
+import { fetchStrapi, fetchContactData } from '@/lib/api'
 
 interface PageProps {
   params: Promise<{ locale: string }>
@@ -15,16 +15,21 @@ export default async function HomePage({ params }: PageProps) {
   const { locale } = await params;
   const currentLocale = locale as 'uk' | 'en';
 
-  // Отримуємо дані для сторінки, вказуючи всі секції, які нам потрібні
-  const homeData = await fetchStrapi('home-page', {
-    locale: currentLocale,
-    'populate[headSection][populate]': '*',
-    'populate[aboutSection][populate]': '*',
-    'populate[blockSection][populate]': '*',
-    'populate[partnerSection][populate]': '*',
-    'populate[servicesSection][populate][clusters][populate][items]': '*',
-    'populate[contactsSection][populate][phones]': '*',
-  });
+  // Отримуємо дані для сторінки, вказуючи всі секції, які нам потрібні.
+  // contactsSection тут більше не запитуємо — контактний блок/форма тепер
+  // незалежний Strapi single-type "contact" (fetchContactData), той самий,
+  // що використовує і app/[locale]/services/[slug]/page.tsx.
+  const [homeData, contactData] = await Promise.all([
+    fetchStrapi('home-page', {
+      locale: currentLocale,
+      'populate[headSection][populate]': '*',
+      'populate[aboutSection][populate]': '*',
+      'populate[blockSection][populate]': '*',
+      'populate[partnerSection][populate]': '*',
+      'populate[servicesSection][populate][clusters][populate][items]': '*',
+    }),
+    fetchContactData(currentLocale),
+  ]);
 
   return (
     <>
@@ -61,7 +66,7 @@ export default async function HomePage({ params }: PageProps) {
       <Reveal>
         <Contacts
           locale={currentLocale}
-          data={homeData?.contactsSection} />
+          data={contactData} />
       </Reveal>
 
     </>

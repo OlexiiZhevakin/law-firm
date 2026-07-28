@@ -1,0 +1,103 @@
+.aside {
+  align-self: start;
+  position: sticky;
+  top: 40px;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.asideTitle {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--steel);
+  margin-bottom: 16px;
+}
+
+.navList {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+// Сигнатурний елемент: тонка лінія var(--focus), що плавно "їде" вздовж
+// пасивної трек-лінії (var(--line-light)) слідом за активною секцією.
+.indicator {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 2px;
+  background-color: var(--focus);
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), height 0.3s ease;
+  pointer-events: none;
+}
+
+.navLink {
+  display: block;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+  color: var(--steel-dim);
+  padding-left: 16px;
+  border-left: 2px solid var(--line-light);
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: var(--obsidian);
+  }
+
+  &.active {
+    color: var(--focus);
+    font-weight: 500;
+  }
+}
+
+.mobileNav {
+  display: none;
+
+  @media (max-width: 768px) {
+    display: block;
+    margin-bottom: 32px;
+  }
+}
+
+.mobileSummary {
+  cursor: pointer;
+  list-style: none;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+  color: var(--obsidian);
+  padding: 14px 16px;
+  border: 1px solid var(--line-light);
+
+  &::-webkit-details-marker {
+    display: none;
+  }
+}
+
+.mobileList {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line-light);
+  border-top: none;
+}
+
+.mobileNavLink {
+  display: block;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+  color: var(--steel-dim);
+  padding: 12px 16px;
+  border-top: 1px solid var(--line-light);
+
+  &.active {
+    color: var(--focus);
+  }
+}

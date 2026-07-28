@@ -1,6 +1,7 @@
 "use client"
 
 import { useRef, useState } from 'react'
+import Link from 'next/link'
 import Title from '@/app/[locale]/components/title/Title'
 import styles from './Contacts.module.scss'
 
@@ -15,7 +16,7 @@ interface ContactsProps {
     hours: string
     formTitle: string
     formSubtitle: string
-    formDisclaimer: string // Додали нове поле
+    formDisclaimer: string
   }
 }
 
@@ -35,18 +36,11 @@ export default function Contacts({ locale = 'uk', data }: ContactsProps) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formDataObj),
       })
-      if (res.ok) {
-        setStatus('success')
-        formRef.current?.reset()
-        alert(locale === 'uk' ? 'Дякуємо! Ваша заявка отримана.' : 'Thank you! Your request has been received.')
-      } else {
-        throw new Error('Failed to send')
-      }
-    } catch (error) {
+      if (!res.ok) throw new Error('Failed to send')
+      setStatus('success')
+      formRef.current?.reset()
+    } catch {
       setStatus('error')
-      alert(locale === 'uk' ? 'Помилка відправки.' : 'Submission error.')
-    } finally {
-      setStatus('idle')
     }
   }
 
@@ -91,24 +85,51 @@ export default function Contacts({ locale = 'uk', data }: ContactsProps) {
             <p className={styles.formSubtitle}>{data.formSubtitle}</p>
 
             <label className={styles.label}>{locale === 'uk' ? 'Ім’я' : 'Name'}
-              <input type="text" name="name" required className={styles.input} />
+              <input type="text" name="name" required autoComplete="name" className={styles.input} />
             </label>
             <label className={styles.label}>{locale === 'uk' ? 'Назва компанії' : 'Company Name'}
-              <input type="text" name="company" className={styles.input} />
+              <input type="text" name="company" autoComplete="organization" className={styles.input} />
             </label>
             <label className={styles.label}>Email
-              <input type="email" name="email" required className={styles.input} />
+              <input type="email" name="email" required autoComplete="email" className={styles.input} />
             </label>
             <label className={styles.label}>{locale === 'uk' ? 'Телефон' : 'Phone'}
-              <input type="tel" name="phone" required className={styles.input} />
+              <input type="tel" name="phone" required autoComplete="tel" className={styles.input} />
             </label>
             <label className={styles.label}>{locale === 'uk' ? 'Короткий опис питання' : 'Short description'}
               <textarea name="message" rows={3} className={styles.textarea} />
             </label>
 
+            {/* Honeypot: приховане від людей поле-приманка для ботів, див. app/api/contact/route.ts */}
+            <div className={styles.honeypot} aria-hidden="true">
+              <label htmlFor="website">Website</label>
+              <input type="text" id="website" name="website" tabIndex={-1} autoComplete="off" />
+            </div>
+
+            <label className={styles.consentLabel}>
+              <input type="checkbox" name="consent" required className={styles.consentInput} />
+              <span>
+                {locale === 'uk'
+                  ? 'Я даю згоду на обробку персональних даних відповідно до '
+                  : 'I agree to the processing of my personal data in accordance with the '}
+                <Link href={`/${locale}/privacy`} className={styles.consentLink}>
+                  {locale === 'uk' ? 'Політики конфіденційності' : 'Privacy Policy'}
+                </Link>
+              </span>
+            </label>
+
             <button type="submit" className={styles.submitBtn} disabled={status === 'sending'}>
               {status === 'sending' ? '...' : (locale === 'uk' ? 'НАДІСЛАТИ ЗАПИТ →' : 'SEND REQUEST →')}
             </button>
+
+            <p className={styles.status} aria-live="polite">
+              {status === 'success' && (
+                locale === 'uk' ? 'Дякуємо! Ваша заявка отримана.' : 'Thank you! Your request has been received.'
+              )}
+              {status === 'error' && (
+                locale === 'uk' ? 'Помилка відправки. Спробуйте ще раз.' : 'Submission error. Please try again.'
+              )}
+            </p>
 
             {/* Текст під кнопкою */}
             <p className={styles.formDisclaimer}>{data.formDisclaimer}</p>

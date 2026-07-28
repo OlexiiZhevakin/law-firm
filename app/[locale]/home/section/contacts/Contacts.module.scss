@@ -24,17 +24,17 @@
 .contacts p {
   font-size: 1.1rem; // Збільшили шрифт для кращої читабельності
   margin: 0;
-  color: #333; // Трохи темніший колір для тексту
+  color: var(--steel-dim);
 }
 
 .addressLink {
-  color: #000; // Це змусить посилання бути чорним
+  color: var(--obsidian);
   text-decoration: none; // Прибере підкреслення, якщо воно тобі не подобається
   display: block;
   transition: color 0.3s;
 
   &:hover {
-    color: #555; // Легка зміна кольору при наведенні
+    color: var(--steel-dim);
   }
 }
 
@@ -63,12 +63,12 @@
   }
 }
 .form {
-  background: #ffffff;
+  background: var(--paper);
   padding: 2dvh; // Зменшив падінг, щоб форма не була такою масивною
   display: flex;
   flex-direction: column;
   gap: 10px; // Зменшив проміжки між полями
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--line-light);
 }
 
 .formTitle {
@@ -76,7 +76,7 @@
 }
 
 .formSubtitle {
-  color: #8E8E93;
+  color: var(--steel);
   font-size: 1.1rem;
   margin: 0 0 10px;
 }
@@ -85,7 +85,7 @@
   font-size: .7rem;
   letter-spacing: .2em;
   text-transform: uppercase;
-  color: var(--color-obsidian);
+  color: var(--obsidian);
   font-weight: 600;
   margin-bottom: 8px;
 }
@@ -94,11 +94,17 @@
 .textarea {
   width: 100%;
   padding: 6px; // Зменшив висоту самих полів
-  border: 1px solid #ddd;
-  background: #FAFAFA;
+  border: 1px solid var(--line-light);
+  background: var(--platinum);
   margin-top: 4px; // Менше місця між лейблом і полем
   font-size: 20px;
   font-weight: normal;
+  transition: border-color 0.3s ease;
+
+  &:focus {
+    outline: none;
+    border-color: var(--focus);
+  }
 }
 
 .textarea {
@@ -106,9 +112,55 @@
   height: 100%;
 }
 
+.honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.consentLabel {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: var(--steel-dim);
+  cursor: pointer;
+}
+
+.consentInput {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  accent-color: var(--obsidian);
+  cursor: pointer;
+}
+
+.consentLink {
+  color: var(--obsidian);
+  text-decoration: underline;
+
+  &:hover {
+    opacity: 0.7;
+  }
+}
+
+.status {
+  font-size: 0.85rem;
+  margin: 0;
+  min-height: 1.2em;
+
+  &:empty {
+    display: none;
+  }
+}
+
 .submitBtn {
-  background: #000;
-  color: #fff;
+  background: var(--obsidian);
+  color: var(--paper);
   padding: 18px;
   text-transform: uppercase;
   font-weight: 600;

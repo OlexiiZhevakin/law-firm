@@ -1,0 +1,22 @@
+.mobileCallBtn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--line-light);
+  background: transparent;
+  color: var(--obsidian);
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease;
+
+  &:hover {
+    background: var(--obsidian);
+    color: var(--paper);
+  }
+
+  @media (max-width: 768px) {
+    display: flex;
+  }
+}

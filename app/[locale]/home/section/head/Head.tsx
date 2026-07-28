@@ -18,6 +18,13 @@ interface HeadProps {
   data?: HeadSectionData;
 }
 
+// Той самий принцип, що в NavLink.tsx: якщо targetId зі Strapi починається
+// з "/" (напр. "/services") — це посилання на окремий маршрут, інакше —
+// якір на поточній сторінці ("services" -> "/uk#services").
+function buildHref(locale: string, targetId: string) {
+  return targetId.startsWith('/') ? `/${locale}${targetId}` : `/${locale}#${targetId}`;
+}
+
 export default function Head({ locale = 'uk', data }: HeadProps) {
   // Якщо даних зі Strapi немає, нічого не рендеримо
   if (!data) return null;
@@ -33,13 +40,13 @@ export default function Head({ locale = 'uk', data }: HeadProps) {
 
           <div className={styles.btns}>
             {data.primaryButton && (
-              <Button href={`/${locale}#${data.primaryButton.targetId}`} className={styles.btnDark}>
+              <Button href={buildHref(locale, data.primaryButton.targetId)} className={styles.btnDark}>
                 {data.primaryButton.title}
               </Button>
             )}
 
             {data.secondaryButton && (
-              <Button href={`/${locale}#${data.secondaryButton.targetId}`} className={styles.btnLight}>
+              <Button href={buildHref(locale, data.secondaryButton.targetId)} className={styles.btnLight}>
                 {data.secondaryButton.title}
               </Button>
             )}
