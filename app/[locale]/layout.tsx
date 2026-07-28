@@ -147,7 +147,6 @@ import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
 import ScrollToTop from "./components/scrollToTop/ScrollToTop";
 import CookieBanner from "./components/cookies/CookieBanner";
-import { GoogleAnalytics } from "@next/third-parties/google";
 import JsonLd from "./components/seo/JsonLd";
 
 const locales = ["uk", "en"];
@@ -307,8 +306,8 @@ export default async function RootLayout({
         <main>{children}</main>
         <Footer params={{ locale: locale as "uk" | "en" }} />
         <ScrollToTop />
+        {/* Єдине місце, звідки вантажиться GA — лише після consent === "granted" всередині CookieBanner */}
         <CookieBanner locale={locale} />
-        <GoogleAnalytics gaId="G-PLXGLCQLSF" />
       </body>
     </html>
   );

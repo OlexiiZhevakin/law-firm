@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from "next/link"
 import styles from './Footer.module.scss'
 import { fetchStrapi } from '@/lib/api'
+import CookieSettingsLink from '../cookies/CookieSettingsLink'
 
 export interface LinkItem {
   id: number
@@ -116,6 +117,7 @@ export default async function Footer({ params }: FooterProps) {
         {/* Нижня частина з лінією та копірайтом */}
         <div className={styles.bottom}>
           <p className={styles.copyright}>{copyrightText}</p>
+          <CookieSettingsLink locale={locale as 'uk' | 'en'} />
         </div>
 
       </div>
