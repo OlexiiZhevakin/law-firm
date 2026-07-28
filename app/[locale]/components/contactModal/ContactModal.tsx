@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import styles from './ContactModal.module.scss'
 
@@ -24,6 +24,10 @@ export default function ContactModal({ open, onClose, locale, data }: ContactMod
   // Той самий mount-gate трюк, що в CookieBanner.tsx — не рендеримо модалку
   // до першого клієнтського рендеру, щоб уникнути flash/mismatch при гідратації.
   const [mounted, setMounted] = useState(false)
+  // Унікальний per-instance id — на сторінці тепер можуть одночасно існувати
+  // кілька ContactModal (Header і QuickContactButton), і без цього обидва
+  // рендерили б однаковий id="contact-modal-title" (невалідний HTML/a11y).
+  const titleId = useId()
   const overlayRef = useRef<HTMLDivElement>(null)
   const dialogRef = useRef<HTMLDivElement>(null)
   const closeBtnRef = useRef<HTMLButtonElement>(null)
@@ -106,7 +110,7 @@ export default function ContactModal({ open, onClose, locale, data }: ContactMod
         className={styles.dialog}
         role="dialog"
         aria-modal="true"
-        aria-labelledby="contact-modal-title"
+        aria-labelledby={titleId}
       >
         <button
           ref={closeBtnRef}
@@ -118,7 +122,7 @@ export default function ContactModal({ open, onClose, locale, data }: ContactMod
           &times;
         </button>
 
-        <h3 id="contact-modal-title" className={styles.title}>
+        <h3 id={titleId} className={styles.title}>
           {locale === 'uk' ? "Зв'яжіться з нами" : 'Get in touch'}
         </h3>
 

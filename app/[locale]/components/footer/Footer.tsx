@@ -96,21 +96,19 @@ export default async function Footer({ params }: FooterProps) {
             </ul>
           </div>
 
-          {/* 3. Колонка: Юридична інформація (Тільки для англійської) */}
-          {locale === 'en' && (
-            <div className={styles.column}>
-              <h3 className={styles.title}>{legalTitle}</h3>
-              <ul className={styles.list}>
-                {legalLinks.map((link) => (
-                  <li key={link.id}>
-                    <Link href={getLocalizedUrl(link.url)}>
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+          {/* 3. Колонка: Юридична інформація (тепер для обох локалей) */}
+          <div className={styles.column}>
+            <h3 className={styles.title}>{legalTitle}</h3>
+            <ul className={styles.list}>
+              {legalLinks.map((link) => (
+                <li key={link.id}>
+                  <Link href={getLocalizedUrl(link.url)}>
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
 
         </div>
 

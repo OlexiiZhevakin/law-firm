@@ -1,6 +1,8 @@
 .scrollTopBtn {
   position: fixed;
-  bottom: 30px;
+  // Зсунуто вище, щоб не перекриватися з QuickContactButton (fixed, той самий
+  // нижній правий кут) — див. QuickContactButton.module.scss .wrapper.
+  bottom: 96px;
   right: 30px;
   width: 45px;
   height: 45px;
@@ -26,7 +28,7 @@
   }
 
   @media (max-width: 768px) {
-    bottom: 20px;
+    bottom: 76px;
     right: 20px;
     width: 40px;
     height: 40px;

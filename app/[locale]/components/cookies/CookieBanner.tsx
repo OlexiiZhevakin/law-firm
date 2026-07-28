@@ -31,6 +31,10 @@ const POLICY_VERSION = "1.0";
 // незалежно від того, що вже збережено в localStorage.
 export const COOKIE_SETTINGS_EVENT = "harlib:open-cookie-settings";
 
+// QuickContactButton слухає цю подію, щоб ховати плаваючу кнопку, поки банер
+// видимий — обидва fixed-позиціоновані знизу екрана й не повинні перекриватись.
+export const COOKIE_BANNER_VISIBILITY_EVENT = "harlib:cookie-banner-visibility";
+
 function getOrCreateConsentId(): string {
   const existing = localStorage.getItem(CONSENT_ID_KEY);
   if (existing) return existing;
@@ -80,6 +84,15 @@ export default function CookieBanner({ locale }: CookieBannerProps) {
     window.addEventListener(COOKIE_SETTINGS_EVENT, openSettings);
     return () => window.removeEventListener(COOKIE_SETTINGS_EVENT, openSettings);
   }, []);
+
+  // Сповіщає QuickContactButton про поточну видимість банера (щоб той сховався,
+  // поки банер зайняв нижню частину екрана).
+  useEffect(() => {
+    if (!mounted) return;
+    window.dispatchEvent(
+      new CustomEvent(COOKIE_BANNER_VISIBILITY_EVENT, { detail: { visible: showBanner } })
+    );
+  }, [mounted, showBanner]);
 
   const handleChoice = (choice: Choice) => {
     const timestamp = Date.now();

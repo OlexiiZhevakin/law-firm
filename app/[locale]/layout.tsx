@@ -147,7 +147,9 @@ import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
 import ScrollToTop from "./components/scrollToTop/ScrollToTop";
 import CookieBanner from "./components/cookies/CookieBanner";
+import QuickContactButton from "./components/quickContact/QuickContactButton";
 import JsonLd from "./components/seo/JsonLd";
+import { fetchContactData } from "@/lib/api";
 
 const locales = ["uk", "en"];
 
@@ -295,6 +297,10 @@ export default async function RootLayout({
     notFound();
   }
 
+  // Той самий contact single-type, що й Header/ContactButton — Next.js дедуплікує
+  // однакові fetch-виклики в межах одного рендеру, тож зайвого запиту до Strapi нема.
+  const contactData = await fetchContactData(locale);
+
   return (
     <html lang={locale}>
       <head>
@@ -306,6 +312,7 @@ export default async function RootLayout({
         <main>{children}</main>
         <Footer params={{ locale: locale as "uk" | "en" }} />
         <ScrollToTop />
+        <QuickContactButton locale={locale as "uk" | "en"} data={contactData} />
         {/* Єдине місце, звідки вантажиться GA — лише після consent === "granted" всередині CookieBanner */}
         <CookieBanner locale={locale} />
       </body>

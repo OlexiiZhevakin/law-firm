@@ -1,8 +1,37 @@
+import type { Metadata } from 'next';
+import { generatePageMetadata } from '@/lib/metadata';
+import type { Locale } from '@/lib/routes';
 
-export default async function PrivacyPolicyPage({ params }: { params: Promise<{ locale: string }> }) {
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
 
-  await params;
-  // Англійська версія
+  return generatePageMetadata({
+    locale: (locale as Locale) || 'uk',
+    path: '/privacy',
+    title: {
+      uk: 'Політика приватності',
+      en: 'Privacy Policy',
+    },
+    description: {
+      uk: 'Як HARLIB збирає, використовує та захищає персональні дані, надані через harlib.com.ua.',
+      en: 'How HARLIB collects, uses and protects personal data submitted through harlib.com.ua.',
+    },
+  });
+}
+
+// Візуально відмінний плейсхолдер — щоб було очевидно з першого погляду,
+// що це НЕ фінальний юридичний текст, якщо сторінку випадково задеплоять
+// до того, як юрист компанії надасть переклад.
+function TranslationPlaceholder() {
+  return (
+    <p style={{ marginBottom: '40px', fontStyle: 'italic', opacity: 0.55 }}>
+      [Текст цього розділу очікує перекладу від юриста компанії — НЕ заповнювати автоперекладом]
+    </p>
+  );
+}
+
+// Оригінальна (затверджена) англомовна версія — контент не змінювався.
+function PrivacyPolicyEn() {
   return (
     <main className="container" style={{ padding: '120px 15px 80px', maxWidth: '800px', margin: '0 auto', lineHeight: '1.6' }}>
 
@@ -99,4 +128,84 @@ export default async function PrivacyPolicyPage({ params }: { params: Promise<{ 
 
     </main>
   );
+}
+
+// Українська версія: лише структура/заголовки перекладені. Текст розділів —
+// плейсхолдери до того, як юрист компанії надасть офіційний переклад.
+// НЕ заповнювати автоперекладом.
+function PrivacyPolicyUk() {
+  return (
+    <main className="container" style={{ padding: '120px 15px 80px', maxWidth: '800px', margin: '0 auto', lineHeight: '1.6' }}>
+
+      <h1 style={{ fontSize: '36px', marginBottom: '32px', fontWeight: '600' }}>Політика приватності</h1>
+
+      <TranslationPlaceholder />
+      <TranslationPlaceholder />
+
+      <h2 style={{ fontSize: '24px', marginBottom: '16px' }}>1. Які персональні дані ми збираємо</h2>
+      <TranslationPlaceholder />
+
+      <h3 style={{ fontSize: '18px', marginBottom: '12px' }}>1.1. Форма зв&apos;язку та консультації</h3>
+      <TranslationPlaceholder />
+
+      <h3 style={{ fontSize: '18px', marginBottom: '12px' }}>1.2. Пряме звернення</h3>
+      <TranslationPlaceholder />
+
+      <h3 style={{ fontSize: '18px', marginBottom: '12px' }}>1.3. Файли cookie</h3>
+      <TranslationPlaceholder />
+
+      <div style={{ paddingLeft: '20px', marginBottom: '40px' }}>
+        <h4 style={{ fontSize: '16px', marginBottom: '8px' }}>1.3.1. Функціональні файли cookie</h4>
+        <TranslationPlaceholder />
+
+        <h4 style={{ fontSize: '16px', marginBottom: '8px' }}>1.3.2. Необов&apos;язкові (аналітичні) файли cookie</h4>
+        <TranslationPlaceholder />
+      </div>
+
+      <h2 style={{ fontSize: '24px', marginBottom: '16px' }}>2. Як ми отримуємо ваші персональні дані</h2>
+      <TranslationPlaceholder />
+
+      <h2 style={{ fontSize: '24px', marginBottom: '16px' }}>3. Як ми використовуємо ваші персональні дані</h2>
+      <TranslationPlaceholder />
+
+      <h2 style={{ fontSize: '24px', marginBottom: '16px' }}>4. Правові підстави обробки</h2>
+      <TranslationPlaceholder />
+
+      <h2 style={{ fontSize: '24px', marginBottom: '16px' }}>5. Кому ми розкриваємо ваші персональні дані</h2>
+      <TranslationPlaceholder />
+
+      <h2 style={{ fontSize: '24px', marginBottom: '16px' }}>6. Міжнародні передачі даних</h2>
+      <TranslationPlaceholder />
+
+      <h2 style={{ fontSize: '24px', marginBottom: '16px' }}>7. Як довго ми зберігаємо ваші персональні дані</h2>
+      <TranslationPlaceholder />
+
+      <h2 style={{ fontSize: '24px', marginBottom: '16px' }}>8. Як ми захищаємо ваші персональні дані</h2>
+      <TranslationPlaceholder />
+
+      <h2 style={{ fontSize: '24px', marginBottom: '16px' }}>9. Ваші права</h2>
+      <TranslationPlaceholder />
+
+      <h2 style={{ fontSize: '24px', marginBottom: '16px' }}>10. Зміни до цієї Політики</h2>
+      <TranslationPlaceholder />
+
+      <h2 style={{ fontSize: '24px', marginBottom: '16px' }}>11. Контролер персональних даних</h2>
+      <TranslationPlaceholder />
+
+      <p style={{ fontSize: '14px', opacity: 0.7, borderTop: '1px solid rgba(0,0,0,0.1)', paddingTop: '20px' }}>
+        [Прикінцевий абзац про застосовне право — очікує перекладу від юриста компанії]
+      </p>
+
+    </main>
+  );
+}
+
+export default async function PrivacyPolicyPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+
+  if (locale === 'uk') {
+    return <PrivacyPolicyUk />;
+  }
+
+  return <PrivacyPolicyEn />;
 }
