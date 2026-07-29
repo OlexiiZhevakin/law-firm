@@ -1,8 +1,11 @@
 import Link from 'next/link';
 import { fetchServicePages } from '@/lib/api';
 import { generatePageMetadata } from '@/lib/metadata';
+import { buildItemListJsonLd } from '@/lib/jsonld';
+import { BASE_URL } from '@/lib/constants';
 import type { Locale } from '@/lib/routes';
 import type { Metadata } from 'next';
+import JsonLd from '../components/seo/JsonLd';
 import styles from './page.module.scss';
 
 interface PageProps {
@@ -29,8 +32,17 @@ export default async function ServicesPage({ params }: PageProps) {
   const currentLocale = locale as Locale;
   const servicePages = await fetchServicePages(currentLocale);
 
+  const itemListJsonLd = buildItemListJsonLd(
+    servicePages.map((page) => ({
+      name: page.h1,
+      url: `${BASE_URL}/${currentLocale}/services/${page.slug}`,
+      description: page.metaDescription,
+    }))
+  );
+
   return (
     <main className="container">
+      {servicePages.length > 0 && <JsonLd data={itemListJsonLd} />}
       <div className={styles.wrapper}>
         <h1 className={styles.h1}>{currentLocale === 'uk' ? 'Послуги' : 'Services'}</h1>
 

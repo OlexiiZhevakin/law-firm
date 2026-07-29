@@ -1,10 +1,13 @@
 import { notFound } from 'next/navigation';
 import { fetchStrapiBySlug, fetchContactData } from '@/lib/api';
 import { generatePageMetadata } from '@/lib/metadata';
+import { buildServiceJsonLd } from '@/lib/jsonld';
+import { BASE_URL } from '@/lib/constants';
 import type { Locale } from '@/lib/routes';
 import type { Metadata } from 'next';
 import ArticleNav, { type ArticleNavSection } from './ArticleNav';
 import Contacts from '../../home/section/contacts/Contacts';
+import JsonLd from '../../components/seo/JsonLd';
 import styles from './page.module.scss';
 
 interface ContentBlock {
@@ -50,7 +53,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     locale: currentLocale,
     path: `/services/${slug}`,
     title: data.metaTitle || data.h1 || slug,
-    description: data.metaDescription || '',
+    description: data.metaDescription || data.h1 || (data.mainContent?.[0]?.body ?? ''),
   });
 }
 
@@ -76,8 +79,16 @@ export default async function ServicePage({ params }: PageProps) {
     .filter((block): block is ContentBlock & { heading: string } => Boolean(block.heading))
     .map((block) => ({ id: `section-${block.id}`, heading: block.heading }));
 
+  const serviceJsonLd = buildServiceJsonLd({
+    locale: currentLocale,
+    name: data.h1 || slug,
+    description: data.metaDescription,
+    url: `${BASE_URL}/${currentLocale}/services/${slug}`,
+  });
+
   return (
     <>
+      <JsonLd data={serviceJsonLd} />
       <main className="container">
         <div className={styles.wrapper}>
           <article className={styles.main}>

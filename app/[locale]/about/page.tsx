@@ -1,12 +1,14 @@
 import type { Metadata } from 'next';
 import { fetchStrapi, fetchContactData } from '@/lib/api';
 import { generatePageMetadata } from '@/lib/metadata';
+import { buildAboutPageJsonLd, buildLegalServiceJsonLd, buildPersonJsonLd } from '@/lib/jsonld';
 import type { Locale } from '@/lib/routes';
 import Reveal from '../components/reveal/Reveal';
 import Title from '../components/title/Title';
 import Block, { type BlockSectionData } from '../home/section/block/Block';
 import Partner, { type PartnerSectionData } from '../home/section/partner/Partner';
 import Contacts from '../home/section/contacts/Contacts';
+import JsonLd from '../components/seo/JsonLd';
 import styles from './page.module.scss';
 
 interface ExpertiseItemData {
@@ -67,8 +69,31 @@ export default async function AboutPage({ params }: PageProps) {
     fetchContactData(currentLocale),
   ]);
 
+  const jsonLdItems = [buildLegalServiceJsonLd(currentLocale), buildAboutPageJsonLd(currentLocale)];
+
+  const partnerSection = homeSections?.partnerSection;
+  if (partnerSection) {
+    // Той самий "добудувати повний URL картинки" патерн, що й Partner.tsx —
+    // Strapi віддає лише відносний шлях до фото.
+    const imageUrl = partnerSection.photo.url.startsWith('http')
+      ? partnerSection.photo.url
+      : `${process.env.NEXT_PUBLIC_STRAPI_URL || 'http://127.0.0.1:1331'}${partnerSection.photo.url}`;
+
+    jsonLdItems.push(
+      buildPersonJsonLd({
+        locale: currentLocale,
+        name: partnerSection.name,
+        jobTitle: partnerSection.role,
+        imageUrl,
+        // Реального посилання на LinkedIn немає в наявних даних — краще
+        // відсутній sameAs, ніж фейкове значення в structured data.
+      })
+    );
+  }
+
   return (
     <>
+      <JsonLd data={jsonLdItems} />
       <main className="container">
         {aboutPageData?.heroTitle && (
           <section className={styles.hero}>

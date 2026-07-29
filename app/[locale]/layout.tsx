@@ -150,6 +150,9 @@ import CookieBanner from "./components/cookies/CookieBanner";
 import QuickContactButton from "./components/quickContact/QuickContactButton";
 import JsonLd from "./components/seo/JsonLd";
 import { fetchContactData } from "@/lib/api";
+import { buildOrganizationJsonLd } from "@/lib/jsonld";
+import { BASE_URL, GOOGLE_SITE_VERIFICATION } from "@/lib/constants";
+import type { Locale } from "@/lib/routes";
 
 const locales = ["uk", "en"];
 
@@ -164,9 +167,9 @@ const playfair = Playfair_Display({
 });
 
 
-// ПРОФЕСІЙНА ГЕНЕРАЦІЯ МЕТАТЕГІВ ДЛЯ HARLIB (SEO Оптимізовано)
-
-// ПРОФЕСІЙНА ГЕНЕРАЦІЯ МЕТАТЕГІВ ДЛЯ HARLIB (SEO Оптимізовано)
+// Тільки те, що справді спільне для КОЖНОЇ сторінки сайту — title/description/OG/
+// keywords/robots тепер живуть у generateMetadata() кожної окремої сторінки
+// (через generatePageMetadata()), інакше вони не будуть по-сторінковими.
 export async function generateMetadata({
   params,
 }: {
@@ -175,14 +178,11 @@ export async function generateMetadata({
   const { locale } = await params;
   const isUk = locale === "uk";
 
-  // Ваш офіційний домен
-  const baseUrl = "https://harlib.com.ua";
-
   return {
-    metadataBase: new URL(baseUrl),
+    metadataBase: new URL(BASE_URL),
 
     verification: {
-      google: "ajEeltqhnCaDdkrysooitKpCvmRwhLTtdBcWm9icdyA",
+      google: GOOGLE_SITE_VERIFICATION,
     },
 
     title: {
@@ -192,31 +192,6 @@ export async function generateMetadata({
       template: "%s | HARLIB",
     },
 
-    // ОПТИМІЗОВАНИЙ ОПИС (Точно ваш текст із головного екрану)
-    description: isUk
-      ? "HARLIB — юридичний бутік для банків, страхових і небанківських фінансових установ, фінтех-компаній і крипто-сервісів — в Україні, ЄС, Великобританії та Азії."
-      : "HARLIB is a legal boutique for banks, insurance and non-bank financial institutions, fintech companies and crypto-services — in Ukraine, the EU, the UK, and Asia.",
-
-    // РОЗШИРЕНІ КЛЮЧОВІ СЛОВА (Таргетинг на високомаржинальні послуги B2B)
-    keywords: isUk
-      ? [
-        "юридичний бутик", "фінансове право", "юридичні послуги для бізнесу",
-        "корпоративне право", "супровід інвестицій", "структурування бізнесу",
-        "податковий консалтинг", "захист активів", "злиття та поглинання M&A",
-        "Due Diligence Україна", "юрист для IT та Fintech", "HARLIB",
-        "адвокат для бізнесу", "корпоративний договір"
-      ]
-      : [
-        "law boutique", "financial law Ukraine", "corporate law",
-        "investment legal support", "business structuring", "tax consulting Ukraine",
-        "asset protection", "M&A Ukraine", "Due Diligence", "Fintech lawyer",
-        "HARLIB", "business attorney", "legal services for business"
-      ],
-
-    authors: [{ name: "HARLIB Law Boutique", url: baseUrl }],
-    creator: "HARLIB Law Boutique",
-    publisher: "HARLIB",
-
     icons: {
       icon: [
         { url: "/favicon.ico", sizes: "32x32" },
@@ -225,61 +200,6 @@ export async function generateMetadata({
       apple: [
         { url: "/apple-icon.png", sizes: "180x180", type: "image/png" },
       ],
-    },
-
-    // 👇 ОНОВЛЕНИЙ БЛОК HREFLANG 👇
-    alternates: {
-      canonical: `/${locale}`,
-      languages: {
-        "uk-UA": "/uk",       // Вказуємо мову та регіон (Україна)
-        "en": "/en",          // Англійська для всього світу
-        "x-default": "/uk",   // Якщо регіон/мова невідомі — показуємо українську
-      },
-    },
-    // 👆 ---------------------- 👆
-
-    // ОПТИМІЗАЦІЯ ДЛЯ СОЦМЕРЕЖ ТА МЕСЕНДЖЕРІВ (Telegram, Viber, LinkedIn)
-    openGraph: {
-      type: "website",
-      locale: isUk ? "uk_UA" : "en_US",
-      url: `/${locale}`,
-      siteName: "HARLIB Law Boutique",
-      title: isUk
-        ? "HARLIB | Надійний юридичний партнер для вашого бізнесу"
-        : "HARLIB | Trusted Legal Partner for Your Business",
-      description: isUk
-        ? "HARLIB — юридичний бутік для банків, страхових і небанківських фінансових установ, фінтех-компаній і крипто-сервісів — в Україні, ЄС, Великобританії та Азії."
-        : "HARLIB is a legal boutique for banks, insurance and non-bank financial institutions, fintech companies and crypto-services — in Ukraine, the EU, the UK, and Asia.",
-      images: [
-        {
-          url: "/og-image.jpg",
-          width: 1200,
-          height: 630,
-          alt: isUk ? "HARLIB Юридичний Бутик" : "HARLIB Law Boutique",
-        },
-      ],
-    },
-
-    twitter: {
-      card: "summary_large_image",
-      title: isUk ? "HARLIB | Експерти фінансового права" : "HARLIB | Financial Law Experts",
-      description: isUk
-        ? "Професійний юридичний супровід бізнесу та інвестицій."
-        : "Professional legal support for business and investments.",
-      images: ["/og-image.jpg"],
-    },
-
-    robots: {
-      index: true,
-      follow: true,
-      nocache: false,
-      googleBot: {
-        index: true,
-        follow: true,
-        "max-video-preview": -1,
-        "max-image-preview": "large",
-        "max-snippet": -1,
-      },
     },
   };
 }
@@ -304,8 +224,9 @@ export default async function RootLayout({
   return (
     <html lang={locale}>
       <head>
-        {/* 👇 ВИКЛИКАЄМО НАШ НОВИЙ КОМПОНЕНТ 👇 */}
-        <JsonLd locale={locale} />
+        {/* Мінімальна Organization — стосується всього сайту. Детальний
+            LegalService/Person живе на /about, найрелевантнішій сторінці. */}
+        <JsonLd data={buildOrganizationJsonLd(locale as Locale)} />
       </head>
       <body className={`${inter.className} ${playfair.className}`}>
         <Header params={{ locale: locale as "uk" | "en" }} />

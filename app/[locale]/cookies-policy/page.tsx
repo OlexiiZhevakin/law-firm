@@ -7,8 +7,11 @@ import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import Link from 'next/link';
 import { generatePageMetadata } from '@/lib/metadata';
+import { buildWebPageJsonLd } from '@/lib/jsonld';
+import { BASE_URL } from '@/lib/constants';
 import type { Locale } from '@/lib/routes';
 import CookieSettingsTrigger from '../components/cookies/CookieSettingsTrigger';
+import JsonLd from '../components/seo/JsonLd';
 import styles from './CookiesPolicy.module.scss';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
@@ -98,8 +101,18 @@ export default async function CookiesPolicyPage({ params }: { params: Promise<{ 
   const filename = currentLocale === 'uk' ? 'cookies-policy-uk.md' : 'cookies-policy-en.md';
   const content = readLegalMarkdown(filename);
 
+  const webPageJsonLd = buildWebPageJsonLd({
+    name: currentLocale === 'uk' ? 'Налаштування cookies' : 'Cookie Settings',
+    description:
+      currentLocale === 'uk'
+        ? 'Які файли cookie та локальні сховища використовує harlib.com.ua, навіщо вони потрібні і як керувати своїм вибором.'
+        : 'Which cookies and local storage harlib.com.ua uses, what they are for, and how to manage your choice.',
+    url: `${BASE_URL}/${currentLocale}/cookies-policy`,
+  });
+
   return (
     <main className="container">
+      <JsonLd data={webPageJsonLd} />
       <div className={styles.main}>
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}

@@ -1,7 +1,10 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { generatePageMetadata } from '@/lib/metadata';
+import { buildWebPageJsonLd } from '@/lib/jsonld';
+import { BASE_URL } from '@/lib/constants';
 import type { Locale } from '@/lib/routes';
+import JsonLd from '../components/seo/JsonLd';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
@@ -308,10 +311,21 @@ function PrivacyPolicyUk() {
 
 export default async function PrivacyPolicyPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
+  const currentLocale: Locale = locale === 'en' ? 'en' : 'uk';
 
-  if (locale === 'uk') {
-    return <PrivacyPolicyUk />;
-  }
+  const webPageJsonLd = buildWebPageJsonLd({
+    name: currentLocale === 'uk' ? 'Політика приватності' : 'Privacy Policy',
+    description:
+      currentLocale === 'uk'
+        ? 'Як HARLIB збирає, використовує та захищає персональні дані, надані через harlib.com.ua.'
+        : 'How HARLIB collects, uses and protects personal data submitted through harlib.com.ua.',
+    url: `${BASE_URL}/${currentLocale}/privacy`,
+  });
 
-  return <PrivacyPolicyEn />;
+  return (
+    <>
+      <JsonLd data={webPageJsonLd} />
+      {currentLocale === 'uk' ? <PrivacyPolicyUk /> : <PrivacyPolicyEn />}
+    </>
+  );
 }

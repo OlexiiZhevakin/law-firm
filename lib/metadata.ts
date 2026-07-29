@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { SITE_NAME } from './constants';
+import { BASE_URL, SITE_NAME } from './constants';
 import { DEFAULT_LOCALE, LOCALES, LOCALE_HREFLANG, type Locale } from './routes';
 
 /** Текст, окремий для кожної локалі. Рядок теж дозволений, якщо текст однаковий для всіх мов. */
@@ -77,6 +77,11 @@ export function generatePageMetadata({
     title: resolvedTitle,
     description: resolvedDescription,
     keywords: resolvedKeywords,
+    // Однакові для кожної сторінки — тримаємо тут (в одному місці), а не
+    // дублюємо в кожному generateMetadata() чи в layout.tsx.
+    authors: [{ name: SITE_NAME, url: BASE_URL }],
+    creator: SITE_NAME,
+    publisher: SITE_NAME,
     alternates: getAlternates(locale, path),
     openGraph: {
       type: 'website',
