@@ -9,11 +9,19 @@ import Partner, { type PartnerSectionData } from '../home/section/partner/Partne
 import Contacts from '../home/section/contacts/Contacts';
 import styles from './page.module.scss';
 
+interface ExpertiseItemData {
+  id: number;
+  label: string;
+  description: string;
+}
+
 interface AboutPageData {
   heroTitle?: string;
   heroSubtitle?: string;
   storyTitle?: string;
   storyBody?: string;
+  expertiseTitle?: string;
+  expertiseAreas?: ExpertiseItemData[];
 }
 
 interface HomeSectionsForAbout {
@@ -47,7 +55,10 @@ export default async function AboutPage({ params }: PageProps) {
   const currentLocale = (locale as Locale) || 'uk';
 
   const [aboutPageData, homeSections, contactData] = await Promise.all([
-    fetchStrapi('about-page', { locale: currentLocale }) as Promise<AboutPageData | null>,
+    fetchStrapi('about-page', {
+      locale: currentLocale,
+      'populate[expertiseAreas]': '*',
+    }) as Promise<AboutPageData | null>,
     fetchStrapi('home-page', {
       locale: currentLocale,
       'populate[blockSection][populate]': '*',
@@ -77,6 +88,22 @@ export default async function AboutPage({ params }: PageProps) {
                   paragraph.trim() ? <p key={index}>{paragraph}</p> : null
                 ))}
               </div>
+            </section>
+          </Reveal>
+        )}
+
+        {aboutPageData?.expertiseTitle && aboutPageData.expertiseAreas && aboutPageData.expertiseAreas.length > 0 && (
+          <Reveal>
+            <section className={styles.expertise}>
+              <h2 className={styles.storyTitle}>{aboutPageData.expertiseTitle}</h2>
+              <ul className={styles.expertiseList}>
+                {aboutPageData.expertiseAreas.map((area) => (
+                  <li key={area.id} className={styles.expertiseItem}>
+                    <h3 className={styles.expertiseLabel}>{area.label}</h3>
+                    <p className={styles.expertiseDescription}>{area.description}</p>
+                  </li>
+                ))}
+              </ul>
             </section>
           </Reveal>
         )}
