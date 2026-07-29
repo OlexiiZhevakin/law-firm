@@ -1,0 +1,109 @@
+// Та сама типографіка, що на /privacy (app/[locale]/privacy/page.tsx):
+// Playfair Display для заголовків, Inter для тексту, max-width 800px,
+// ті самі розміри (36px/24px), лише через CSS Modules + канонічні
+// CSS custom properties замість inline style.
+
+.main {
+  padding: 120px 15px 80px;
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.6;
+  font-family: 'Inter', sans-serif;
+  color: var(--obsidian);
+}
+
+.h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 36px;
+  font-weight: 600;
+  margin-bottom: 32px;
+}
+
+.h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  font-weight: 600;
+  margin: 40px 0 16px;
+}
+
+.p {
+  margin-bottom: 16px;
+}
+
+.strong {
+  font-weight: 700;
+}
+
+.em {
+  font-style: italic;
+}
+
+.code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.9em;
+  background: var(--line-light);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.link {
+  color: var(--obsidian);
+  text-decoration: underline;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--steel-dim);
+  }
+}
+
+.inlineTrigger {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: var(--obsidian);
+  text-decoration: underline;
+  cursor: pointer;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--steel-dim);
+  }
+}
+
+.list {
+  margin: 0 0 16px 0;
+  padding-left: 20px;
+
+  li {
+    list-style: disc;
+    margin-bottom: 8px;
+  }
+}
+
+.tableWrapper {
+  overflow-x: auto;
+  margin-bottom: 24px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  min-width: 640px;
+}
+
+.th,
+.td {
+  border: 1px solid var(--line-light);
+  padding: 8px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.th {
+  background: var(--line-light);
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+}

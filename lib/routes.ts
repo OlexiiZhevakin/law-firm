@@ -32,6 +32,8 @@ export interface StaticRoute {
  */
 export const STATIC_ROUTES: StaticRoute[] = [
   { path: '', changeFrequency: 'monthly', priority: 1 },
+  { path: '/about', changeFrequency: 'monthly', priority: 0.7 },
   { path: '/services', changeFrequency: 'weekly', priority: 0.8 },
   { path: '/privacy', changeFrequency: 'yearly', priority: 0.3 },
+  { path: '/cookies-policy', changeFrequency: 'yearly', priority: 0.3 },
 ];

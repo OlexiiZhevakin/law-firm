@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "./CookieSettingsLink.module.scss";
-import { COOKIE_SETTINGS_EVENT } from "./CookieBanner";
+import CookieSettingsTrigger from "./CookieSettingsTrigger";
 
 interface CookieSettingsLinkProps {
   locale: "uk" | "en";
@@ -12,12 +12,8 @@ interface CookieSettingsLinkProps {
 // в localStorage (сам вибір там не чіпає, лише відкриває банер повторно).
 export default function CookieSettingsLink({ locale }: CookieSettingsLinkProps) {
   return (
-    <button
-      type="button"
-      className={styles.link}
-      onClick={() => window.dispatchEvent(new Event(COOKIE_SETTINGS_EVENT))}
-    >
+    <CookieSettingsTrigger className={styles.link}>
       {locale === "uk" ? "Налаштування cookies" : "Cookie Settings"}
-    </button>
+    </CookieSettingsTrigger>
   );
 }

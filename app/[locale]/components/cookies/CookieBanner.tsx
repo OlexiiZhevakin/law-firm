@@ -123,6 +123,8 @@ export default function CookieBanner({ locale }: CookieBannerProps) {
         accept: "Прийняти всі",
         reject: "Відхилити аналітику",
         policy: "Політиці приватності",
+        and: "та",
+        cookiePolicy: "Налаштуваннях cookies",
       }
       : {
         title: "We value your privacy",
@@ -131,6 +133,8 @@ export default function CookieBanner({ locale }: CookieBannerProps) {
         accept: "Accept All",
         reject: "Reject Non-Essential",
         policy: "Privacy Policy",
+        and: "and",
+        cookiePolicy: "Cookie Settings",
       };
 
   // Поки не змонтувались — взагалі нічого не рендеримо.
@@ -169,6 +173,10 @@ export default function CookieBanner({ locale }: CookieBannerProps) {
                 {text.learnMore}{" "}
                 <Link href={`/${locale}/privacy`} className={styles.link}>
                   {text.policy}
+                </Link>{" "}
+                {text.and}{" "}
+                <Link href={`/${locale}/cookies-policy`} className={styles.link}>
+                  {text.cookiePolicy}
                 </Link>
                 .
               </p>

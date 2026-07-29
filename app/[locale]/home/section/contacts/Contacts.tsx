@@ -84,21 +84,26 @@ export default function Contacts({ locale = 'uk', data }: ContactsProps) {
             <h3 className={styles.formTitle}>{data.formTitle}</h3>
             <p className={styles.formSubtitle}>{data.formSubtitle}</p>
 
-            <label className={styles.label}>{locale === 'uk' ? 'Ім’я' : 'Name'}
-              <input type="text" name="name" required autoComplete="name" className={styles.input} />
-            </label>
-            <label className={styles.label}>{locale === 'uk' ? 'Назва компанії' : 'Company Name'}
-              <input type="text" name="company" autoComplete="organization" className={styles.input} />
-            </label>
-            <label className={styles.label}>Email
-              <input type="email" name="email" required autoComplete="email" className={styles.input} />
-            </label>
-            <label className={styles.label}>{locale === 'uk' ? 'Телефон' : 'Phone'}
-              <input type="tel" name="phone" required autoComplete="tel" className={styles.input} />
-            </label>
-            <label className={styles.label}>{locale === 'uk' ? 'Короткий опис питання' : 'Short description'}
-              <textarea name="message" rows={3} className={styles.textarea} />
-            </label>
+            <div className={styles.field}>
+              <input type="text" id="contact-name" name="name" required autoComplete="name" placeholder=" " className={styles.input} />
+              <label htmlFor="contact-name" className={styles.fieldLabel}>{locale === 'uk' ? 'Ім’я' : 'Name'}</label>
+            </div>
+            <div className={styles.field}>
+              <input type="text" id="contact-company" name="company" autoComplete="organization" placeholder=" " className={styles.input} />
+              <label htmlFor="contact-company" className={styles.fieldLabel}>{locale === 'uk' ? 'Назва компанії' : 'Company Name'}</label>
+            </div>
+            <div className={styles.field}>
+              <input type="email" id="contact-email" name="email" required autoComplete="email" placeholder=" " className={styles.input} />
+              <label htmlFor="contact-email" className={styles.fieldLabel}>Email</label>
+            </div>
+            <div className={styles.field}>
+              <input type="tel" id="contact-phone" name="phone" required autoComplete="tel" placeholder=" " className={styles.input} />
+              <label htmlFor="contact-phone" className={styles.fieldLabel}>{locale === 'uk' ? 'Телефон' : 'Phone'}</label>
+            </div>
+            <div className={styles.field}>
+              <textarea id="contact-message" name="message" rows={3} placeholder=" " className={styles.textarea} />
+              <label htmlFor="contact-message" className={styles.fieldLabel}>{locale === 'uk' ? 'Короткий опис питання' : 'Short description'}</label>
+            </div>
 
             {/* Honeypot: приховане від людей поле-приманка для ботів, див. app/api/contact/route.ts */}
             <div className={styles.honeypot} aria-hidden="true">
