@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { fetchStrapi, fetchContactData } from '@/lib/api';
 import { generatePageMetadata } from '@/lib/metadata';
-import { buildAboutPageJsonLd, buildLegalServiceJsonLd, buildPersonJsonLd } from '@/lib/jsonld';
+import { buildAboutPageJsonLd, buildJsonLdGraph, buildLegalServiceJsonLd, buildPersonJsonLd } from '@/lib/jsonld';
 import type { Locale } from '@/lib/routes';
 import Reveal from '../components/reveal/Reveal';
 import Title from '../components/title/Title';
@@ -91,9 +91,13 @@ export default async function AboutPage({ params }: PageProps) {
     );
   }
 
+  // Один спільний @graph, не плоский масив — щоб worksFor/mainEntity's { "@id": ... }
+  // посилання на LegalService резолвилися в межах одного JSON-LD документа.
+  const jsonLdGraph = buildJsonLdGraph(jsonLdItems);
+
   return (
     <>
-      <JsonLd data={jsonLdItems} />
+      <JsonLd data={jsonLdGraph} />
       <main className="container">
         {aboutPageData?.heroTitle && (
           <section className={styles.hero}>

@@ -5,6 +5,35 @@ import type { Locale } from './routes';
  * повертає звичайний об'єкт, типізований лише як "серіалізовний у JSON". */
 export type JsonLdObject = Record<string, unknown>;
 
+/** Стабільний @id-якір повного LegalService-вузла (buildLegalServiceJsonLd) —
+ * один і той самий рядок незалежно від локалі/сторінки, щоб інші вузли (Person.worksFor,
+ * AboutPage.mainEntity) могли ПОСИЛАТИСЯ на нього через { "@id": ... } замість
+ * дублювання власного мінімального LegalService-об'єкта. Без цього Google Rich
+ * Results Test бачив три окремі сутності типу LegalService на /about — два з них
+ * порожні заглушки (лише "name": "HARLIB"). */
+export const LEGAL_SERVICE_ID = `${BASE_URL}/#legalservice`;
+
+/**
+ * Об'єднує кілька вже побудованих вузлів в один спільний JSON-LD документ
+ * ({ "@context", "@graph": [...] }) замість плоского масиву окремих об'єктів,
+ * кожен зі своїм власним "@context". @id-посилання між вузлами (напр.
+ * Person.worksFor -> LegalService) резолвяться коректно лише тоді, коли всі
+ * пов'язані вузли лежать в одному @graph одного документа — саме тому /about
+ * використовує це, а не просто масив (`[buildX(), buildY()]`) напряму в <JsonLd>.
+ * Кожен окремий build*JsonLd() лишається валідним і сам по собі (зі своїм
+ * "@context") — на випадок, якщо колись знадобиться використати його одиночно.
+ */
+export function buildJsonLdGraph(nodes: JsonLdObject[]): JsonLdObject {
+  return {
+    '@context': 'https://schema.org',
+    '@graph': nodes.map((node) => {
+      const nodeWithoutContext = { ...node };
+      delete nodeWithoutContext['@context'];
+      return nodeWithoutContext;
+    }),
+  };
+}
+
 /** Мінімальна сутність організації — рендериться глобально в layout.tsx
  * на кожній сторінці сайту. Детальні дані (адреса, телефон, керівник)
  * навмисно тут відсутні — вони на /about (buildLegalServiceJsonLd/buildPersonJsonLd). */
@@ -28,6 +57,7 @@ export function buildLegalServiceJsonLd(locale: Locale): JsonLdObject {
   return {
     '@context': 'https://schema.org',
     '@type': 'LegalService',
+    '@id': LEGAL_SERVICE_ID,
     name: isUk ? 'HARLIB Юридичний Бутик' : 'HARLIB Law Boutique',
     url: `${BASE_URL}/${locale}`,
     logo: `${BASE_URL}/icon.png`,
@@ -80,10 +110,10 @@ export function buildPersonJsonLd({ locale, name, jobTitle, imageUrl, sameAs }: 
     jobTitle,
     url: `${BASE_URL}/${locale}/about`,
     image: imageUrl,
-    worksFor: {
-      '@type': 'LegalService',
-      name: SITE_NAME,
-    },
+    // Посилання на вже повний LegalService-вузол (buildLegalServiceJsonLd),
+    // а не дубльований мінімальний об'єкт — резолвиться, бо обидва вузли
+    // потрапляють в один @graph через buildJsonLdGraph() на /about.
+    worksFor: { '@id': LEGAL_SERVICE_ID },
   };
 
   if (sameAs && sameAs.length > 0) {
@@ -103,10 +133,9 @@ export function buildAboutPageJsonLd(locale: Locale): JsonLdObject {
     '@type': 'AboutPage',
     name: isUk ? 'Про HARLIB' : 'About HARLIB',
     url: `${BASE_URL}/${locale}/about`,
-    mainEntity: {
-      '@type': 'LegalService',
-      name: SITE_NAME,
-    },
+    // Те саме посилання через @id, що й у buildPersonJsonLd — не дублюємо
+    // мінімальний LegalService-об'єкт вдруге.
+    mainEntity: { '@id': LEGAL_SERVICE_ID },
   };
 }
 
