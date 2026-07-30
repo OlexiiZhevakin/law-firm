@@ -59,6 +59,14 @@
   }
 }
 
+.mobileLang {
+  // .langSwitch (Header.module.scss) читає --lang-inactive-color з фолбеком
+  // на var(--steel-dim) — той фолбек призначений для світлого Header-фону і
+  // провалює контраст (~3.2:1) на темному фоні .sidebar. var(--steel) дає
+  // ~6.25:1 на цьому темному фоні — перевірено WCAG-калькулятором, не на око.
+  --lang-inactive-color: var(--steel);
+}
+
 .closeBtn {
   background: none;
   border: none;

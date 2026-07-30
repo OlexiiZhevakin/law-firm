@@ -14,7 +14,10 @@
   font-size: 13px;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--steel);
+  // var(--steel) давав 3.12:1 на фоні сторінки (--platinum) — нижче WCAG AA
+  // 4.5:1. --steel-dim дає 6.07:1 (той самий патерн, що вже застосований до
+  // LangSwitch і Contacts-форми).
+  color: var(--steel-dim);
   margin-bottom: 16px;
 }
 

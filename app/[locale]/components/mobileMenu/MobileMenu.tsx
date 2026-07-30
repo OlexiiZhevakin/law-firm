@@ -35,7 +35,11 @@ export default function MobileMenu({ links, btnText, locale }: MobileMenuProps) 
         ☰
       </button>
 
-      <div className={`${styles.sidebar} ${open ? styles.active : ""}`} aria-hidden={!open}>
+      {/* inert (той самий підхід, що вже в ContactModal.tsx) знімає посилання
+          всередині закритого меню і з фокус-порядку, і з accessibility-дерева
+          одночасно — без цього aria-hidden сам по собі не заважав Tab
+          заходити в приховане меню (axe: aria-hidden-focus). */}
+      <div className={`${styles.sidebar} ${open ? styles.active : ""}`} aria-hidden={!open} inert={!open}>
         <button
           className={styles.closeBtn}
           onClick={() => setOpen(false)}
