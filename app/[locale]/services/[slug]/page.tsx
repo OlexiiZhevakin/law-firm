@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation';
+import { headers } from 'next/headers';
 import { fetchStrapiBySlug, fetchContactData } from '@/lib/api';
 import { generatePageMetadata } from '@/lib/metadata';
 import { buildServiceJsonLd } from '@/lib/jsonld';
@@ -85,10 +86,11 @@ export default async function ServicePage({ params }: PageProps) {
     description: data.metaDescription,
     url: `${BASE_URL}/${currentLocale}/services/${slug}`,
   });
+  const nonce = (await headers()).get('x-nonce') || undefined;
 
   return (
     <>
-      <JsonLd data={serviceJsonLd} />
+      <JsonLd data={serviceJsonLd} nonce={nonce} />
       <main className="container">
         <div className={styles.wrapper}>
           <article className={styles.main}>

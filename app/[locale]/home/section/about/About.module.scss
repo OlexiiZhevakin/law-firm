@@ -25,7 +25,9 @@
   text-transform: uppercase;
   // Використовуємо шрифт із засічками для елегантності
   font-family: 'Playfair Display', 'Times New Roman', serif;
-  font-weight: 500;
+  // 500 не завантажується (layout.tsx вантажить лише 400/600) — браузер і так
+  // рендерив найближчий доступний, 600; CSS тепер відповідає фактичному рендеру.
+  font-weight: 600;
   color: #111111;
   margin-bottom: 60px;
   font-size: clamp(28px, 4vw, 52px); // Робимо заголовок масивнішим

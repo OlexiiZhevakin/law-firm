@@ -64,7 +64,9 @@
 
 .cardDesc {
   font-family: 'Inter', sans-serif;
-  font-weight: 300;
+  // 300 прибрано з layout.tsx (не вантажиться) — 400 найближчий реально
+  // завантажений, CSS тепер відповідає фактичному рендеру.
+  font-weight: 400;
   font-size: 16px;
   line-height: 1.6;
   color: var(--steel-dim);

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { headers } from 'next/headers';
 import { fetchStrapi, fetchContactData } from '@/lib/api';
 import { generatePageMetadata } from '@/lib/metadata';
 import { buildAboutPageJsonLd, buildJsonLdGraph, buildLegalServiceJsonLd, buildPersonJsonLd } from '@/lib/jsonld';
@@ -94,10 +95,11 @@ export default async function AboutPage({ params }: PageProps) {
   // Один спільний @graph, не плоский масив — щоб worksFor/mainEntity's { "@id": ... }
   // посилання на LegalService резолвилися в межах одного JSON-LD документа.
   const jsonLdGraph = buildJsonLdGraph(jsonLdItems);
+  const nonce = (await headers()).get('x-nonce') || undefined;
 
   return (
     <>
-      <JsonLd data={jsonLdGraph} />
+      <JsonLd data={jsonLdGraph} nonce={nonce} />
       <main className="container">
         {aboutPageData?.heroTitle && (
           <section className={styles.hero}>

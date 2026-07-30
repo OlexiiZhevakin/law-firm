@@ -143,6 +143,7 @@ import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { notFound } from "next/navigation";
+import { headers } from "next/headers";
 import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
 import ScrollToTop from "./components/scrollToTop/ScrollToTop";
@@ -156,14 +157,19 @@ import type { Locale } from "@/lib/routes";
 
 const locales = ["uk", "en"];
 
+// 300 прибрано: реально використовувався лише в порожньому стані /services
+// ("сторінок ще немає"), який зараз майже ніколи не рендериться (10 реальних
+// service-page записів) — не вартий окремого файлу шрифту.
 const inter = Inter({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
+  weight: ["400", "500", "600"],
 });
 
+// 700 прибрано: жодного реального використання в коді не знайдено (перевірено
+// по всіх .scss з font-family: 'Playfair Display').
 const playfair = Playfair_Display({
   subsets: ["latin"],
-  weight: ["400", "600", "700"],
+  weight: ["400", "600"],
 });
 
 
@@ -221,12 +227,17 @@ export default async function RootLayout({
   // однакові fetch-виклики в межах одного рендеру, тож зайвого запиту до Strapi нема.
   const contactData = await fetchContactData(locale);
 
+  // x-nonce проставляється в proxy.ts на кожен запит (nonce-based CSP замість
+  // script-src 'unsafe-inline') — виклик headers() тут заразом форсує
+  // динамічний рендер усього дерева під цим layout, що й потрібно для nonce.
+  const nonce = (await headers()).get("x-nonce") || undefined;
+
   return (
     <html lang={locale}>
       <head>
         {/* Мінімальна Organization — стосується всього сайту. Детальний
             LegalService/Person живе на /about, найрелевантнішій сторінці. */}
-        <JsonLd data={buildOrganizationJsonLd(locale as Locale)} />
+        <JsonLd data={buildOrganizationJsonLd(locale as Locale)} nonce={nonce} />
       </head>
       <body className={`${inter.className} ${playfair.className}`}>
         <Header params={{ locale: locale as "uk" | "en" }} />
@@ -235,7 +246,7 @@ export default async function RootLayout({
         <ScrollToTop />
         <QuickContactButton locale={locale as "uk" | "en"} data={contactData} />
         {/* Єдине місце, звідки вантажиться GA — лише після consent === "granted" всередині CookieBanner */}
-        <CookieBanner locale={locale} />
+        <CookieBanner locale={locale} nonce={nonce} />
       </body>
     </html>
   );

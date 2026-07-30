@@ -84,7 +84,9 @@
   color: var(--color-platinum);
   text-align: center;
   font-size: 28px;
-  font-weight: 700;
+  // 700 не вантажиться (Inter — тільки 400/500/600) — 600 найближчий реально
+  // завантажений.
+  font-weight: 600;
   border: none;
   margin-top: 8px;
   transition: background 0.3s ease;

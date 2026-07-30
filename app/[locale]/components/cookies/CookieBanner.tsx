@@ -8,6 +8,10 @@ import { GA_MEASUREMENT_ID } from "@/lib/constants";
 
 interface CookieBannerProps {
   locale: string;
+  /** x-nonce поточного запиту (з layout.tsx, через headers()) — потрібен для
+   * nonce-based CSP замість script-src 'unsafe-inline'. Client Component не
+   * може читати headers() сам, тому приймає готовий nonce пропсом. */
+  nonce?: string;
 }
 
 type Choice = "granted" | "denied";
@@ -64,7 +68,7 @@ function readStoredConsent(): StoredConsent | null {
   return null;
 }
 
-export default function CookieBanner({ locale }: CookieBannerProps) {
+export default function CookieBanner({ locale, nonce }: CookieBannerProps) {
   const [mounted, setMounted] = useState(false);
   const [consent, setConsent] = useState<ConsentState>("pending");
   const [showBanner, setShowBanner] = useState(false);
@@ -151,8 +155,9 @@ export default function CookieBanner({ locale }: CookieBannerProps) {
           <Script
             src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
             strategy="afterInteractive"
+            nonce={nonce}
           />
-          <Script id="google-analytics" strategy="afterInteractive">
+          <Script id="google-analytics" strategy="afterInteractive" nonce={nonce}>
             {`
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}

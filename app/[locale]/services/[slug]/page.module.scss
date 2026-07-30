@@ -38,7 +38,9 @@
 
 .intro {
   font-family: 'Inter', sans-serif;
-  font-weight: 300;
+  // 300 прибрано з layout.tsx (не вантажиться) — 400 найближчий реально
+  // завантажений, CSS тепер відповідає фактичному рендеру.
+  font-weight: 400;
   font-size: 22px;
   line-height: 1.7;
   color: var(--obsidian);

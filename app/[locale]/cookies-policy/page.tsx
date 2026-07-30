@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import type { Metadata } from 'next';
+import { headers } from 'next/headers';
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes } from 'react';
 import ReactMarkdown, { type Components } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -109,10 +110,11 @@ export default async function CookiesPolicyPage({ params }: { params: Promise<{ 
         : 'Which cookies and local storage harlib.com.ua uses, what they are for, and how to manage your choice.',
     url: `${BASE_URL}/${currentLocale}/cookies-policy`,
   });
+  const nonce = (await headers()).get('x-nonce') || undefined;
 
   return (
     <main className="container">
-      <JsonLd data={webPageJsonLd} />
+      <JsonLd data={webPageJsonLd} nonce={nonce} />
       <div className={styles.main}>
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}

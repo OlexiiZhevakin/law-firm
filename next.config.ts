@@ -16,15 +16,9 @@
 
 /** @type {import('next').NextConfig} */
 
-const cspHeader = `
-  default-src 'self';
-  script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com;
-  style-src 'self' 'unsafe-inline';
-  img-src 'self' blob: data: https: http://31.131.18.174:1331;
-  font-src 'self' data:;
-  connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com http://31.131.18.174:1331;
-`.replace(/\n/g, '').replace(/\s+/g, ' ').trim();
-
+// Content-Security-Policy більше НЕ тут — вона тепер генерується per-request
+// у proxy.ts (nonce-based, замінює script-src 'unsafe-inline'). Статичний
+// заголовок у next.config.ts не міг би нести унікальний nonce на кожен запит.
 const nextConfig = {
   images: {
     remotePatterns: [
@@ -41,10 +35,6 @@ const nextConfig = {
       {
         source: '/(.*)',
         headers: [
-          {
-            key: 'Content-Security-Policy',
-            value: cspHeader,
-          },
           {
             key: 'Strict-Transport-Security',
             value: 'max-age=63072000; includeSubDomains; preload',

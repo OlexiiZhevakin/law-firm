@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { headers } from 'next/headers';
 import { fetchServicePages } from '@/lib/api';
 import { generatePageMetadata } from '@/lib/metadata';
 import { buildItemListJsonLd } from '@/lib/jsonld';
@@ -39,10 +40,11 @@ export default async function ServicesPage({ params }: PageProps) {
       description: page.metaDescription,
     }))
   );
+  const nonce = (await headers()).get('x-nonce') || undefined;
 
   return (
     <main className="container">
-      {servicePages.length > 0 && <JsonLd data={itemListJsonLd} />}
+      {servicePages.length > 0 && <JsonLd data={itemListJsonLd} nonce={nonce} />}
       <div className={styles.wrapper}>
         <h1 className={styles.h1}>{currentLocale === 'uk' ? 'Послуги' : 'Services'}</h1>
 

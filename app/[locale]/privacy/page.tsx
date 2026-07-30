@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { headers } from 'next/headers';
 import { generatePageMetadata } from '@/lib/metadata';
 import { buildWebPageJsonLd } from '@/lib/jsonld';
 import { BASE_URL } from '@/lib/constants';
@@ -321,10 +322,11 @@ export default async function PrivacyPolicyPage({ params }: { params: Promise<{ 
         : 'How HARLIB collects, uses and protects personal data submitted through harlib.com.ua.',
     url: `${BASE_URL}/${currentLocale}/privacy`,
   });
+  const nonce = (await headers()).get('x-nonce') || undefined;
 
   return (
     <>
-      <JsonLd data={webPageJsonLd} />
+      <JsonLd data={webPageJsonLd} nonce={nonce} />
       {currentLocale === 'uk' ? <PrivacyPolicyUk /> : <PrivacyPolicyEn />}
     </>
   );
