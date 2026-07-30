@@ -150,7 +150,7 @@ import ScrollToTop from "./components/scrollToTop/ScrollToTop";
 import CookieBanner from "./components/cookies/CookieBanner";
 import QuickContactButton from "./components/quickContact/QuickContactButton";
 import JsonLd from "./components/seo/JsonLd";
-import { fetchContactData } from "@/lib/api";
+import { fetchContactData, getStrapiURL } from "@/lib/api";
 import { buildOrganizationJsonLd } from "@/lib/jsonld";
 import { BASE_URL, GOOGLE_SITE_VERIFICATION } from "@/lib/constants";
 import type { Locale } from "@/lib/routes";
@@ -235,6 +235,9 @@ export default async function RootLayout({
   return (
     <html lang={locale}>
       <head>
+        {/* Прискорює з'єднання до Strapi (uploads-зображення: фото Гаріка,
+            лого) — той самий origin, що вже в images.remotePatterns/CSP. */}
+        <link rel="preconnect" href={getStrapiURL()} />
         {/* Мінімальна Organization — стосується всього сайту. Детальний
             LegalService/Person живе на /about, найрелевантнішій сторінці. */}
         <JsonLd data={buildOrganizationJsonLd(locale as Locale)} nonce={nonce} />
