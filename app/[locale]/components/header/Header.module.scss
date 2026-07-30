@@ -191,11 +191,28 @@
   }
 }
 
+// .desktopLang {
+//   display: none;
+
+//   @media (min-width: 768px) {
+//     display: block;
+//     /* Або block, залежно від того, як у тебе вирівняні елементи */
+//   }
+// }
+
 .desktopLang {
+  /* 1. Логіка відображення: приховуємо на мобілці */
   display: none;
 
+  /* 2. Логіка кольорів: змінні для виправлення контрасту в Lighthouse */
+  --lang-inactive-color: var(--steel-dim);
+  background-color: var(--color-platinum);
+  /* Підказуємо Lighthouse реальний фон */
+
   @media (min-width: 768px) {
-    display: block;
-    /* Або block, залежно від того, як у тебе вирівняні елементи */
+    /* Показуємо на планшетах і десктопах */
+    display: flex;
+    /* Краще використовувати flex, щоб вирівняти внутрішній вміст */
+    align-items: center;
   }
 }
