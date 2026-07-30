@@ -31,7 +31,10 @@ export function buildLegalServiceJsonLd(locale: Locale): JsonLdObject {
     name: isUk ? 'HARLIB Юридичний Бутик' : 'HARLIB Law Boutique',
     url: `${BASE_URL}/${locale}`,
     logo: `${BASE_URL}/icon.png`,
-    image: `${BASE_URL}/og-image.jpg`,
+    // Реальний логотип із Header/Footer (public/logo-header.png) — не /og-image.jpg,
+    // такого файлу немає в public/ (404), і саме тому Google Rich Results Test
+    // не бачив валідного зображення для цієї сутності.
+    image: `${BASE_URL}/logo-header.png`,
     description: isUk
       ? 'HARLIB — юридичний бутік для банків, страхових і небанківських фінансових установ, фінтех-компаній і крипто-сервісів — в Україні, ЄС, Великобританії та Азії.'
       : 'HARLIB is a legal boutique for banks, insurance and non-bank financial institutions, fintech companies and crypto-services — in Ukraine, the EU, the UK, and Asia.',
@@ -39,7 +42,7 @@ export function buildLegalServiceJsonLd(locale: Locale): JsonLdObject {
     email: CONTACT_EMAIL,
     address: {
       '@type': 'PostalAddress',
-      streetAddress: isUk ? 'вулиця Михайла Грушевського, 3' : '3 Mykhaila Hrushevskoho St',
+      streetAddress: isUk ? 'вул. М. Грушевського, 3' : '3 Mykhaila Hrushevskoho St',
       addressLocality: isUk ? 'Київ' : 'Kyiv',
       addressRegion: isUk ? 'Київська область' : 'Kyiv region',
       postalCode: '01001',
@@ -51,6 +54,11 @@ export function buildLegalServiceJsonLd(locale: Locale): JsonLdObject {
       opens: '09:00',
       closes: '20:00',
     },
+    // priceRange навмисно НЕ заповнюється: юридичні послуги HARLIB не мають
+    // фіксованого/публічного цінового діапазону (кожен кейс — індивідуальна
+    // оцінка), на відміну від ресторану чи магазину, де це поле й задумане.
+    // Google позначає priceRange як необов'язкове — вигадане значення на
+    // кшталт "$$$" було б недостовірними даними в structured data.
   };
 }
 
