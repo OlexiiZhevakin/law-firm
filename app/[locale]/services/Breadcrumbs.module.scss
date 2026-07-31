@@ -1,0 +1,38 @@
+// Той самий "дрібний, приглушений, uppercase-лейбл" патерн, що вже є в
+// ArticleNav.module.scss's .asideTitle ("На цій сторінці") — тільки без
+// text-transform: uppercase, бо тут реальні назви послуг (не короткий
+// лейбл), і суцільні капси на довгій назві виглядали б важко.
+.breadcrumbs {
+  display: flex;
+  flex-wrap: wrap;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  color: var(--steel-dim);
+  margin-bottom: 24px;
+}
+
+.item {
+  display: inline-flex;
+  align-items: center;
+}
+
+.link {
+  color: var(--steel-dim);
+  text-decoration: none;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: var(--obsidian);
+  }
+}
+
+.current {
+  color: var(--obsidian);
+}
+
+.separator {
+  margin: 0 8px;
+  color: var(--line-dark);
+}

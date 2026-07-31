@@ -1,5 +1,5 @@
 import { BASE_URL, CONTACT_EMAIL, CONTACT_PHONE, SITE_NAME } from './constants';
-import type { Locale } from './routes';
+import { STATIC_ROUTES, type Locale } from './routes';
 
 /** JSON-LD не має єдиної строгої TS-схеми в цьому проєкті — кожен білдер
  * повертає звичайний об'єкт, типізований лише як "серіалізовний у JSON". */
@@ -46,6 +46,49 @@ export function buildOrganizationJsonLd(locale: Locale): JsonLdObject {
     name: isUk ? 'HARLIB Юридичний Бутик' : 'HARLIB Law Boutique',
     url: `${BASE_URL}/${locale}`,
     logo: `${BASE_URL}/icon.png`,
+  };
+}
+
+/** Локалізовані назви для "головних" пунктів навігації (@see buildSiteNavigationJsonLd,
+ * buildBreadcrumbJsonLd) — STATIC_ROUTES не має поля назви, тож мапінг
+ * path -> назва тримається тут, поруч із рештою JSON-LD, а не вигаданий
+ * окремий реєстр. Експортується, щоб /services і /services/[slug] могли
+ * взяти ті самі "Головна"/"Послуги", а не дублювати рядки локально. */
+export const SITE_NAV_NAMES: Record<string, { uk: string; en: string }> = {
+  '': { uk: 'Головна', en: 'Home' },
+  '/about': { uk: 'Про нас', en: 'About Us' },
+  '/services': { uk: 'Послуги', en: 'Services' },
+};
+
+/** SiteNavigationElement — підказка Google для sitelinks при брендовому запиті
+ * "harlib". Рендериться глобально в layout.tsx поруч з Organization (та сама
+ * причина: навігація спільна для всього сайту, не по-сторінкова).
+ *
+ * Список береться з STATIC_ROUTES (lib/routes.ts), а не вигаданий заново —
+ * але не всі STATIC_ROUTES потрапляють сюди: /privacy і /cookies-policy
+ * (priority 0.3, "yearly") — юридичні сторінки в футері, а не пункти головної
+ * навігації, тож не годяться для sitelinks-підказки. Поріг priority >= 0.7
+ * природно відділяє "головні" розділи (''=1, /about=0.7, /services=0.8) від
+ * другорядних, використовуючи вже наявне поле, а не нову довільну ознаку. */
+export function buildSiteNavigationJsonLd(locale: Locale): JsonLdObject {
+  const mainRoutes = STATIC_ROUTES.filter(
+    (route) => route.priority >= 0.7 && SITE_NAV_NAMES[route.path]
+  );
+
+  const names = mainRoutes.map((route) => SITE_NAV_NAMES[route.path][locale]);
+  const urls = mainRoutes.map((route) => `${BASE_URL}/${locale}${route.path}`);
+
+  // "Контакти" не є окремим STATIC_ROUTE — немає самостійної сторінки /contacts,
+  // це секція на головній (той самий якір #contacts, що вже в navLinks
+  // Strapi-хедера). Додається окремо, а не вигадується неіснуючий роут.
+  names.push(locale === 'uk' ? 'Контакти' : 'Contact');
+  urls.push(`${BASE_URL}/${locale}#contacts`);
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'SiteNavigationElement',
+    name: names,
+    url: urls,
   };
 }
 
@@ -136,6 +179,33 @@ export function buildAboutPageJsonLd(locale: Locale): JsonLdObject {
     // Те саме посилання через @id, що й у buildPersonJsonLd — не дублюємо
     // мінімальний LegalService-об'єкт вдруге.
     mainEntity: { '@id': LEGAL_SERVICE_ID },
+  };
+}
+
+export interface BreadcrumbItem {
+  name: string;
+  url: string;
+}
+
+/** BreadcrumbList — на /services (2 рівні: Головна → Послуги) і
+ * /services/[slug] (3 рівні: Головна → Послуги → назва послуги). Формат
+ * ListItem.item (не .url) — саме так, як задокументовано в Google's власному
+ * прикладі розмітки breadcrumb (developers.google.com/search/docs/appearance/
+ * structured-data/breadcrumb), на відміну від buildItemListJsonLd вище, де
+ * це загальний ItemList, а не спеціально розпізнаваний Google breadcrumb-тип.
+ * `items` — уже повний, локалізований і абсолютний список (сторінка сама
+ * будує його через SITE_NAV_NAMES + власні дані), `locale` йде в `inLanguage`. */
+export function buildBreadcrumbJsonLd(items: BreadcrumbItem[], locale: Locale): JsonLdObject {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    inLanguage: locale,
+    itemListElement: items.map((item, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: item.name,
+      item: item.url,
+    })),
   };
 }
 

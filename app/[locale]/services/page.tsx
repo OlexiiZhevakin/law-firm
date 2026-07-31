@@ -2,11 +2,12 @@ import Link from 'next/link';
 import { headers } from 'next/headers';
 import { fetchServicePages } from '@/lib/api';
 import { generatePageMetadata } from '@/lib/metadata';
-import { buildItemListJsonLd } from '@/lib/jsonld';
+import { buildBreadcrumbJsonLd, buildItemListJsonLd, SITE_NAV_NAMES } from '@/lib/jsonld';
 import { BASE_URL } from '@/lib/constants';
 import type { Locale } from '@/lib/routes';
 import type { Metadata } from 'next';
 import JsonLd from '../components/seo/JsonLd';
+import Breadcrumbs from './Breadcrumbs';
 import styles from './page.module.scss';
 
 interface PageProps {
@@ -40,12 +41,30 @@ export default async function ServicesPage({ params }: PageProps) {
       description: page.metaDescription,
     }))
   );
+
+  // Головна → Послуги (2 рівні) — той самий SITE_NAV_NAMES, що вже дає
+  // ці локалізовані назви для SiteNavigationElement, не дублюємо рядки.
+  // path — відносний (для візуального <Link>), url — абсолютний (для JSON-LD).
+  const breadcrumbLevels = [
+    { name: SITE_NAV_NAMES[''][currentLocale], path: `/${currentLocale}` },
+    { name: SITE_NAV_NAMES['/services'][currentLocale], path: `/${currentLocale}/services` },
+  ];
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd(
+    breadcrumbLevels.map((level) => ({ name: level.name, url: `${BASE_URL}${level.path}` })),
+    currentLocale
+  );
+
   const nonce = (await headers()).get('x-nonce') || undefined;
+
+  // BreadcrumbList валідний завжди (Головна → Послуги — це структура сторінки,
+  // не залежить від каталогу), ItemList — лише якщо є що перелічувати.
+  const jsonLdNodes = servicePages.length > 0 ? [itemListJsonLd, breadcrumbJsonLd] : [breadcrumbJsonLd];
 
   return (
     <main className="container">
-      {servicePages.length > 0 && <JsonLd data={itemListJsonLd} nonce={nonce} />}
+      <JsonLd data={jsonLdNodes} nonce={nonce} />
       <div className={styles.wrapper}>
+        <Breadcrumbs items={breadcrumbLevels.map((level) => ({ name: level.name, href: level.path }))} />
         <h1 className={styles.h1}>{currentLocale === 'uk' ? 'Послуги' : 'Services'}</h1>
 
         {servicePages.length === 0 ? (

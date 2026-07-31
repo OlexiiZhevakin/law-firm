@@ -23,9 +23,17 @@ export default function NavLink({ targetId, className, activeClass, children }: 
     const rawHref = `/${locale}${targetId}`
     // "/" (Головна) дає /uk/ з кінцевим слешем — а pathname завжди без нього.
     const href = rawHref.length > 1 && rawHref.endsWith('/') ? rawHref.slice(0, -1) : rawHref
-    // Активний і на самому роуті, і на його підсторінках (напр. targetId="/services"
-    // лишається активним і на /services/licensing).
-    const isActive = pathname === href || pathname?.startsWith(`${href}/`)
+    // Корінь локалі ("Головна", targetId="/") — виняток: активний ТІЛЬКИ на
+    // точному співпадінні. pathname.startsWith(`${href}/`) для href="/uk" —
+    // це буквально "/uk/" — збігається з АБСОЛЮТНО будь-якою сторінкою сайту
+    // (/uk/about, /uk/services/... — усі вони "під коренем"), тож без цього
+    // винятку "Головна" підсвічувалась одночасно з кожним іншим активним
+    // пунктом. Для решти пунктів підсвітка на підсторінках лишається (напр.
+    // targetId="/services" лишається активним і на /services/licensing).
+    const isRootHref = href === `/${locale}`
+    const isActive = isRootHref
+      ? pathname === href
+      : pathname === href || pathname?.startsWith(`${href}/`)
 
     return (
       <Link

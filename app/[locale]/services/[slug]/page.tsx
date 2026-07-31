@@ -2,13 +2,14 @@ import { notFound } from 'next/navigation';
 import { headers } from 'next/headers';
 import { fetchStrapiBySlug, fetchContactData } from '@/lib/api';
 import { generatePageMetadata } from '@/lib/metadata';
-import { buildServiceJsonLd } from '@/lib/jsonld';
+import { buildBreadcrumbJsonLd, buildServiceJsonLd, SITE_NAV_NAMES } from '@/lib/jsonld';
 import { BASE_URL } from '@/lib/constants';
 import type { Locale } from '@/lib/routes';
 import type { Metadata } from 'next';
 import ArticleNav, { type ArticleNavSection } from './ArticleNav';
 import Contacts from '../../home/section/contacts/Contacts';
 import JsonLd from '../../components/seo/JsonLd';
+import Breadcrumbs from '../Breadcrumbs';
 import styles from './page.module.scss';
 
 interface ContentBlock {
@@ -86,14 +87,29 @@ export default async function ServicePage({ params }: PageProps) {
     description: data.metaDescription,
     url: `${BASE_URL}/${currentLocale}/services/${slug}`,
   });
+
+  // Головна → Послуги → {назва цієї послуги} (3 рівні) — той самий
+  // SITE_NAV_NAMES, що й на /services, плюс реальна назва сторінки
+  // (data.h1, не slug), як і скрізь на цій сторінці (h1, JSON-LD Service).
+  const breadcrumbLevels = [
+    { name: SITE_NAV_NAMES[''][currentLocale], path: `/${currentLocale}` },
+    { name: SITE_NAV_NAMES['/services'][currentLocale], path: `/${currentLocale}/services` },
+    { name: data.h1 || slug, path: `/${currentLocale}/services/${slug}` },
+  ];
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd(
+    breadcrumbLevels.map((level) => ({ name: level.name, url: `${BASE_URL}${level.path}` })),
+    currentLocale
+  );
+
   const nonce = (await headers()).get('x-nonce') || undefined;
 
   return (
     <>
-      <JsonLd data={serviceJsonLd} nonce={nonce} />
+      <JsonLd data={[serviceJsonLd, breadcrumbJsonLd]} nonce={nonce} />
       <main className="container">
         <div className={styles.wrapper}>
           <article className={styles.main}>
+            <Breadcrumbs items={breadcrumbLevels.map((level) => ({ name: level.name, href: level.path }))} />
             <h1 className={styles.h1}>{data.h1 || slug}</h1>
 
             {introBlock?.body && <p className={styles.intro}>{introBlock.body}</p>}

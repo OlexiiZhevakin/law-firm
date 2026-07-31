@@ -12,7 +12,7 @@ import CookieBanner from "./components/cookies/CookieBanner";
 import QuickContactButton from "./components/quickContact/QuickContactButton";
 import JsonLd from "./components/seo/JsonLd";
 import { fetchContactData, getStrapiURL } from "@/lib/api";
-import { buildOrganizationJsonLd } from "@/lib/jsonld";
+import { buildOrganizationJsonLd, buildSiteNavigationJsonLd } from "@/lib/jsonld";
 import { BASE_URL, GOOGLE_SITE_VERIFICATION } from "@/lib/constants";
 import type { Locale } from "@/lib/routes";
 
@@ -100,8 +100,17 @@ export default async function RootLayout({
             лого) — той самий origin, що вже в images.remotePatterns/CSP. */}
         <link rel="preconnect" href={getStrapiURL()} />
         {/* Мінімальна Organization — стосується всього сайту. Детальний
-            LegalService/Person живе на /about, найрелевантнішій сторінці. */}
-        <JsonLd data={buildOrganizationJsonLd(locale as Locale)} nonce={nonce} />
+            LegalService/Person живе на /about, найрелевантнішій сторінці.
+            SiteNavigationElement поруч — підказка Google для sitelinks,
+            теж спільна для всього сайту, не по-сторінкова. Без @id-посилань
+            між цими двома вузлами, тож плоский масив, без buildJsonLdGraph. */}
+        <JsonLd
+          data={[
+            buildOrganizationJsonLd(locale as Locale),
+            buildSiteNavigationJsonLd(locale as Locale),
+          ]}
+          nonce={nonce}
+        />
       </head>
       <body className={`${inter.className} ${playfair.className}`}>
         <Header params={{ locale: locale as "uk" | "en" }} />

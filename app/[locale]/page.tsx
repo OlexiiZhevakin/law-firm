@@ -16,13 +16,26 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return generatePageMetadata({
     locale: currentLocale,
     path: '',
+    // "| HARLIB" дописано явно в самому рядку, а НЕ залишено на layout.tsx's
+    // title.template — за документацією Next.js (generate-metadata.md,
+    // "Good to know"): "title.template defined in layout.js will not apply
+    // to a title defined in a page.js of the SAME route segment". Ця
+    // сторінка (app/[locale]/page.tsx) і layout.tsx лежать в ОДНОМУ сегменті
+    // ([locale]), тому шаблон із layout сюди НЕ каскадується — на відміну
+    // від about/services/etc, які є вкладеними сегментами. Раніше рядок
+    // мав хибний префікс "HARLIB | " (без шаблону це давало лише один раз
+    // бренд на початку, без дублювання — попередній аудит помилково
+    // припустив, що шаблон завжди застосовується). Суфікс тут — це
+    // єдиний спосіб отримати бренд у заголовку цієї конкретної сторінки.
     title: {
-      uk: 'HARLIB | Юридичний бутик фінансового та корпоративного права',
-      en: 'HARLIB | Financial & Corporate Law Boutique',
+      uk: 'Юридичний бутик фінансового та корпоративного права | HARLIB',
+      en: 'Financial & Corporate Law Boutique | HARLIB',
     },
     description: {
       uk: 'HARLIB — юридичний бутік для банків, страхових і небанківських фінансових установ, фінтех-компаній і крипто-сервісів — в Україні, ЄС, Великобританії та Азії.',
-      en: 'HARLIB is a legal boutique for banks, insurance and non-bank financial institutions, fintech companies and crypto-services — in Ukraine, the EU, the UK, and Asia.',
+      // "the UK" -> "UK" (162 -> 158 символів) — єдина правка, значення й
+      // ключові терміни не змінені, лише прибрано зайвий артикль.
+      en: 'HARLIB is a legal boutique for banks, insurance and non-bank financial institutions, fintech companies and crypto-services — in Ukraine, the EU, UK, and Asia.',
     },
     keywords: {
       uk: [

@@ -27,7 +27,11 @@ export async function fetchStrapi(
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch data from ${endpoint}`);
+      // Статус/URL — дешево (без читання body) і саме цього бракувало, коли
+      // діагностували "Failed to fetch data from about-page" (виявився 400
+      // ValidationError через відсутнє на сервері поле, а не rate-limit/timeout,
+      // як спершу здавалось) — без status тут довелось би гадати наосліп.
+      throw new Error(`Failed to fetch data from ${endpoint}: ${response.status} ${response.statusText} (${requestUrl})`);
     }
 
     const json = await response.json();
