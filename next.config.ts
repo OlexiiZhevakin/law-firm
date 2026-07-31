@@ -30,6 +30,21 @@ const nextConfig = {
       },
     ],
   },
+  experimental: {
+    // Замінює всі згенеровані Next.js <link rel="stylesheet"> на inline
+    // <style> у продакшн-білді — прибирає саме той HTML→CSS-запит-ланцюжок,
+    // який Lighthouse позначав як "запити, що блокують відображення" (~820мс
+    // на мобільному). Безпечно тут: (1) CSS цього сайту невеликий (~11KB
+    // gzip сумарно на сторінку — це не Bootstrap/MUI-масштаб, де inline
+    // шкодив би TTFB), (2) style-src уже має 'unsafe-inline' у CSP
+    // (proxy.ts) — inline-стилі без nonce не блокуються, (3) кожна сторінка
+    // тут і так повністю динамічна (ƒ, через headers() для nonce), тож
+    // "styles use <link> для prerendered сторінок" (задокументоване
+    // обмеження цієї фічі) сюди не застосовується — нема кешованих
+    // prerendered варіантів, які плутались би з inline-версією.
+    // Не працює в `next dev` (лише production build) — це очікувано.
+    inlineCss: true,
+  },
   async headers() {
     return [
       {
