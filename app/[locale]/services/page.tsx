@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { headers } from 'next/headers';
-import { fetchServicePages } from '@/lib/api';
+import { fetchServicePages, fetchContactData } from '@/lib/api';
 import { generatePageMetadata } from '@/lib/metadata';
 import { buildBreadcrumbJsonLd, buildItemListJsonLd, SITE_NAV_NAMES } from '@/lib/jsonld';
 import { BASE_URL } from '@/lib/constants';
@@ -8,6 +8,7 @@ import type { Locale } from '@/lib/routes';
 import type { Metadata } from 'next';
 import JsonLd from '../components/seo/JsonLd';
 import Breadcrumbs from './Breadcrumbs';
+import Contacts from '../home/section/contacts/Contacts';
 import styles from './page.module.scss';
 
 interface PageProps {
@@ -32,7 +33,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function ServicesPage({ params }: PageProps) {
   const { locale } = await params;
   const currentLocale = locale as Locale;
-  const servicePages = await fetchServicePages(currentLocale);
+  const [servicePages, contactData] = await Promise.all([
+    fetchServicePages(currentLocale),
+    fetchContactData(currentLocale),
+  ]);
 
   const itemListJsonLd = buildItemListJsonLd(
     servicePages.map((page) => ({
@@ -61,29 +65,38 @@ export default async function ServicesPage({ params }: PageProps) {
   const jsonLdNodes = servicePages.length > 0 ? [itemListJsonLd, breadcrumbJsonLd] : [breadcrumbJsonLd];
 
   return (
-    <main className="container">
-      <JsonLd data={jsonLdNodes} nonce={nonce} />
-      <div className={styles.wrapper}>
-        <Breadcrumbs items={breadcrumbLevels.map((level) => ({ name: level.name, href: level.path }))} />
-        <h1 className={styles.h1}>{currentLocale === 'uk' ? 'Послуги' : 'Services'}</h1>
+    <>
+      <main className="container">
+        <JsonLd data={jsonLdNodes} nonce={nonce} />
+        <div className={styles.wrapper}>
+          <Breadcrumbs items={breadcrumbLevels.map((level) => ({ name: level.name, href: level.path }))} />
+          <h1 className={styles.h1}>{currentLocale === 'uk' ? 'Послуги' : 'Services'}</h1>
 
-        {servicePages.length === 0 ? (
-          <p className={styles.empty}>
-            {currentLocale === 'uk' ? 'Сторінки послуг ще не додані.' : 'No service pages yet.'}
-          </p>
-        ) : (
-          <ul className={styles.list}>
-            {servicePages.map((page) => (
-              <li key={page.slug} className={styles.card}>
-                <Link href={`/${currentLocale}/services/${page.slug}`} className={styles.cardLink}>
-                  <h2 className={styles.cardTitle}>{page.h1}</h2>
-                  {page.metaDescription && <p className={styles.cardDesc}>{page.metaDescription}</p>}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-    </main>
+          {servicePages.length === 0 ? (
+            <p className={styles.empty}>
+              {currentLocale === 'uk' ? 'Сторінки послуг ще не додані.' : 'No service pages yet.'}
+            </p>
+          ) : (
+            <ul className={styles.list}>
+              {servicePages.map((page) => (
+                <li key={page.slug} className={styles.card}>
+                  <Link href={`/${currentLocale}/services/${page.slug}`} className={styles.cardLink}>
+                    <h2 className={styles.cardTitle}>{page.h1}</h2>
+                    {page.metaDescription && <p className={styles.cardDesc}>{page.metaDescription}</p>}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </main>
+
+      {/* Поза .container — Contacts сам керує своїм повношириним
+          двоколонковим лейаутом (той самий підхід, що на /about і
+          /services/[slug]; вкладення в ще один .container подвоїло б
+          бічні відступи). Той самий компонент/Strapi-дані, що на
+          головній — жодного дублювання логіки. */}
+      {contactData && <Contacts locale={currentLocale} data={contactData} />}
+    </>
   );
 }

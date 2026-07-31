@@ -17,49 +17,127 @@
   left: 0;
   height: 100%;
   width: 100%; // на всю ширину
-  background: var(--color-obsidian);
+  // Легка глибина замість суцільного плаского чорного — тонкий градієнт у
+  // межах наявної темної палітри (obsidian -> ink), без нових кольорів.
+  background: linear-gradient(180deg, var(--obsidian) 0%, var(--ink) 100%);
   color: var(--color-platinum);
   transform: translateX(-100%);
   transition: transform 0.3s ease;
-  padding: 40px 20px;
+  padding: 24px 20px 40px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px; // відступи між пунктами
   z-index: 1000;
+  overflow-y: auto; // якщо вміст не влазить на дуже низьких екранах
 
   &.active {
     transform: translateX(0);
   }
+}
 
+.closeBtn {
+  align-self: flex-end;
+  flex-shrink: 0;
+  // 44x44 — мінімальна тапабельна зона (WCAG 2.5.5 Target Size / Apple HIG),
+  // раніше це був просто текст "×" без явної зони кліку.
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: 1px solid var(--line-dark);
+  border-radius: 50%;
+  font-size: 26px;
+  line-height: 1;
+  color: var(--color-platinum);
+  cursor: pointer;
+  transition: background 0.25s ease, border-color 0.25s ease;
+
+  &:hover,
+  &:active {
+    background: color-mix(in srgb, var(--paper) 12%, transparent);
+    border-color: color-mix(in srgb, var(--paper) 30%, transparent);
+  }
+}
+
+// Уся змістовна частина (нав/мова/CTA) як один блок — margin: auto 0
+// центрує його по вертикалі в .sidebar, а closeBtn лишається зафіксованим
+// зверху окремо (не бере участі в цьому центруванні, бо це сусідній
+// flex-елемент, не нащадок .menuBody).
+.menuBody {
+  width: 100%;
+  margin: auto 0;
+}
+
+.mobileNav {
   ul {
     list-style: none;
     padding: 0;
     margin: 0;
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
   }
 
-  a {
-    display: block;
-    // width: 100%;
-    text-align: center;
-    font-size: 28px;
-    padding: 20px; // великі падінги
-    color: var(--color-platinum);
-    text-decoration: none;
+  // Тонкі розділювачі між пунктами — --line-dark вже напівпрозорий
+  // (rgba(255,255,255,.14)), додаткової opacity не треба. Той самий
+  // "divider list" патерн, що вже використаний на /about (expertise) і
+  // /services/[slug] (mainContent) — не винаходимо новий візуальний прийом.
+  li {
+    border-bottom: 1px solid var(--line-dark);
 
-    &:hover {
-      background: var(--color-steel);
-      color: var(--color-obsidian);
+    &:first-child {
+      border-top: 1px solid var(--line-dark);
     }
   }
 }
 
+.mobileLink {
+  display: block;
+  text-align: center;
+  font-size: 26px;
+  padding: 18px 12px;
+  color: var(--color-platinum);
+  text-decoration: none;
+  transition: background 0.2s ease;
+
+  // Кожен пункт — окрема тапабельна зона з власним фоном на hover/active,
+  // а не лише підкреслення тексту в порожнечі.
+  &:hover,
+  &:active {
+    background: color-mix(in srgb, var(--paper) 8%, transparent);
+    color: var(--color-platinum);
+  }
+}
+
+// "Перемикач мови" і "CTA" нижче — власні логічні групи з вирівняним
+// відступом зверху (той самий 24px, що й у .mobileNav), щоб усі три секції
+// (навігація / мова / CTA) виглядали як послідовні блоки, а не розкидані
+// рядки з довільними інтервалами.
+.mobileLangGroup {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
 .mobileLang {
+  // Pill/segmented-control замість двох окремих слів з довільним інтервалом:
+  // UA/EN впритул один до одного в спільній напівпрозорій рамці, активна
+  // мова — контрастний "чіп" (--platinum на темному фоні сайдбару). Усе це
+  // вмикається через CSS custom properties, які Header.module.scss's
+  // .langSwitch/.activeLang/.divider читають з безпечними дефолтами
+  // (transparent/none/0/inline) — десктопний Header ці властивості не
+  // задає взагалі, тому лишається візуально незмінним.
+  --lang-pill-gap: 0;
+  --lang-pill-bg: color-mix(in srgb, var(--paper) 6%, transparent);
+  --lang-pill-border: 1px solid var(--line-dark);
+  --lang-pill-radius: 999px;
+  --lang-pill-outer-padding: 4px;
+  --lang-pill-padding: 8px 20px;
+  --lang-divider-display: none;
+  --lang-active-bg: var(--platinum);
+  --lang-active-color: var(--obsidian);
+  --lang-active-radius: 999px;
+
   // .langSwitch (Header.module.scss) читає --lang-inactive-color з фолбеком
   // на var(--steel-dim) — той фолбек призначений для світлого Header-фону і
   // провалює контраст (~3.2:1) на темному фоні .sidebar. var(--steel) дає
@@ -67,32 +145,34 @@
   --lang-inactive-color: var(--steel);
 }
 
-.closeBtn {
-  background: none;
-  border: none;
-  font-size: 40px; // більший хрестик
-  color: var(--color-platinum);
-  align-self: flex-end;
-  cursor: pointer;
+.ctaGroup {
+  margin-top: 24px;
+  flex-shrink: 0;
 }
 
 .sidebarBtn {
   display: block;
-  // width: 100%; // кнопка на всю ширину
-  padding: 20px; // падінг 20px зліва і справа
-  background: var(--color-graphite);
-  color: var(--color-platinum);
+  padding: 18px 20px; // помітно більший padding, ніж у звичайних пунктів меню
+  // Стриманий сірий замість золотого --focus (клієнт попросив прибрати
+  // жовтий акцент) — --steel-dim, лише на тон світліший за сам --obsidian/
+  // --ink фон сайдбару, з --platinum текстом дає 6.33:1 (WCAG AA), і читається
+  // як "приглушена" кнопка, а не привертає увагу яскравим кольором.
+  background: var(--steel-dim);
+  color: var(--platinum);
   text-align: center;
-  font-size: 28px;
-  // 700 не вантажиться (Inter — тільки 400/500/600) — 600 найближчий реально
-  // завантажений.
+  font-size: 20px;
   font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  // 6px — той самий border-radius, що в базовому .btn (Button.module.scss),
+  // а не довільне нове значення.
+  border-radius: 6px;
   border: none;
-  margin-top: 8px;
-  transition: background 0.3s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 
-  &:hover {
-    background: var(--color-steel);
-    color: var(--color-obsidian);
+  &:hover,
+  &:active {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.4);
   }
 }

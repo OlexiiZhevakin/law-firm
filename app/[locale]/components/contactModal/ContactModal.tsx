@@ -2,6 +2,7 @@
 
 import { useEffect, useId, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
+import { Send, MessageCircle, Phone } from 'lucide-react'
 import styles from './ContactModal.module.scss'
 
 export interface ContactModalData {
@@ -129,19 +130,25 @@ export default function ContactModal({ open, onClose, locale, data }: ContactMod
         <div className={styles.options}>
           {data?.telegramUrl && (
             <a href={data.telegramUrl} target="_blank" rel="noopener noreferrer" className={styles.option}>
-              Telegram
+              <Send className={styles.optionIcon} aria-hidden="true" />
+              <span className={styles.optionLabel}>Telegram</span>
             </a>
           )}
 
           {data?.whatsappUrl && (
             <a href={data.whatsappUrl} target="_blank" rel="noopener noreferrer" className={styles.option}>
-              WhatsApp
+              <MessageCircle className={styles.optionIcon} aria-hidden="true" />
+              <span className={styles.optionLabel}>WhatsApp</span>
             </a>
           )}
 
           {phone && (
             <a href={`tel:${phone.value}`} className={styles.option}>
-              {locale === 'uk' ? 'Подзвонити' : 'Call us'} — {phone.label}
+              <Phone className={styles.optionIcon} aria-hidden="true" />
+              <span className={styles.optionText}>
+                <span className={styles.optionLabel}>{locale === 'uk' ? 'Подзвонити' : 'Call us'}</span>
+                <span className={styles.optionSublabel}>{phone.label}</span>
+              </span>
             </a>
           )}
         </div>

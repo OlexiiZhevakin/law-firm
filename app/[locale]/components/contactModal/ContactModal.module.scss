@@ -26,29 +26,58 @@
   max-width: 400px;
   background: var(--paper);
   border: 1px solid var(--line-light);
-  padding: 40px 32px;
+  // 6px — той самий border-radius, що вже на .form (Contacts.module.scss),
+  // .btn (Button.module.scss) і .sidebarBtn (MobileMenu.module.scss) — не
+  // винаходимо новий радіус для модалки.
+  border-radius: 6px;
+  padding: 40px 32px 32px;
+  // Той самий двошаровий м'який shadow-рецепт, що вже на формі контактів —
+  // легка тінь-підйом замість плаского прямокутника на затемненому фоні.
+  box-shadow:
+    0 2px 8px var(--line-light),
+    0 20px 60px -20px var(--line-light);
   transform: scale(0.96);
   transition: transform 0.3s ease;
 
   .overlay.active & {
     transform: scale(1);
   }
+
+  @media (max-width: 480px) {
+    padding: 32px 24px 24px;
+  }
 }
 
 .closeBtn {
   position: absolute;
   top: 12px;
-  right: 16px;
+  right: 12px;
+  // 44x44 — той самий мінімальний тапабельний розмір і круглий трактування,
+  // що вже на .closeBtn у MobileMenu.module.scss, лише в світлому, а не
+  // темному контексті (тому var(--line-light), не var(--line-dark)).
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: none;
-  border: none;
-  font-size: 28px;
+  border: 1px solid var(--line-light);
+  border-radius: 50%;
+  font-size: 24px;
   line-height: 1;
   color: var(--steel-dim);
   cursor: pointer;
-  transition: color 0.3s ease;
+  transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
 
   &:hover {
+    background: var(--mist);
+    border-color: var(--steel-dim);
     color: var(--obsidian);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
   }
 }
 
@@ -56,10 +85,16 @@
   font-family: 'Playfair Display', serif;
   font-weight: 600;
   text-transform: uppercase;
-  font-size: 24px;
+  font-size: 28px;
   color: var(--obsidian);
-  margin-bottom: 24px;
-  padding-right: 24px;
+  // Досить місця під circular closeBtn (44px + відступи), щоб довший
+  // заголовок ("Зв'яжіться з нами") не наїжджав на кнопку на вузьких екранах.
+  // padding-right: 44px;
+  margin: 0 0 20px;
+  padding-bottom: 20px;
+  // Тонкий розділювач під заголовком — той самий "divider list" прийом,
+  // що вже використаний на /about (expertise) і /services/[slug].
+  border-bottom: 1px solid var(--line-light);
 }
 
 .options {
@@ -69,24 +104,53 @@
 }
 
 .option {
-  display: block;
-  text-align: center;
-  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
   font-family: 'Inter', sans-serif;
-  font-weight: 500;
-  font-size: 16px;
   color: var(--obsidian);
+  background: var(--paper);
   border: 1px solid var(--line-light);
-  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  border-radius: 6px;
+  transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
 
+  // Легка зміна фону/рамки замість повної інверсії кольору — картка, а не
+  // "перемикач" кольору.
   &:hover {
-    background: var(--obsidian);
-    border-color: var(--obsidian);
-    color: var(--paper);
+    background: var(--mist);
+    border-color: var(--steel-dim);
+    transform: translateY(-1px);
   }
 
   &:focus-visible {
     outline: 2px solid var(--focus);
     outline-offset: 2px;
   }
+}
+
+.optionIcon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  color: var(--steel-dim);
+}
+
+// Обгортка для варіанту з двома рядками (дія + приглушений підпис) —
+// використовується лише для телефону; Telegram/WhatsApp — один рядок.
+.optionText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.optionLabel {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.optionSublabel {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--steel-dim);
 }

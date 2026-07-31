@@ -50,18 +50,27 @@ export default function NavLink({ targetId, className, activeClass, children }: 
   const cleanTargetId = targetId?.replace('#', '') || ''
 
   const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault()
-
     // Шукаємо елемент по чистому ID (наприклад, "about", а не "#about")
     const element = document.getElementById(cleanTargetId)
     if (element) {
+      // Елемент є на поточній сторінці (напр. #contacts на головній чи на
+      // /services/[slug]) — гасимо звичайну навігацію і просто скролимо.
+      e.preventDefault()
       element.scrollIntoView({
         behavior: 'smooth',
         block: 'start'
       })
       // Додаємо лише одну решітку в URL
       window.history.pushState(null, '', `#${cleanTargetId}`)
+      return
     }
+    // Елемента немає на поточній сторінці (напр. на /services, /privacy,
+    // /cookies-policy — там немає власного блоку #contacts). Раніше
+    // preventDefault() викликався безумовно, тож клік був повністю "мертвим":
+    // ані скролу, ані переходу. Тепер НЕ гасимо клік — Link веде за href
+    // (`/${locale}#${cleanTargetId}`), тобто реально переходить на головну,
+    // де сторінка сама доскролить до блоку (див. Contacts.tsx: useEffect
+    // за window.location.hash при монтуванні).
   }
 
   return (

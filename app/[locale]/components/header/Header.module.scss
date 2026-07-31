@@ -111,25 +111,37 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: var(--lang-pill-gap, 4px);
   /* Відстань між "UA", "/" та "EN" */
+  // Pill/segmented-control фон — вимкнено за замовчуванням (transparent/none/0),
+  // тому десктопний вигляд не змінюється ні на піксель. MobileMenu.module.scss
+  // вмикає це через --lang-pill-* на .mobileLang, той самий підхід, що вже
+  // застосований нижче для --lang-inactive-color.
+  background: var(--lang-pill-bg, transparent);
+  border: var(--lang-pill-border, none);
+  border-radius: var(--lang-pill-radius, 0);
+  padding: var(--lang-pill-outer-padding, 0);
 
   a {
     text-decoration: none;
     text-transform: uppercase;
     font-size: 1.1rem;
     /* Трохи більший розмір, щоб зручно натискати пальцем */
-    transition: color 0.3s ease;
-    padding: 4px;
+    transition: color 0.3s ease, background 0.3s ease;
+    padding: var(--lang-pill-padding, 4px);
     /* Збільшуємо невидиму зону кліку для телефонів */
 
     // :not(.activeLang) тут не про виключення активного стану заради стилю —
-    // це навмисний підйом специфічності (0,2,1 замість 0,1,1). Без нього це
-    // правило програє однаковій специфічності .sidebar a {color: ...} з
-    // MobileMenu.module.scss (виграє за порядком у зібраному бандлі), і колір
-    // неактивної мови в мобільному меню мовчки залишався platinum замість
-    // задуманого сірого — WCAG-контраст випадково проходив (19.5:1), але сама
-    // умова (неактивний тьмяніший за активний) не виконувалась.
+    // це навмисний підйом специфічності (0,2,1 замість 0,1,1). Історично це
+    // було потрібно, бо MobileMenu.module.scss мало генеричне правило
+    // `.sidebar a { color: ... }`, яке з тою самою специфічністю зачіпало й
+    // ці посилання LangSwitch (той самий компонент рендериться і в
+    // навігації, і в перемикачі мови, обидва — прямі нащадки .sidebar).
+    // MobileMenu.module.scss відтоді перейшло на скоуплений клас .mobileLink
+    // замість голого селектора по тегу `a`, тож цього конкретного конфлікту
+    // вже немає — підйом специфічності тут лишений як загальний захист
+    // (дешево, і без нього легко випадково повернути той самий клас багів
+    // майбутньою зміною в MobileMenu).
     &:not(.activeLang) {
       // .langSwitch рендериться і в світлому Header (десктоп, фон #FAFAFA), і в
       // темному MobileMenu (фон --color-obsidian #050505) — той самий компонент,
@@ -152,11 +164,21 @@
       font-weight: 600;
       /* Супер-трюк: беремо колір тексту від батька.
          Тепер у світлій шапці він буде темним, а в темному меню — світлим! */
-      color: inherit;
+      color: var(--lang-active-color, inherit);
+      // Pill-фон активної мови — вимкнено за замовчуванням (transparent),
+      // тому десктоп не змінюється. MobileMenu.module.scss вмикає
+      // --lang-active-bg/--lang-active-color/--lang-active-radius для
+      // контрастного "чіпа" (--platinum на темному фоні сайдбару).
+      background: var(--lang-active-bg, transparent);
+      border-radius: var(--lang-active-radius, 0);
     }
   }
 
   .divider {
+    // Вимикається на мобільному (--lang-divider-display: none у
+    // MobileMenu.module.scss) — у pill-перемикачі UA/EN стоять впритул одне
+    // до одного в спільній рамці, розділовий "/" там зайвий.
+    display: var(--lang-divider-display, inline);
     color: var(--obsidian);
     /* Колір слеша трохи темніший за неактивну мову */
     user-select: none;
@@ -212,6 +234,24 @@
   --lang-inactive-color: var(--steel-dim);
   background-color: var(--color-platinum);
   /* Підказуємо Lighthouse реальний фон */
+
+  // Той самий pill/segmented-control, що вже в MobileMenu.module.scss's
+  // .mobileLang — усі гачки читаються через ті самі CSS custom properties
+  // на .langSwitch/.activeLang/.divider (Header.module.scss), просто з
+  // компактнішими розмірами під один рядок десктопного хедера замість
+  // повноширинної секції мобільного меню. --mist/--paper тут — та сама пара
+  // "сірий backdrop + білий елемент на ньому", що вже задокументована для
+  // --mist у globals.css (форма контактів використовує її так само).
+  --lang-pill-gap: 0;
+  --lang-pill-bg: var(--mist);
+  --lang-pill-border: 1px solid var(--line-light);
+  --lang-pill-radius: 999px;
+  --lang-pill-outer-padding: 3px;
+  --lang-pill-padding: 4px 12px;
+  --lang-divider-display: none;
+  --lang-active-bg: var(--paper);
+  --lang-active-color: var(--obsidian);
+  --lang-active-radius: 999px;
 
   @media (min-width: 768px) {
     /* Показуємо на планшетах і десктопах */

@@ -209,14 +209,27 @@
   }
 }
 
-.status {
+// Помітний банер помилки — колишній .status був малопомітним рядком тексту
+// під кнопкою; тепер іконка + кольорова рамка/підложка того самого патерну
+// color-mix, що вже використаний для input:focus glow вище в цьому файлі.
+.errorBanner {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--error) 8%, var(--paper));
+  border: 1px solid color-mix(in srgb, var(--error) 35%, transparent);
+  color: var(--error);
   font-size: 0.85rem;
-  margin: 0;
-  min-height: 1.2em;
+  line-height: 1.4;
+}
 
-  &:empty {
-    display: none;
-  }
+.errorIcon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  margin-top: 1px;
 }
 
 .submitBtn {

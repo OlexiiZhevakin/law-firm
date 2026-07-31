@@ -1,0 +1,82 @@
+// Toast зверху по центру екрана — не перекриває ні форму (середина сторінки),
+// ні bottom-right стек ScrollToTop/QuickContactButton.
+.toast {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: min(420px, calc(100vw - 32px));
+  padding: 14px 40px 14px 16px;
+  background: var(--paper);
+  border: 1px solid var(--line-light);
+  border-left: 4px solid var(--success);
+  border-radius: 6px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  animation: toastSlideIn 0.3s ease;
+
+  @media (max-width: 480px) {
+    top: 12px;
+    padding: 12px 36px 12px 12px;
+  }
+}
+
+.toast.closing {
+  animation: toastSlideOut 0.25s ease forwards;
+}
+
+.icon {
+  width: 22px;
+  height: 22px;
+  color: var(--success);
+  flex-shrink: 0;
+}
+
+.text {
+  color: var(--obsidian);
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: var(--steel-dim);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--obsidian);
+  }
+}
+
+@keyframes toastSlideIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -12px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+@keyframes toastSlideOut {
+  from {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -12px);
+  }
+}
