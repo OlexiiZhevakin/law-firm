@@ -157,8 +157,8 @@
   // жовтий акцент) — --steel-dim, лише на тон світліший за сам --obsidian/
   // --ink фон сайдбару, з --platinum текстом дає 6.33:1 (WCAG AA), і читається
   // як "приглушена" кнопка, а не привертає увагу яскравим кольором.
-  background: var(--steel-dim);
-  color: var(--platinum);
+  background: var(--platinum);
+  color: var(--steel-dim);
   text-align: center;
   font-size: 20px;
   font-weight: 600;
