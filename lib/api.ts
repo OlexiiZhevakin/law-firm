@@ -86,3 +86,53 @@ export async function fetchServicePages(locale: string): Promise<ServicePageSumm
 export async function fetchContactData(locale: string) {
   return fetchStrapi('contact', { locale, populate: '*' });
 }
+
+// "services-page" — окремий Strapi single-type (той самий "own single-type per
+// shared UI piece" підхід, що header/footer/contact) — наразі тримає лише
+// вступний абзац над карткою-лістингом на /services. На відміну від інших
+// типів (service-page, about-page тощо), Public role тут НЕ має дозволу
+// find (підтверджено: неавторизований GET -> 403) — лише сам API-токен
+// має find на цей конкретний тип (підтверджено: GET з токеном -> 200), тож
+// цей запит, на відміну від fetchStrapi/fetchServicePages, свідомо йде з
+// Authorization-заголовком. Токен без префіксу NEXT_PUBLIC_ — лишається
+// server-only, у клієнтський бандл не потрапляє. Guard на споживчому боці
+// (порожній рядок -> null нижче) — сторінка мусить рендеритись нормально
+// навіть без цього поля.
+export async function fetchServicesPageData(locale: string): Promise<{ introText?: string } | null> {
+  try {
+    const token = process.env.STRAPI_SERVICE_PAGES_API_TOKEN;
+    const res = await fetch(`${getStrapiURL()}/api/services-page?locale=${locale}`, {
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+      next: { revalidate: 60 },
+    });
+    if (!res.ok) return null;
+    const json = await res.json();
+    return json?.data ?? null;
+  } catch {
+    return null;
+  }
+}
+
+// Повертає slug того самого документа (той самий Strapi documentId — service-page's
+// slug більше НЕ спільний між uk/en, кожна локаль має власне значення) в ІНШІЙ
+// локалі, або null, якщо такої локалізації не існує. Відсутність локалізації —
+// ОЧІКУВАНИЙ стан для деяких сторінок (напр. crypto-сторінка існує лише в en,
+// без uk-пари), а не помилка, тож свідомо НЕ йде через fetchStrapi (який пише
+// console.error на кожен !ok — це заспамило б лог на кожному звичайному
+// відвідуванні en/services/crypto).
+export async function fetchServicePageSlugInLocale(
+  documentId: string,
+  locale: string
+): Promise<string | null> {
+  try {
+    const res = await fetch(
+      `${getStrapiURL()}/api/service-pages/${documentId}?locale=${locale}&fields[0]=slug`,
+      { next: { revalidate: 60 } }
+    );
+    if (!res.ok) return null;
+    const json = await res.json();
+    return json?.data?.slug ?? null;
+  } catch {
+    return null;
+  }
+}

@@ -26,6 +26,23 @@
   }
 }
 
+// Той самий "вступний абзац" патерн, що вже на /services/[slug] (.intro там же) —
+// лише власний margin-bottom, без змін до .h1: коли поле в Strapi ще порожнє
+// (introText не заповнено), верстка лишається піксель-в-піксель такою, як була.
+.intro {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 1.7;
+  color: var(--steel-dim);
+  max-width: 720px;
+  margin-bottom: 40px;
+
+  @media (max-width: 768px) {
+    font-size: 18px;
+  }
+}
+
 .empty {
   font-family: 'Inter', sans-serif;
   font-weight: 400;

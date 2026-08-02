@@ -20,20 +20,52 @@ function normalizePath(path: string): string {
 }
 
 /**
+ * За замовчуванням той самий шлях однаковий для всіх локалей (правда для
+ * переважної більшості сторінок сайту). `localizedPaths` — точковий виняток
+ * для сторінок, де шлях (slug) РІЗНИЦЯ між локалями (напр. service-page після
+ * переструктурування каталогу послуг: /uk/services/kapitalizaciya має пару
+ * /en/services/capital, не /en/services/kapitalizaciya) — передайте мапу з
+ * реальним шляхом на кожну локаль. Значення `null` означає "цієї локалі
+ * свідомо не існує" (напр. crypto-сторінка існує лише в en) — така локаль
+ * пропускається в languages, hreflang на неіснуючу сторінку не генерується.
+ */
+type LocalizedPathOverrides = Partial<Record<Locale, string | null>>;
+
+/**
  * canonical (самопосилання на поточну локаль) + hreflang на всі локалі,
  * для конкретного шляху (без префіксу локалі).
  */
-export function getAlternates(locale: Locale, path: string): Metadata['alternates'] {
+export function getAlternates(
+  locale: Locale,
+  path: string,
+  localizedPaths?: LocalizedPathOverrides
+): Metadata['alternates'] {
   const normalizedPath = normalizePath(path);
+
+  const pathForLocale = (l: Locale): string | null => {
+    if (!localizedPaths || !(l in localizedPaths)) return normalizedPath;
+    const override = localizedPaths[l];
+    return override === null ? null : normalizePath(override as string);
+  };
+
+  const languages: Record<string, string> = {};
+  for (const l of LOCALES) {
+    const p = pathForLocale(l);
+    if (p === null) continue;
+    languages[LOCALE_HREFLANG[l]] = `/${l}${p}`;
+  }
+
+  // x-default вказує на дефолтну локаль сайту (uk) — якщо ЦІЄЇ конкретної
+  // сторінки в дефолтній локалі не існує (crypto), x-default коректно
+  // вказувати на саму поточну сторінку (єдину, що реально існує), а не на
+  // неіснуючий /uk/... шлях.
+  const defaultPath = pathForLocale(DEFAULT_LOCALE);
+  languages['x-default'] =
+    defaultPath !== null ? `/${DEFAULT_LOCALE}${defaultPath}` : `/${locale}${normalizedPath}`;
 
   return {
     canonical: `/${locale}${normalizedPath}`,
-    languages: {
-      ...Object.fromEntries(
-        LOCALES.map((l) => [LOCALE_HREFLANG[l], `/${l}${normalizedPath}`])
-      ),
-      'x-default': `/${DEFAULT_LOCALE}${normalizedPath}`,
-    },
+    languages,
   };
 }
 
@@ -48,6 +80,8 @@ interface PageMetadataInput {
   image?: string;
   /** Позначити сторінку як таку, що не повинна індексуватись (напр. дублікати, чернетки). */
   noIndex?: boolean;
+  /** Див. getAlternates — точковий виняток для сторінок з різним шляхом per-locale. */
+  localizedPaths?: LocalizedPathOverrides;
 }
 
 /**
@@ -65,6 +99,7 @@ export function generatePageMetadata({
   keywords,
   image,
   noIndex,
+  localizedPaths,
 }: PageMetadataInput): Metadata {
   const resolvedTitle = resolveText(title, locale);
   const resolvedDescription = resolveText(description, locale);
@@ -82,7 +117,7 @@ export function generatePageMetadata({
     authors: [{ name: SITE_NAME, url: BASE_URL }],
     creator: SITE_NAME,
     publisher: SITE_NAME,
-    alternates: getAlternates(locale, path),
+    alternates: getAlternates(locale, path, localizedPaths),
     openGraph: {
       type: 'website',
       locale: locale === 'uk' ? 'uk_UA' : 'en_US',

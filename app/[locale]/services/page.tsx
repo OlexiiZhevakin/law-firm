@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { headers } from 'next/headers';
-import { fetchServicePages, fetchContactData } from '@/lib/api';
+import { fetchServicePages, fetchContactData, fetchServicesPageData } from '@/lib/api';
 import { generatePageMetadata } from '@/lib/metadata';
 import { buildBreadcrumbJsonLd, buildItemListJsonLd, SITE_NAV_NAMES } from '@/lib/jsonld';
 import { BASE_URL } from '@/lib/constants';
@@ -33,9 +33,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function ServicesPage({ params }: PageProps) {
   const { locale } = await params;
   const currentLocale = locale as Locale;
-  const [servicePages, contactData] = await Promise.all([
+  const [servicePages, contactData, servicesPageData] = await Promise.all([
     fetchServicePages(currentLocale),
     fetchContactData(currentLocale),
+    fetchServicesPageData(currentLocale),
   ]);
 
   const itemListJsonLd = buildItemListJsonLd(
@@ -71,6 +72,10 @@ export default async function ServicesPage({ params }: PageProps) {
         <div className={styles.wrapper}>
           <Breadcrumbs items={breadcrumbLevels.map((level) => ({ name: level.name, href: level.path }))} />
           <h1 className={styles.h1}>{currentLocale === 'uk' ? 'Послуги' : 'Services'}</h1>
+
+          {servicesPageData?.introText && (
+            <p className={styles.intro}>{servicesPageData.introText}</p>
+          )}
 
           {servicePages.length === 0 ? (
             <p className={styles.empty}>

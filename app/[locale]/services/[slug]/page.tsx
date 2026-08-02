@@ -1,10 +1,10 @@
 import { notFound } from 'next/navigation';
 import { headers } from 'next/headers';
-import { fetchStrapiBySlug, fetchContactData } from '@/lib/api';
+import { fetchStrapiBySlug, fetchContactData, fetchServicePageSlugInLocale } from '@/lib/api';
 import { generatePageMetadata } from '@/lib/metadata';
 import { buildBreadcrumbJsonLd, buildServiceJsonLd, SITE_NAV_NAMES } from '@/lib/jsonld';
 import { BASE_URL } from '@/lib/constants';
-import type { Locale } from '@/lib/routes';
+import { LOCALES, type Locale } from '@/lib/routes';
 import type { Metadata } from 'next';
 import ArticleNav, { type ArticleNavSection } from './ArticleNav';
 import Contacts from '../../home/section/contacts/Contacts';
@@ -19,6 +19,7 @@ interface ContentBlock {
 }
 
 interface ServicePageData {
+  documentId?: string;
   h1?: string;
   metaTitle?: string;
   metaDescription?: string;
@@ -36,6 +37,23 @@ async function getServicePage(locale: Locale, slug: string): Promise<ServicePage
   });
 }
 
+// slug більше НЕ спільний між uk/en (переструктурування каталогу послуг) —
+// щоб hreflang не вказував на неіснуючий /{otherLocale}/services/{той самий slug},
+// дізнаємось РЕАЛЬНИЙ slug цього documentId в кожній іншій локалі. Відсутність
+// локалізації (напр. crypto — лише в en) — очікуваний стан, не помилка:
+// fetchServicePageSlugInLocale повертає null, і ця локаль просто випадає з
+// hreflang (див. getAlternates/LocalizedPathOverrides у lib/metadata.ts).
+async function getLocalizedPaths(documentId: string, currentLocale: Locale): Promise<Partial<Record<Locale, string | null>>> {
+  const otherLocales = LOCALES.filter((l) => l !== currentLocale);
+  const entries = await Promise.all(
+    otherLocales.map(async (l) => {
+      const slug = await fetchServicePageSlugInLocale(documentId, l);
+      return [l, slug ? `/services/${slug}` : null] as const;
+    })
+  );
+  return Object.fromEntries(entries);
+}
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale, slug } = await params;
   const currentLocale = locale as Locale;
@@ -51,11 +69,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     });
   }
 
+  const localizedPaths = data.documentId
+    ? await getLocalizedPaths(data.documentId, currentLocale)
+    : undefined;
+
   return generatePageMetadata({
     locale: currentLocale,
     path: `/services/${slug}`,
     title: data.metaTitle || data.h1 || slug,
     description: data.metaDescription || data.h1 || (data.mainContent?.[0]?.body ?? ''),
+    localizedPaths,
   });
 }
 
