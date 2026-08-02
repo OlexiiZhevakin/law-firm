@@ -89,28 +89,15 @@ export async function fetchContactData(locale: string) {
 
 // "services-page" — окремий Strapi single-type (той самий "own single-type per
 // shared UI piece" підхід, що header/footer/contact) — наразі тримає лише
-// вступний абзац над карткою-лістингом на /services. На відміну від інших
-// типів (service-page, about-page тощо), Public role тут НЕ має дозволу
-// find (підтверджено: неавторизований GET -> 403) — лише сам API-токен
-// має find на цей конкретний тип (підтверджено: GET з токеном -> 200), тож
-// цей запит, на відміну від fetchStrapi/fetchServicePages, свідомо йде з
-// Authorization-заголовком. Токен без префіксу NEXT_PUBLIC_ — лишається
-// server-only, у клієнтський бандл не потрапляє. Guard на споживчому боці
-// (порожній рядок -> null нижче) — сторінка мусить рендеритись нормально
+// вступний абзац над карткою-лістингом на /services. Public role тепер має
+// find на цей тип (надано 2026-08-02, той самий Settings -> Roles -> Public
+// шлях, що й для service-page/about-page), тож звичайний неавторизований
+// fetchStrapi достатній — жодного окремого API-токена в рантаймі фронтенду
+// цей запит не потребує. Guard на споживчому боці (fetchStrapi повертає null
+// при помилці/порожньому полі) — сторінка мусить рендеритись нормально
 // навіть без цього поля.
-export async function fetchServicesPageData(locale: string): Promise<{ introText?: string } | null> {
-  try {
-    const token = process.env.STRAPI_SERVICE_PAGES_API_TOKEN;
-    const res = await fetch(`${getStrapiURL()}/api/services-page?locale=${locale}`, {
-      headers: token ? { Authorization: `Bearer ${token}` } : {},
-      next: { revalidate: 60 },
-    });
-    if (!res.ok) return null;
-    const json = await res.json();
-    return json?.data ?? null;
-  } catch {
-    return null;
-  }
+export async function fetchServicesPageData(locale: string) {
+  return fetchStrapi('services-page', { locale });
 }
 
 // Повертає slug того самого документа (той самий Strapi documentId — service-page's
