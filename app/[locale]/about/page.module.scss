@@ -1,6 +1,22 @@
+// Типографіка й кольори тут навмисно ідентичні решті сайту (Playfair
+// Display 600 uppercase для заголовків, Inter для тексту, лише токени з
+// globals.css) — композиція (rail-мітки зліва від блоків, ruled-list для
+// експертизи/клієнтів) орієнтована на референс-макет, але без його окремої
+// типографіки/палітри (--rule/--steel-dark там не з цього проєкту).
+
 .hero {
   padding: clamp(80px, 10vw, 140px) 0 clamp(40px, 6vw, 60px);
   max-width: 800px;
+}
+
+.eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--steel-dim);
+  margin-bottom: 20px;
 }
 
 .heroSubtitle {
@@ -11,12 +27,41 @@
   margin-top: 20px;
 }
 
-.story {
-  padding-bottom: clamp(60px, 8vw, 100px);
-  max-width: 720px;
+// Спільна секція-обгортка для блоків 2-4 (Про фірму / Експертиза / Клієнти):
+// вузький rail з номером зліва + контент справа, той самий двоколонковий
+// grid, що ArticleNav використовує для аside/контенту на /services/[slug].
+.section {
+  padding: clamp(56px, 8vw, 96px) 0;
+  border-top: 1px solid var(--line-light);
+
+  &:first-of-type {
+    border-top: none;
+  }
 }
 
-.storyTitle {
+.grid {
+  display: grid;
+  gap: 20px;
+
+  @media (min-width: 880px) {
+    grid-template-columns: 132px 1fr;
+    gap: 48px;
+  }
+}
+
+// Той самий типографічний рецепт, що ArticleNav.module.scss's .asideTitle
+// (13px/500/uppercase/.06em/steel-dim) — не новий візуальний прийом.
+.marker {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--steel-dim);
+  padding-top: 6px;
+}
+
+.sectionTitle {
   font-family: 'Playfair Display', serif;
   font-weight: 600;
   text-transform: uppercase;
@@ -40,21 +85,25 @@
   }
 }
 
-// Той самий патерн, що на /services/[slug]: H3/P блоки, розділені
-// тонкою лінією var(--line-light), у читабельній колонці тексту.
-.expertise {
-  padding-bottom: clamp(60px, 8vw, 100px);
-  max-width: 720px;
+.caption {
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--steel-dim);
+  max-width: 56ch;
+  margin-top: 16px;
 }
 
+// Той самий "divider list" патерн, що вже на /services/[slug] (mainContent)
+// — h3+p блоки, розділені var(--line-light).
 .expertiseList {
-  margin: 0;
+  margin: 0 0 8px;
   padding: 0;
   list-style: none;
 }
 
 .expertiseItem {
-  padding: 24px 0;
+  padding: 20px 0;
   border-top: 1px solid var(--line-light);
 
   &:last-child {
@@ -65,14 +114,143 @@
 .expertiseLabel {
   font-family: 'Playfair Display', serif;
   font-weight: 600;
-  font-size: 20px;
+  font-size: 18px;
   color: var(--obsidian);
   margin-bottom: 8px;
 }
 
 .expertiseDescription {
   font-family: 'Inter', sans-serif;
-  font-size: 16px;
+  font-size: 15.5px;
   line-height: 1.6;
   color: var(--steel-dim);
+}
+
+.clusterGroup {
+  margin-top: 32px;
+
+  &:first-of-type {
+    margin-top: 24px;
+  }
+}
+
+.clusterLabel {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--steel-dim);
+  margin: 0;
+}
+
+.afterLink {
+  display: inline-block;
+  margin-top: 24px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: var(--obsidian);
+  text-decoration: none;
+  border-bottom: 1px solid var(--line-light);
+  padding-bottom: 3px;
+  transition: border-color 0.2s ease;
+
+  &:hover {
+    border-color: var(--obsidian);
+  }
+}
+
+// Клієнти: 2-колонковий список на десктопі (як у референс-макеті), кожен
+// пункт — divider-рядок var(--line-light), той самий прийом, що й вище.
+.tagsList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  @media (min-width: 720px) {
+    columns: 2;
+    column-gap: 40px;
+  }
+}
+
+.tagsItem {
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  color: var(--ink);
+  padding: 12px 0;
+  border-top: 1px solid var(--line-light);
+  break-inside: avoid;
+}
+
+.callout {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line-light);
+}
+
+.calloutTitle {
+  font-family: 'Playfair Display', serif;
+  font-weight: 600;
+  font-size: 20px;
+  color: var(--obsidian);
+  margin-bottom: 8px;
+}
+
+.calloutText {
+  font-family: 'Inter', sans-serif;
+  font-size: 15.5px;
+  line-height: 1.6;
+  color: var(--steel-dim);
+  max-width: 56ch;
+}
+
+// CTA: єдина інвертована (темна) секція на сторінці — той самий градієнт
+// obsidian -> ink, що вже використовується в MobileMenu.module.scss's
+// .sidebar, і та сама кнопка (platinum bg / steel-dim текст), що вже
+// затверджена клієнтом для .sidebarBtn там-таки — не нові кольори.
+.cta {
+  background: linear-gradient(180deg, var(--obsidian) 0%, var(--ink) 100%);
+  padding: clamp(64px, 9vw, 100px) 0;
+}
+
+.ctaWrapper {
+  max-width: 640px;
+}
+
+.ctaTitle {
+  font-family: 'Playfair Display', serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: clamp(28px, 3vw, 40px);
+  color: var(--platinum);
+  margin-bottom: 18px;
+}
+
+.ctaText {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--steel);
+  margin-bottom: 32px;
+}
+
+.ctaBtn {
+  display: inline-block;
+  padding: 16px 32px;
+  background: var(--platinum);
+  color: var(--steel-dim);
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.4);
+  }
 }

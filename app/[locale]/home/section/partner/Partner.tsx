@@ -6,6 +6,12 @@ export interface PartnerSectionData {
   name: string;
   bio: string;
   photo: { url: string; alternativeText?: string };
+  // Опційні — homepage-виклик їх не передає (там просто немає прямих
+  // контактів у цьому блоці), тож там нічого не змінюється. /about's
+  // "Ключовий контакт" передає обидва, щоб показати email/телефон під bio
+  // без форку цього компонента під окремий, майже ідентичний шаблон.
+  email?: string;
+  phone?: string;
 }
 
 interface PartnerProps {
@@ -46,6 +52,14 @@ export default function Partner({ data }: PartnerProps) {
                 <p key={index}>{paragraph}</p>
               ))}
             </article>
+
+            {(data.email || data.phone) && (
+              <p className={styles.meta}>
+                {data.email && <a href={`mailto:${data.email}`}>{data.email}</a>}
+                {data.email && data.phone && ' · '}
+                {data.phone && <a href={`tel:${data.phone.replace(/\s+/g, '')}`}>{data.phone}</a>}
+              </p>
+            )}
           </div>
 
         </div>
