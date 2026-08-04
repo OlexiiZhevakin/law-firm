@@ -28,8 +28,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     // припустив, що шаблон завжди застосовується). Суфікс тут — це
     // єдиний спосіб отримати бренд у заголовку цієї конкретної сторінки.
     title: {
-      uk: 'Юридичний бутик фінансового та корпоративного права | HARLIB',
-      en: 'Financial & Corporate Law Boutique | HARLIB',
+      uk: 'Юридичний бутик  для фінансових установ | HARLIB',
+      en: 'Boutique law firm for financial institutions | HARLIB',
     },
     description: {
       // "(Харліб, Гарліб)" додано один раз тут — обидва варіанти українською
@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       // три написання з одним брендом. Єдине місце в тексті, де вони
       // вписані поруч (див. law-firm/CLAUDE.md "Brand name variants") —
       // навмисно без дублювання деінде, щоб не виглядало як keyword stuffing.
-      uk: 'HARLIB (Харліб, Гарліб) — юридичний бутік для банків, страхових і небанківських фінансових установ, фінтех-компаній і крипто-сервісів — в Україні, ЄС, Великобританії та Азії.',
+      uk: 'HARLIB (Гарліб) — юридичний бутік для банків, страхових і небанківських фінансових установ, фінтех-компаній і крипто-сервісів — в Україні, ЄС, Великобританії та Азії.',
       // "the UK" -> "UK" (162 -> 158 символів) — єдина правка, значення й
       // ключові терміни не змінені, лише прибрано зайвий артикль.
       en: 'HARLIB is a legal boutique for banks, insurance and non-bank financial institutions, fintech companies and crypto-services — in Ukraine, the EU, UK, and Asia.',
@@ -48,6 +48,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         'корпоративне право', 'супровід інвестицій', 'структурування бізнесу',
         'податковий консалтинг', 'захист активів', 'злиття та поглинання M&A',
         'Due Diligence Україна', 'юрист для IT та Fintech', 'HARLIB',
+        'Харліб', 'Гарліб',
         'адвокат для бізнесу', 'корпоративний договір',
       ],
       en: [
