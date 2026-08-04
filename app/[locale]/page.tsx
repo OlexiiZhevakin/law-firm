@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     // припустив, що шаблон завжди застосовується). Суфікс тут — це
     // єдиний спосіб отримати бренд у заголовку цієї конкретної сторінки.
     title: {
-      uk: 'Юридичний бутик  для фінансових установ | HARLIB',
+      uk: 'Юридичний бутик для фінансових установ | HARLIB',
       en: 'Boutique law firm for financial institutions | HARLIB',
     },
     description: {
