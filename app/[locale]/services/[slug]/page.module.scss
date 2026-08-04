@@ -88,3 +88,100 @@
   // ризикованого schema-редеплою заради самого форматування.
   white-space: pre-line;
 }
+
+// Опційне посилання в кінці блоку (напр. "Види установ" -> "Придбання
+// діючої фінансової установи") — той самий .afterLink рецепт, що вже на
+// /about's expertise-блоці ("Детально про кожну послугу →").
+.afterLink {
+  display: inline-block;
+  margin-top: 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: var(--obsidian);
+  text-decoration: none;
+  border-bottom: 1px solid var(--line-light);
+  padding-bottom: 3px;
+  transition: border-color 0.2s ease;
+
+  &:hover {
+    border-color: var(--obsidian);
+  }
+}
+
+// "Етапи роботи"-стиль нумерованих секцій — той самий divider-list рецепт,
+// що вже .blockBody use, лише з доданим номером-міткою (той самий
+// типографічний рецепт, що ArticleNav.module.scss's .asideTitle) перед
+// H3-заголовком кроку.
+.stepsList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.stepItem {
+  padding: 20px 0;
+  border-top: 1px solid var(--line-light);
+
+  &:first-child {
+    border-top: none;
+    padding-top: 0;
+  }
+
+  &:last-child {
+    padding-bottom: 0;
+  }
+}
+
+.stepNumber {
+  display: block;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--steel-dim);
+  margin-bottom: 8px;
+}
+
+.stepTitle {
+  font-family: 'Playfair Display', serif;
+  font-weight: 600;
+  font-size: 20px;
+  color: var(--obsidian);
+  margin-bottom: 8px;
+}
+
+.stepBody {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 15.5px;
+  line-height: 1.65;
+  color: var(--steel-dim);
+  white-space: pre-line;
+}
+
+// CTA-кнопка в кінці статті — той самий рецепт, що Contacts.module.scss's
+// .submitBtn (суцільний obsidian, той самий hover-ліфт), не нова кнопка "з
+// нуля" й не темна CTA-секція /about (тут кнопка сидить у звичайному
+// світлому потоці статті, не в окремій інвертованій секції).
+.ctaBtn {
+  display: inline-block;
+  margin-top: 40px;
+  padding: 14px 28px;
+  background: var(--obsidian);
+  color: var(--paper);
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px -8px var(--line-light);
+  }
+}

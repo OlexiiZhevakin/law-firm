@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { headers } from 'next/headers';
 import { fetchStrapiBySlug, fetchContactData, fetchServicePageSlugInLocale } from '@/lib/api';
@@ -8,14 +9,33 @@ import { LOCALES, type Locale } from '@/lib/routes';
 import type { Metadata } from 'next';
 import ArticleNav, { type ArticleNavSection } from './ArticleNav';
 import Contacts from '../../home/section/contacts/Contacts';
+import ServiceCtaButton from './ServiceCtaButton';
 import JsonLd from '../../components/seo/JsonLd';
 import Breadcrumbs from '../Breadcrumbs';
 import styles from './page.module.scss';
+
+interface StepItem {
+  id: number;
+  number?: string;
+  title?: string;
+  items?: string;
+}
 
 interface ContentBlock {
   id: number;
   heading?: string;
   body?: string;
+  // "Етапи роботи"-стиль секцій (номер + заголовок + список дій на крок) —
+  // текстовий body тут не підходить (потребує вкладеної структури: номер,
+  // власний заголовок, власний список), тож для таких секцій body
+  // ігнорується, а рендериться steps. Дет. в CLAUDE.md, "Service pages".
+  steps?: StepItem[];
+  // Опційне посилання в кінці блоку (напр. "Види установ" -> "Придбання
+  // діючої фінансової установи") — єдиний спосіб дати реальний internal
+  // link всередині service-page контенту без переходу всієї схеми на
+  // rich text/blocks заради одного посилання.
+  linkText?: string;
+  linkHref?: string;
 }
 
 interface ServicePageData {
@@ -30,10 +50,26 @@ interface PageProps {
   params: Promise<{ locale: string; slug: string }>;
 }
 
+// Всі service-page записи в Strapi мають " | HARLIB" буквально в кінці
+// metaTitle (авторський текст, скопійований з SEO-брифів разом із суфіксом
+// бренду) — але app/[locale]/layout.tsx's title.template ("%s | HARLIB")
+// вже додає той самий суфікс автоматично для БУДЬ-ЯКОГО вкладеного сегмента
+// (services/[slug] лежить під [locale], не в ньому самому — на відміну від
+// app/[locale]/page.tsx, де суфікс дійсно треба дописувати вручну, див.
+// коментар там-таки). Без цього стрипу кожна сторінка послуги показувала
+// "... | HARLIB | HARLIB" в <title> — підтверджено на живій /en/services/
+// capital (не лише на цій, щойно оновленій сторінці), тобто це наскрізний,
+// а не щойно внесений баг. Виправлено тут (єдине місце, що формує title для
+// service-page), а не в Strapi-контенті — 19 записів редагувати не треба.
+const HARLIB_SUFFIX_RE = /\s*\|\s*HARLIB\s*$/i;
+function stripHarlibSuffix(title: string): string {
+  return title.replace(HARLIB_SUFFIX_RE, '');
+}
+
 async function getServicePage(locale: Locale, slug: string): Promise<ServicePageData | null> {
   return fetchStrapiBySlug('service-pages', slug, {
     locale,
-    'populate[mainContent]': '*',
+    'populate[mainContent][populate]': 'steps',
   });
 }
 
@@ -76,7 +112,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return generatePageMetadata({
     locale: currentLocale,
     path: `/services/${slug}`,
-    title: data.metaTitle || data.h1 || slug,
+    title: stripHarlibSuffix(data.metaTitle || data.h1 || slug),
     description: data.metaDescription || data.h1 || (data.mainContent?.[0]?.body ?? ''),
     localizedPaths,
   });
@@ -144,9 +180,30 @@ export default async function ServicePage({ params }: PageProps) {
                 className={styles.block}
               >
                 {block.heading && <h2 className={styles.blockHeading}>{block.heading}</h2>}
-                {block.body && <p className={styles.blockBody}>{block.body}</p>}
+
+                {block.steps && block.steps.length > 0 ? (
+                  <ol className={styles.stepsList}>
+                    {block.steps.map((step) => (
+                      <li key={step.id} className={styles.stepItem}>
+                        {step.number && <span className={styles.stepNumber}>{step.number}</span>}
+                        {step.title && <h3 className={styles.stepTitle}>{step.title}</h3>}
+                        {step.items && <p className={styles.stepBody}>{step.items}</p>}
+                      </li>
+                    ))}
+                  </ol>
+                ) : (
+                  block.body && <p className={styles.blockBody}>{block.body}</p>
+                )}
+
+                {block.linkText && block.linkHref && (
+                  <Link href={block.linkHref} className={styles.afterLink}>
+                    {block.linkText} →
+                  </Link>
+                )}
               </section>
             ))}
+
+            <ServiceCtaButton locale={currentLocale} data={contactData} />
           </article>
 
           <ArticleNav
