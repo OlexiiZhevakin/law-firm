@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       // три написання з одним брендом. Єдине місце в тексті, де вони
       // вписані поруч (див. law-firm/CLAUDE.md "Brand name variants") —
       // навмисно без дублювання деінде, щоб не виглядало як keyword stuffing.
-      uk: 'HARLIB — юридичний бутік для банків, страхових і небанківських фінансових установ, фінтех-компаній і крипто-сервісів — в Україні, ЄС, Великобританії та Азії.',
+      uk: 'HARLIB — юридичний бутик для банків, страхових і небанківських фінансових установ, фінтех-компаній і крипто-сервісів — в Україні, ЄС, Великобританії та Азії.',
       // "the UK" -> "UK" (162 -> 158 символів) — єдина правка, значення й
       // ключові терміни не змінені, лише прибрано зайвий артикль.
       en: 'HARLIB is a legal boutique for banks, insurance and non-bank financial institutions, fintech companies and crypto-services — in Ukraine, the EU, UK, and Asia.',
